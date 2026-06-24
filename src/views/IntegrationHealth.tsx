@@ -18,7 +18,7 @@ import {
   XCircle,
   CheckCircle,
 } from 'lucide-react'
-import { Card, SectionHeader } from '../components/Card'
+import { Card, SectionHeader, CardHeader, EmptyState } from '../components/Card'
 import { StatusBadge } from '../components/StatusBadge'
 import { AnimatedNumber } from '../components/AnimatedNumber'
 import { ExceptionRow } from '../components/ExceptionRow'
@@ -130,9 +130,7 @@ export function IntegrationHealth() {
             hint="Distribution of open exceptions by root cause. Credential failures require manual resolution; all other categories support automated retry on the next sync cycle."
           />
           {taxonomy.length === 0 ? (
-            <div className="flex h-64 items-center justify-center text-sm text-slate-500">
-              No open exceptions.
-            </div>
+            <EmptyState title="No open exceptions" className="h-64 py-0" />
           ) : (
             <div className="h-64 w-full">
               <ResponsiveContainer width="100%" height="100%">
@@ -180,21 +178,23 @@ export function IntegrationHealth() {
 
       {/* Exception queue with retry */}
       <Card padded={false} tourId="intq">
-        <div className="flex items-center justify-between border-b border-white/[0.07] p-4">
-          <div className="flex items-center gap-2">
-            <AlertTriangle className="h-4 w-4 text-amber-400" />
-            <h2 className="text-sm font-semibold text-slate-100">Exception Queue</h2>
-            <Hint text="Retryable items reprocess automatically on the next sync once the underlying data issue is corrected. Blocked items require manual intervention before the queue can clear." />
-          </div>
-          <span className="text-[11px] text-slate-500">
-            {retryable.length} retryable · {blocked.length} blocked
-          </span>
-        </div>
+        <CardHeader
+          title="Exception Queue"
+          icon={<AlertTriangle className="h-4 w-4 text-amber-400" />}
+          hint="Retryable items reprocess automatically on the next sync once the underlying data issue is corrected. Blocked items require manual intervention before the queue can clear."
+          action={
+            <span className="text-[11px] text-slate-500">
+              {retryable.length} retryable · {blocked.length} blocked
+            </span>
+          }
+        />
         <div className="grid gap-2 p-4 md:grid-cols-2">
           {exceptions.length === 0 ? (
-            <div className="col-span-full py-10 text-center text-sm text-slate-500">
-              Queue is clear — all systems reconciled.
-            </div>
+            <EmptyState
+              title="Queue is clear"
+              subtitle="All systems reconciled."
+              className="col-span-full py-10"
+            />
           ) : (
             exceptions.map((exc) => (
               <ExceptionRow key={exc.id} exception={exc} onRetry={resolveException} />

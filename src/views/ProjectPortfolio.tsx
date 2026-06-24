@@ -1,6 +1,5 @@
 import { FolderKanban, AlertTriangle, MapPin } from 'lucide-react'
-import { Card, SectionHeader } from '../components/Card'
-import { Hint } from '../components/Hint'
+import { Card, SectionHeader, CardHeader, CountPill } from '../components/Card'
 import { ProgressBar } from '../components/ProgressBar'
 import { StatusBadge } from '../components/StatusBadge'
 import { AnimatedNumber } from '../components/AnimatedNumber'
@@ -73,13 +72,11 @@ export function ProjectPortfolio() {
       <div className="grid gap-6 lg:grid-cols-3">
         {/* Project table */}
         <Card className="lg:col-span-2" padded={false} tourId="project-table">
-          <div className="flex items-center justify-between border-b border-white/[0.07] p-4">
-            <div className="flex items-center gap-2">
-              <FolderKanban className="h-4 w-4 text-accent" />
-              <h2 className="text-sm font-semibold text-slate-100">Project Portfolio</h2>
-            </div>
-            <span className="text-[11px] text-slate-500">{projects.length} programs</span>
-          </div>
+          <CardHeader
+            title="Project Portfolio"
+            icon={<FolderKanban className="h-4 w-4 text-accent" />}
+            action={<span className="text-[11px] text-slate-500">{projects.length} programs</span>}
+          />
           <div className="overflow-x-auto">
             <table className="w-full text-left text-sm">
               <thead>
@@ -131,16 +128,12 @@ export function ProjectPortfolio() {
 
         {/* At-risk panel */}
         <Card padded={false} className="flex flex-col">
-          <div className="flex items-center justify-between border-b border-white/[0.07] p-4">
-            <div className="flex items-center gap-2">
-              <AlertTriangle className="h-4 w-4 text-amber-400" />
-              <h2 className="text-sm font-semibold text-slate-100">At-Risk Programs</h2>
-              <Hint text="Projects flagged at-risk or blocked needing intervention in the current sprint. Board escalation applies to any project 14+ days blocked with no resolved path forward." />
-            </div>
-            <span className="rounded-full bg-amber-500/15 px-2 py-0.5 text-xs font-semibold tabular text-amber-300">
-              {atRisk.length}
-            </span>
-          </div>
+          <CardHeader
+            title="At-Risk Programs"
+            icon={<AlertTriangle className="h-4 w-4 text-amber-400" />}
+            hint="Projects flagged at-risk or blocked needing intervention in the current sprint. Board escalation applies to any project 14+ days blocked with no resolved path forward."
+            action={<CountPill tone="amber">{atRisk.length}</CountPill>}
+          />
           <div className="space-y-2 p-4">
             {atRisk.map((p) => (
               <div

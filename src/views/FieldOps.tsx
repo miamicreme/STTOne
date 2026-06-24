@@ -9,8 +9,7 @@ import {
   Cell,
 } from 'recharts'
 import { Truck, Wrench, Users, Gauge } from 'lucide-react'
-import { Card, SectionHeader } from '../components/Card'
-import { Hint } from '../components/Hint'
+import { Card, SectionHeader, CardHeader } from '../components/Card'
 import { KPICard } from '../components/KPICard'
 import { StatusBadge } from '../components/StatusBadge'
 import { ProgressBar } from '../components/ProgressBar'
@@ -123,14 +122,12 @@ export function FieldOps() {
       <div className="grid gap-6 lg:grid-cols-2">
         {/* Overdue maintenance */}
         <Card padded={false}>
-          <div className="flex items-center justify-between border-b border-white/[0.07] p-4">
-            <div className="flex items-center gap-2">
-              <Wrench className="h-4 w-4 text-amber-400" />
-              <h2 className="text-sm font-semibold text-slate-100">Overdue & Upcoming Maintenance</h2>
-              <Hint text="Assets past or within 14 days of a scheduled service interval. High-severity items risk field downtime and should be scheduled immediately; medium-severity within the current sprint." />
-            </div>
-            <span className="text-[11px] text-slate-500">{overdueMaintenance.length} assets</span>
-          </div>
+          <CardHeader
+            title="Overdue & Upcoming Maintenance"
+            icon={<Wrench className="h-4 w-4 text-amber-400" />}
+            hint="Assets past or within 14 days of a scheduled service interval. High-severity items risk field downtime and should be scheduled immediately; medium-severity within the current sprint."
+            action={<span className="text-[11px] text-slate-500">{overdueMaintenance.length} assets</span>}
+          />
           <div className="divide-y divide-white/[0.05]">
             {overdueMaintenance.map((m) => (
               <div key={m.asset} className="flex items-center gap-3 p-3.5">
@@ -163,13 +160,11 @@ export function FieldOps() {
 
         {/* Crew board */}
         <Card padded={false}>
-          <div className="flex items-center justify-between border-b border-white/[0.07] p-4">
-            <div className="flex items-center gap-2">
-              <Users className="h-4 w-4 text-accent" />
-              <h2 className="text-sm font-semibold text-slate-100">Crew Board</h2>
-            </div>
-            <span className="text-[11px] text-slate-500">{crewBoard.length} crews</span>
-          </div>
+          <CardHeader
+            title="Crew Board"
+            icon={<Users className="h-4 w-4 text-accent" />}
+            action={<span className="text-[11px] text-slate-500">{crewBoard.length} crews</span>}
+          />
           <div className="space-y-2 p-4">
             {crewBoard.map((c) => (
               <div
