@@ -13,6 +13,7 @@
 export type PageKey =
   | 'home'
   | 'board'
+  | 'architecture'
   | 'newhire'
   | 'drive'
   | 'integration'
@@ -765,8 +766,137 @@ export const tourScenes: TourScene[] = [
   { page: 'newhire', caption: 'New-hire automation: Paychex → PenguinData in a single pass', ms: 7800, run: 'success' },
   { page: 'newhire', caption: 'The catch — a hire with no CDL is stopped before dispatch', ms: 7000, run: 'failure' },
   { page: 'integration', caption: 'That blocked hire lands here as a live exception — nothing fails silently', ms: 5000 },
+  { page: 'architecture', caption: 'The architecture beneath it: one source of truth, a governed integration layer', ms: 5400 },
   { page: 'drive', caption: 'The Google Drive "junk drawer," classified, de-duped, and de-risked', ms: 4800 },
   { page: 'projects', caption: 'Portfolio health across every active program', ms: 4000 },
   { page: 'portal', caption: 'And the field tech’s own portal — schedule, truck, and certs in one place', ms: 4400 },
   { page: 'home', caption: 'Built on Execution. Elevated by Excellence.', ms: 3600 },
+]
+
+/* ------------------------------------------------------------------ */
+/* Integration Architecture                                            */
+/* ------------------------------------------------------------------ */
+
+export interface SystemOfRecord {
+  system: string
+  owns: string
+  role: string
+}
+
+/** The architectural POV: one authoritative owner per data domain. */
+export const systemsOfRecord: SystemOfRecord[] = [
+  { system: 'Paychex', owns: 'People', role: 'Source of truth — workers, onboarding, payroll' },
+  { system: 'PenguinData', owns: 'Operations', role: 'Workforce, dispatch, fleet & work orders' },
+  { system: 'QuickBooks', owns: 'Finance', role: 'Invoicing, job-cost & payables' },
+  { system: 'Google Drive', owns: 'Documents', role: 'Legacy repository → staged & governed' },
+]
+
+export type PipelineTrigger = 'webhook' | 'scheduled' | 'event'
+
+export interface PipelineJob {
+  name: string
+  trigger: PipelineTrigger
+  flow: string
+  cadence: string
+  lastRun: string
+  throughput: string
+  health: SystemStatus
+}
+
+/** The automated pipelines that make the ecosystem run — the "highly automated" proof. */
+export const pipelineJobs: PipelineJob[] = [
+  {
+    name: 'Worker sync',
+    trigger: 'webhook',
+    flow: 'Paychex → PenguinData',
+    cadence: 'Real-time',
+    lastRun: '42s ago',
+    throughput: '118 workers in sync',
+    health: 'healthy',
+  },
+  {
+    name: 'New-hire onboarding',
+    trigger: 'event',
+    flow: 'Paychex → Staging → PenguinData → Fleet',
+    cadence: 'On hire',
+    lastRun: '2h ago',
+    throughput: '6 provisioned this week',
+    health: 'healthy',
+  },
+  {
+    name: 'Job-cost sync',
+    trigger: 'scheduled',
+    flow: 'PenguinData → QuickBooks',
+    cadence: 'Every 15 min',
+    lastRun: '8m ago',
+    throughput: '214 entries/day',
+    health: 'warning',
+  },
+  {
+    name: 'Drive classification',
+    trigger: 'scheduled',
+    flow: 'Google Drive → Staging',
+    cadence: 'Hourly',
+    lastRun: 'streaming',
+    throughput: '58,412 files indexed',
+    health: 'active',
+  },
+  {
+    name: 'Dedupe & merge',
+    trigger: 'scheduled',
+    flow: 'Staging → PenguinData',
+    cadence: 'Nightly',
+    lastRun: '06:00',
+    throughput: '7,936 candidates resolved',
+    health: 'healthy',
+  },
+  {
+    name: 'Payroll reconciliation',
+    trigger: 'scheduled',
+    flow: 'PenguinData → Paychex',
+    cadence: 'Daily 05:30',
+    lastRun: '05:30',
+    throughput: '97.9% auto-matched',
+    health: 'healthy',
+  },
+]
+
+export interface GovernanceGuard {
+  name: string
+  prevents: string
+  scope: string
+}
+
+/** Automated data-entry guards — the JD's "crews can't re-clutter the system" requirement. */
+export const governanceGuards: GovernanceGuard[] = [
+  {
+    name: 'Required-field validation',
+    prevents: 'Incomplete onboarding packets reaching PenguinData',
+    scope: 'Ingest',
+  },
+  {
+    name: 'Dedupe-on-write',
+    prevents: 'Duplicate worker, asset & work-order records',
+    scope: 'Staging',
+  },
+  {
+    name: 'Schema & format enforcement',
+    prevents: 'Malformed IDs and mismatched job codes',
+    scope: 'Ingest',
+  },
+  {
+    name: 'Source-of-truth lock',
+    prevents: 'Worker edits made anywhere outside Paychex',
+    scope: 'Identity',
+  },
+  {
+    name: 'Permission policy',
+    prevents: 'Link-public finance docs & stale external access',
+    scope: 'Drive',
+  },
+  {
+    name: 'Exception routing',
+    prevents: 'Silent failures — everything routes to a human queue',
+    scope: 'Pipeline',
+  },
 ]
