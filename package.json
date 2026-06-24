@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "test": "node --import tsx --test src/__tests__/*.test.ts"
+    "test": "node --import tsx --test src/__tests__/appReducer.test.ts src/__tests__/data.test.ts"
   },
   "dependencies": {
     "lucide-react": "^0.460.0",

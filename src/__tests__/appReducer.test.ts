@@ -78,6 +78,15 @@ test('TOUR_GOTO_SCENE / SET_PLAYING / STOP / COMPLETE behave', () => {
   assert.equal(done.tour.active, false)
 })
 
+test('command palette: open / close / toggle, and SET_PAGE dismisses it', () => {
+  const opened = reducer(initialState, { type: 'OPEN_COMMAND' })
+  assert.equal(opened.commandOpen, true)
+  assert.equal(reducer(opened, { type: 'CLOSE_COMMAND' }).commandOpen, false)
+  assert.equal(reducer(initialState, { type: 'TOGGLE_COMMAND' }).commandOpen, true)
+  // Navigating from the palette closes it.
+  assert.equal(reducer(opened, { type: 'SET_PAGE', page: 'drive' }).commandOpen, false)
+})
+
 test('NH_RUN issues a one-shot command with a strictly increasing nonce', () => {
   const a = reducer(initialState, { type: 'NH_RUN', kind: 'success' })
   assert.deepEqual(a.nhCommand, { kind: 'success', nonce: 1 })

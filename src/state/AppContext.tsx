@@ -23,6 +23,10 @@ interface AppContextValue extends AppState {
   toggleBoardroom: () => void
   toggleMobileNav: () => void
   closeMobileNav: () => void
+  // Command palette (⌘K)
+  openCommand: () => void
+  closeCommand: () => void
+  toggleCommand: () => void
   // Guided tour controls
   startTour: () => void
   stopTour: () => void
@@ -48,6 +52,9 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const toggleBoardroom = useCallback(() => dispatch({ type: 'TOGGLE_BOARDROOM' }), [])
   const toggleMobileNav = useCallback(() => dispatch({ type: 'TOGGLE_MOBILE_NAV' }), [])
   const closeMobileNav = useCallback(() => dispatch({ type: 'CLOSE_MOBILE_NAV' }), [])
+  const openCommand = useCallback(() => dispatch({ type: 'OPEN_COMMAND' }), [])
+  const closeCommand = useCallback(() => dispatch({ type: 'CLOSE_COMMAND' }), [])
+  const toggleCommand = useCallback(() => dispatch({ type: 'TOGGLE_COMMAND' }), [])
   const startTour = useCallback(() => dispatch({ type: 'TOUR_START' }), [])
   const stopTour = useCallback(() => dispatch({ type: 'TOUR_STOP' }), [])
   const tourGotoScene = useCallback((index: number) => dispatch({ type: 'TOUR_GOTO_SCENE', index }), [])
@@ -79,6 +86,9 @@ export function AppProvider({ children }: { children: ReactNode }) {
         toggleBoardroom,
         toggleMobileNav,
         closeMobileNav,
+        openCommand,
+        closeCommand,
+        toggleCommand,
         startTour,
         stopTour,
         tourGotoScene,

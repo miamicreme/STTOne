@@ -29,6 +29,7 @@ export interface AppState {
   sidebarCollapsed: boolean
   boardroomMode: boolean
   mobileNavOpen: boolean
+  commandOpen: boolean
   tour: TourState
   nhCommand: NhCommand | null
   exceptions: ExceptionItem[]
@@ -43,6 +44,9 @@ export type Action =
   | { type: 'TOGGLE_BOARDROOM' }
   | { type: 'TOGGLE_MOBILE_NAV' }
   | { type: 'CLOSE_MOBILE_NAV' }
+  | { type: 'OPEN_COMMAND' }
+  | { type: 'CLOSE_COMMAND' }
+  | { type: 'TOGGLE_COMMAND' }
   | { type: 'TOUR_START' }
   | { type: 'TOUR_STOP' }
   | { type: 'TOUR_GOTO_SCENE'; index: number }
@@ -64,6 +68,7 @@ export const initialState: AppState = {
   sidebarCollapsed: false,
   boardroomMode: false,
   mobileNavOpen: false,
+  commandOpen: false,
   tour: { active: false, sceneIndex: 0, playing: false, completed: false },
   nhCommand: null,
   exceptions: seedExceptions,
@@ -81,6 +86,7 @@ export function reducer(state: AppState, action: Action): AppState {
         ...state,
         page: action.page,
         mobileNavOpen: false,
+        commandOpen: false,
         tour: { ...state.tour, active: false, playing: false },
       }
     case 'TOGGLE_SIDEBAR':
@@ -91,6 +97,14 @@ export function reducer(state: AppState, action: Action): AppState {
       return { ...state, mobileNavOpen: !state.mobileNavOpen }
     case 'CLOSE_MOBILE_NAV':
       return { ...state, mobileNavOpen: false }
+
+    /* ---- Command palette (⌘K) ---- */
+    case 'OPEN_COMMAND':
+      return { ...state, commandOpen: true }
+    case 'CLOSE_COMMAND':
+      return { ...state, commandOpen: false }
+    case 'TOGGLE_COMMAND':
+      return { ...state, commandOpen: !state.commandOpen }
 
     /* ---- Guided tour ---- */
     case 'TOUR_START':

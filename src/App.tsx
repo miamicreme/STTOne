@@ -5,6 +5,7 @@ import { Sidebar } from './components/Sidebar'
 import { TopBar } from './components/TopBar'
 import { ErrorBoundary } from './components/ErrorBoundary'
 import { TourController } from './components/TourController'
+import { CommandPalette } from './components/CommandPalette'
 import { ExecutiveHome } from './views/ExecutiveHome'
 import { CEOBoardView } from './views/CEOBoardView'
 import { Architecture } from './views/Architecture'
@@ -74,6 +75,7 @@ function Shell() {
         </main>
       </div>
       <TourController />
+      <CommandPalette />
     </div>
   )
 }
