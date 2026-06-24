@@ -1,4 +1,6 @@
-import { Presentation, Search, Bell } from 'lucide-react'
+'use client'
+
+import { Presentation, Search, Bell, ChevronRight } from 'lucide-react'
 import { useApp } from '../state/AppContext'
 import type { PageKey } from '../data'
 
@@ -15,37 +17,42 @@ export function TopBar() {
   const { page, boardroomMode, toggleBoardroom, exceptions } = useApp()
 
   return (
-    <header className="sticky top-0 z-20 flex h-16 items-center justify-between gap-4 border-b border-white/[0.07] bg-base-900/80 px-6 backdrop-blur-md">
+    <header className="glass sticky top-0 z-20 flex h-16 items-center justify-between gap-4 border-b border-white/[0.07] px-6">
       <div className="min-w-0">
-        <div className="flex items-center gap-2 text-[11px] uppercase tracking-wider text-slate-500">
+        <div className="flex items-center gap-1.5 text-[11px] font-medium uppercase tracking-[0.14em] text-slate-500">
           <span>Southern Tier Telecommunications</span>
-          <span className="text-slate-700">/</span>
+          <ChevronRight className="h-3 w-3 text-slate-700" />
           <span className="text-slate-400">Fort Myers HQ</span>
         </div>
-        <h1 className="truncate text-lg font-bold tracking-tight text-white">{pageTitles[page]}</h1>
+        <h1 className="truncate font-display text-[19px] font-bold tracking-tight text-white">
+          {pageTitles[page]}
+        </h1>
       </div>
 
       <div className="flex items-center gap-3">
         {/* Operational Pulse chip */}
-        <div className="hidden items-center gap-2 rounded-full border border-emerald-500/25 bg-emerald-500/10 px-3 py-1.5 md:flex">
+        <div className="hidden items-center gap-2 rounded-full border border-emerald-500/25 bg-emerald-500/[0.08] px-3 py-1.5 md:flex">
           <span className="relative flex h-2 w-2">
-            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-60" />
+            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-70" />
             <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-400" />
           </span>
-          <span className="text-xs font-medium text-emerald-300">Operational Pulse · Nominal</span>
+          <span className="text-xs font-semibold text-emerald-300">Operational Pulse · Nominal</span>
         </div>
 
         {/* Fake search */}
-        <button className="hidden items-center gap-2 rounded-lg border border-white/[0.07] bg-white/[0.02] px-3 py-1.5 text-xs text-slate-500 transition-colors hover:text-slate-300 lg:flex">
+        <button className="hidden items-center gap-2 rounded-xl border border-white/[0.07] bg-white/[0.02] px-3 py-2 text-xs text-slate-500 transition-colors hover:border-white/[0.14] hover:text-slate-300 lg:flex">
           <Search className="h-3.5 w-3.5" />
           <span>Search operations…</span>
+          <kbd className="rounded border border-white/10 bg-white/[0.04] px-1.5 py-0.5 text-[10px] text-slate-500">
+            ⌘K
+          </kbd>
         </button>
 
         {/* Notifications */}
-        <button className="relative rounded-lg border border-white/[0.07] bg-white/[0.02] p-2 text-slate-400 transition-colors hover:text-slate-200">
+        <button className="relative rounded-xl border border-white/[0.07] bg-white/[0.02] p-2 text-slate-400 transition-colors hover:border-white/[0.14] hover:text-slate-200">
           <Bell className="h-4 w-4" />
           {exceptions.length > 0 && (
-            <span className="absolute -right-1 -top-1 flex h-4 min-w-4 items-center justify-center rounded-full bg-rose-500 px-1 text-[10px] font-bold text-white">
+            <span className="absolute -right-1 -top-1 flex h-4 min-w-4 items-center justify-center rounded-full bg-rose-500 px-1 text-[10px] font-bold text-white ring-2 ring-base-900">
               {exceptions.length}
             </span>
           )}
@@ -54,10 +61,10 @@ export function TopBar() {
         {/* Boardroom Mode toggle */}
         <button
           onClick={toggleBoardroom}
-          className={`flex items-center gap-2 rounded-lg border px-3 py-2 text-xs font-semibold transition-colors ${
+          className={`flex items-center gap-2 rounded-xl border px-3 py-2 text-xs font-semibold transition-all duration-300 ${
             boardroomMode
-              ? 'border-accent/40 bg-accent/15 text-accent'
-              : 'border-white/[0.07] bg-white/[0.02] text-slate-400 hover:text-slate-200'
+              ? 'border-accent/40 bg-accent/15 text-accent shadow-[0_0_18px_-4px_rgba(56,189,248,0.6)]'
+              : 'border-white/[0.07] bg-white/[0.02] text-slate-400 hover:border-white/[0.14] hover:text-slate-200'
           }`}
         >
           <Presentation className="h-4 w-4" />

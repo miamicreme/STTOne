@@ -1,3 +1,5 @@
+'use client'
+
 import {
   LayoutDashboard,
   UserPlus,
@@ -32,19 +34,22 @@ export function Sidebar() {
 
   return (
     <aside
-      className={`relative flex shrink-0 flex-col border-r border-white/[0.07] bg-base-900/80 transition-all duration-300 ${
-        sidebarCollapsed ? 'w-[68px]' : 'w-64'
+      className={`glass relative z-10 flex shrink-0 flex-col border-r border-white/[0.07] transition-[width] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] ${
+        sidebarCollapsed ? 'w-[72px]' : 'w-64'
       }`}
     >
       {/* Brand */}
       <div className="flex h-16 items-center gap-3 border-b border-white/[0.07] px-4">
-        <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-accent to-accent-deep shadow-lg shadow-accent/20">
+        <div className="relative flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-accent via-accent-soft to-accent-deep shadow-lg shadow-accent/25">
           <Signal className="h-5 w-5 text-white" />
+          <span className="absolute inset-0 rounded-xl ring-1 ring-inset ring-white/20" />
         </div>
         {!sidebarCollapsed && (
           <div className="min-w-0 leading-tight">
-            <p className="truncate text-sm font-bold tracking-tight text-white">Southern Tier</p>
-            <p className="truncate text-[10px] uppercase tracking-wider text-slate-500">
+            <p className="truncate font-display text-[15px] font-bold tracking-tight text-gradient">
+              Southern Tier
+            </p>
+            <p className="truncate text-[10px] uppercase tracking-[0.22em] text-slate-500">
               Command Center
             </p>
           </div>
@@ -61,24 +66,28 @@ export function Sidebar() {
               key={item.key}
               onClick={() => setPage(item.key)}
               title={sidebarCollapsed ? item.label : undefined}
-              className={`group relative flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-left text-sm transition-colors ${
+              className={`group relative flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left text-sm transition-all duration-200 ${
                 active
-                  ? 'bg-accent/12 font-semibold text-accent'
-                  : 'text-slate-400 hover:bg-white/[0.04] hover:text-slate-200'
+                  ? 'bg-accent/[0.12] font-semibold text-accent shadow-[inset_0_0_0_1px_rgba(56,189,248,0.18)]'
+                  : 'text-slate-400 hover:bg-white/[0.05] hover:text-slate-100'
               }`}
             >
               {active && (
-                <span className="absolute inset-y-1 left-0 w-0.5 rounded-full bg-accent" />
+                <span className="absolute inset-y-1.5 left-0 w-[3px] rounded-full bg-accent shadow-[0_0_12px_rgba(56,189,248,0.7)]" />
               )}
-              <Icon className="h-[18px] w-[18px] shrink-0" />
+              <Icon
+                className={`h-[18px] w-[18px] shrink-0 transition-transform duration-200 ${
+                  active ? '' : 'group-hover:scale-110'
+                }`}
+              />
               {!sidebarCollapsed && <span className="flex-1 truncate">{item.label}</span>}
               {!sidebarCollapsed && item.badge ? (
-                <span className="rounded-full bg-rose-500/15 px-1.5 py-0.5 text-[10px] font-semibold tabular text-rose-300">
+                <span className="rounded-full bg-rose-500/15 px-1.5 py-0.5 text-[10px] font-semibold tabular text-rose-300 ring-1 ring-inset ring-rose-500/20">
                   {item.badge}
                 </span>
               ) : null}
               {sidebarCollapsed && item.badge ? (
-                <span className="absolute right-1.5 top-1.5 h-1.5 w-1.5 rounded-full bg-rose-400" />
+                <span className="absolute right-2 top-2 h-1.5 w-1.5 rounded-full bg-rose-400 shadow-[0_0_8px_rgba(251,113,133,0.9)]" />
               ) : null}
             </button>
           )
@@ -88,7 +97,7 @@ export function Sidebar() {
       {/* Footer / collapse */}
       <div className="border-t border-white/[0.07] p-3">
         {!sidebarCollapsed && (
-          <p className="mb-2 px-2 text-[10px] leading-relaxed text-slate-600">
+          <p className="mb-2.5 px-2 font-display text-[10px] uppercase leading-relaxed tracking-[0.14em] text-slate-600">
             Built on Execution.
             <br />
             Elevated by Excellence.
@@ -96,10 +105,12 @@ export function Sidebar() {
         )}
         <button
           onClick={toggleSidebar}
-          className="flex w-full items-center justify-center gap-2 rounded-lg border border-white/[0.07] bg-white/[0.02] py-2 text-xs text-slate-400 transition-colors hover:text-slate-200"
+          className="flex w-full items-center justify-center gap-2 rounded-xl border border-white/[0.07] bg-white/[0.02] py-2 text-xs text-slate-400 transition-colors hover:bg-white/[0.05] hover:text-slate-200"
         >
           <ChevronLeft
-            className={`h-4 w-4 transition-transform ${sidebarCollapsed ? 'rotate-180' : ''}`}
+            className={`h-4 w-4 transition-transform duration-300 ${
+              sidebarCollapsed ? 'rotate-180' : ''
+            }`}
           />
           {!sidebarCollapsed && 'Collapse'}
         </button>

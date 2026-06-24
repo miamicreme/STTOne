@@ -17,6 +17,7 @@ import {
 import { Card, SectionHeader } from '../components/Card'
 import { ProgressBar } from '../components/ProgressBar'
 import { StatusBadge } from '../components/StatusBadge'
+import { AnimatedNumber } from '../components/AnimatedNumber'
 import {
   fileVolumes,
   driveByDomain,
@@ -39,16 +40,18 @@ export function DriveCleanup() {
     <div className="space-y-6">
       {/* File-volume cards */}
       <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
-        {fileVolumes.map((v) => (
+        {fileVolumes.map((v, i) => (
           <div
             key={v.label}
-            className="rounded-xl border border-white/[0.07] bg-base-850/70 p-4 transition-colors hover:border-accent/30"
+            className="lift animate-rise rounded-2xl border border-white/[0.07] bg-base-850/60 p-4"
+            style={{ animationDelay: `${i * 55}ms` }}
           >
-            <p className="text-[11px] uppercase tracking-wider text-slate-500">{v.label}</p>
-            <p className={`mt-2 text-3xl font-bold tabular ${toneText[v.tone]}`}>
-              {v.value.toLocaleString()}
-            </p>
-            <p className="mt-1 text-[11px] text-slate-500">{v.hint}</p>
+            <p className="text-[10.5px] uppercase tracking-[0.12em] text-slate-500">{v.label}</p>
+            <AnimatedNumber
+              value={v.value.toLocaleString()}
+              className={`mt-2 block font-display text-[1.9rem] font-bold leading-none tabular ${toneText[v.tone]}`}
+            />
+            <p className="mt-1.5 text-[11px] text-slate-500">{v.hint}</p>
           </div>
         ))}
       </div>

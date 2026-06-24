@@ -28,8 +28,8 @@ export function FieldOps() {
     <div className="space-y-6">
       {/* KPIs */}
       <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
-        {fleetKpis.map((kpi) => (
-          <KPICard key={kpi.label} kpi={kpi} />
+        {fleetKpis.map((kpi, i) => (
+          <KPICard key={kpi.label} kpi={kpi} index={i} />
         ))}
       </div>
 

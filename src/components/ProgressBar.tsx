@@ -7,10 +7,10 @@ interface ProgressBarProps {
 }
 
 const toneFill: Record<string, string> = {
-  accent: 'bg-accent',
-  emerald: 'bg-emerald-400',
-  amber: 'bg-amber-400',
-  rose: 'bg-rose-400',
+  accent: 'from-accent-soft to-accent-glow',
+  emerald: 'from-emerald-500 to-emerald-300',
+  amber: 'from-amber-500 to-amber-300',
+  rose: 'from-rose-500 to-rose-300',
 }
 
 function pickTone(value: number): keyof typeof toneFill {
@@ -37,7 +37,7 @@ export function ProgressBar({ value, label, caption, tone, size = 'md' }: Progre
         }`}
       >
         <div
-          className={`h-full rounded-full ${fill} transition-all duration-700 ease-out`}
+          className={`h-full rounded-full bg-gradient-to-r ${fill} shadow-[0_0_10px_-2px_rgba(56,189,248,0.5)] transition-[width] duration-1000 ease-[cubic-bezier(0.22,1,0.36,1)]`}
           style={{ width: `${clamped}%` }}
         />
       </div>

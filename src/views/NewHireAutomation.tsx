@@ -148,8 +148,8 @@ export function NewHireAutomation() {
     <div className="space-y-6">
       {/* Stats */}
       <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
-        {newHireStats.map((kpi) => (
-          <KPICard key={kpi.label} kpi={kpi} />
+        {newHireStats.map((kpi, i) => (
+          <KPICard key={kpi.label} kpi={kpi} index={i} />
         ))}
       </div>
 
@@ -183,7 +183,7 @@ export function NewHireAutomation() {
               <button
                 onClick={run}
                 disabled={running}
-                className="inline-flex items-center gap-2 rounded-lg bg-accent px-4 py-2.5 text-sm font-semibold text-base-950 transition-all hover:bg-accent-soft disabled:cursor-not-allowed disabled:opacity-60"
+                className="group inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-accent to-accent-soft px-5 py-2.5 text-sm font-semibold text-base-950 shadow-[0_8px_24px_-8px_rgba(56,189,248,0.8)] transition-all hover:shadow-[0_10px_28px_-6px_rgba(56,189,248,0.95)] hover:brightness-110 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-60 disabled:shadow-none"
               >
                 {running ? (
                   <>
@@ -192,7 +192,7 @@ export function NewHireAutomation() {
                   </>
                 ) : (
                   <>
-                    <Play className="h-4 w-4" />
+                    <Play className="h-4 w-4 transition-transform group-hover:scale-110" />
                     Run New Hire Automation
                   </>
                 )}
