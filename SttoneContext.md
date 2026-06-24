@@ -111,4 +111,42 @@ Because STT’s exact headcount and fleet counts are not public, the safest move
 | Project Portfolio | Portfolio table, phase funnel, production trend line, at-risk projects panel | Underground programs **8**; aerial programs **5**; wireless/small-cell **4**; avg completion across active jobs **63%** | Matches STT’s public service mix. |
 | Google Drive Cleanup Center | File-volume cards, donut by domain, duplicate tracker, permission-risk panel, migration queue | Total files **58,412**; duplicate candidates **7,936**; HR docs **2,184**; fleet docs **1,062**; project docs **10,447**; finance/payroll-sensitive docs **734**; archive-ready **12,330**; migration-ready **3,860** | This is the “wow” page because it visibly attacks the junk drawer problem. |
 | Integration Health | System status cards, event-timeline feed, retry button, exception categorization chart | Paychex status **Healthy**; PenguinData **Healthy**; QuickBooks **Warning**; Google Drive scan **Active**; retryable exceptions **7**; blocked exceptions **4** | Makes you sound like a systems architect instead of a dashboard designer. |
-| Employee Portal | My crew, my truck, certifications, today’s assignment, docs needed | Crew **SW FL Fiber Crew 3**; assigned truck **F-214**; cert expiring in 
+| Employee Portal | My crew, my truck, certifications, today’s assignment, docs needed | Crew **SW FL Fiber Crew 3**; assigned truck **F-214**; certifications valid **4 of 6** (CDL Class B expiring in **18 days**, Aerial Lift in **6 days**); documents outstanding **3**; hours this week **32.5 / 40** | Makes the system feel real to the field, not just the boardroom — the same data leadership sees, from the technician’s seat. |
+
+## Savings and ROI model
+
+The figures below are demo-only, but they are built from defensible assumptions a contractor like STT would recognize. They let you answer “what is this worth?” without overclaiming.
+
+| Lever | Assumption | Modeled monthly impact |
+|---|---|---|
+| Admin time reclaimed | ~126 hours/month saved across HR, dispatch, and AP from automated onboarding, dedupe, and exception routing | ~**$7.0K/mo** at a blended **$55/hr** loaded admin rate |
+| Billing leakage reduced | Fewer job-code/billing-hold errors reaching QuickBooks (e.g., the Eureka and Naples holds) recover a slice of invoiceable work | ~**$8.0K/mo** modeled |
+| Duplicate-record cleanup | **61%** reduction in duplicate worker entries lowers payroll-correction and rework cost | folded into admin time |
+| **Combined annual impact** | Admin + leakage, once migration cutover completes | ~**$189K/yr** |
+
+Frame it as **margin protection**, not back-office cleanup: in fiber/aerial work where labor is 60–70%+ of deployment cost, data hygiene that keeps crews credentialed, trucks assigned, and invoices clean directly protects the job-cost line.
+
+## Interview talking points
+
+Lead with judgment, not features. A few lines that land:
+
+- **“I didn’t build a fake ERP. I built the cockpit that sits on top of the systems you already chose.”** Paychex is the worker master, PenguinData runs operations and fleet, QuickBooks owns finance, and the Drive is the legacy layer being drained — the command center is the governance and visibility layer across them.
+- **“Exceptions are first-class, not silent failures.”** The New Hire automation deliberately includes a failure path (missing driver-license class → vehicle eligibility blocked → routed to an exception queue) that propagates live to Integration Health and the Executive/Board exception counters.
+- **“Event-driven where possible, staged reconciliation where necessary.”** Paychex, QuickBooks, and Drive all support webhook/change-notification patterns; the audit & staging layer classifies, dedupes, maps, and archives before anything lands downstream.
+- **“It speaks to both seats.”** The Board View shows ROI, risk heat, and transformation roadmap in executive language; the Employee Portal shows the same data from the technician’s truck.
+
+## Build status — prototype delivered
+
+The prototype implements the full blueprint above as a single-page **Next.js + TypeScript + Tailwind** app (Recharts, lucide-react), client-side only with all data simulated in-memory and a shared app-state layer so the New Hire flow’s outcomes propagate across pages. Eight scenes ship:
+
+1. **Executive Home** — 6 KPIs, operational-pulse banner, portfolio chart, exception drawer.
+2. **CEO / Board View** — board KPIs, regional risk heat map, transformation roadmap, at-risk programs, modeled-impact panel.
+3. **New Hire Automation** — animated 8-step pipeline with a failure variant and a live audit timeline.
+4. **Google Drive Cleanup Center** — file-volume cards, domain donut, duplicate tracker, permission-risk panel, migration queue.
+5. **Integration Health** — system status cards, live event feed, live exception taxonomy, retry queue.
+6. **Field Ops / Fleet** — fleet-health chart, utilization gauge, maintenance list, crew board.
+7. **Project Portfolio** — project table with per-program issues, phase funnel, at-risk panel.
+8. **Employee Portal** — identity, today’s assignment, my-truck card, certifications, and document checklist.
+
+Cross-page reactivity (shared exception count + audit log), a Boardroom Mode toggle, full tablet/mobile responsiveness, and a Render static-export deploy path are included. Every page is labeled **“Demo data — interview prototype only.”**
+

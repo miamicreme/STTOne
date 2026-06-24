@@ -4,11 +4,13 @@ import { AppProvider, useApp } from './state/AppContext'
 import { Sidebar } from './components/Sidebar'
 import { TopBar } from './components/TopBar'
 import { ExecutiveHome } from './views/ExecutiveHome'
+import { CEOBoardView } from './views/CEOBoardView'
 import { NewHireAutomation } from './views/NewHireAutomation'
 import { DriveCleanup } from './views/DriveCleanup'
 import { IntegrationHealth } from './views/IntegrationHealth'
 import { FieldOps } from './views/FieldOps'
 import { ProjectPortfolio } from './views/ProjectPortfolio'
+import { EmployeePortal } from './views/EmployeePortal'
 
 function Shell() {
   const { page, boardroomMode } = useApp()
@@ -17,6 +19,8 @@ function Shell() {
     switch (page) {
       case 'home':
         return <ExecutiveHome />
+      case 'board':
+        return <CEOBoardView />
       case 'newhire':
         return <NewHireAutomation />
       case 'drive':
@@ -27,6 +31,8 @@ function Shell() {
         return <FieldOps />
       case 'projects':
         return <ProjectPortfolio />
+      case 'portal':
+        return <EmployeePortal />
       default:
         return <ExecutiveHome />
     }

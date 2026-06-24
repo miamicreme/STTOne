@@ -2,11 +2,13 @@
 
 import {
   LayoutDashboard,
+  Landmark,
   UserPlus,
   HardDrive,
   Activity,
   Truck,
   FolderKanban,
+  IdCard,
   ChevronLeft,
   Signal,
   X,
@@ -34,11 +36,13 @@ export function Sidebar() {
 
   const nav: NavItem[] = [
     { key: 'home', label: 'Executive Home', icon: LayoutDashboard },
+    { key: 'board', label: 'CEO / Board View', icon: Landmark },
     { key: 'newhire', label: 'New Hire Automation', icon: UserPlus },
     { key: 'drive', label: 'Drive Cleanup Center', icon: HardDrive },
     { key: 'integration', label: 'Integration Health', icon: Activity, badge: exceptions.length },
     { key: 'fleet', label: 'Field Ops / Fleet', icon: Truck },
     { key: 'projects', label: 'Project Portfolio', icon: FolderKanban },
+    { key: 'portal', label: 'Employee Portal', icon: IdCard },
   ]
 
   // On desktop, `sidebarCollapsed` shrinks to an icon rail (md+ only). On mobile
