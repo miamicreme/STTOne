@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { Play, ArrowRight, Workflow, ShieldCheck, Database, Sparkles } from 'lucide-react'
 import { useApp } from '../state/AppContext'
 import { BrandMark } from './Logo'
@@ -9,9 +9,16 @@ import { leakageTotal } from '../data'
 /**
  * First-load welcome overlay — the front door of the prototype. It says, in
  * one screen, what Southern Tier is looking at and why, then hands the visitor
- * two clear doors: watch the guided tour, or explore freely. Dismissing it (or
- * starting the tour) sets welcomeOpen=false in the pure reducer.
+ * two clear doors: watch the guided tour, or explore freely.
+ *
+ * The hand-off is deliberately smooth: choosing an action plays a fade/scale
+ * exit first, and only when that finishes does it flip welcomeOpen (and start
+ * the tour). Unattended links auto-advance into the tour after a comfortable
+ * read, so it never kicks off too soon.
  */
+
+const EXIT_MS = 360 // keep in step with the transition duration below
+const AUTO_ADVANCE_MS = 9000 // comfortable read before an unattended link tours
 
 const highlights = [
   {
@@ -33,12 +40,32 @@ const highlights = [
 
 export function WelcomeScreen() {
   const { welcomeOpen, dismissWelcome, startTour } = useApp()
+  const [visible, setVisible] = useState(false)
+  const actedRef = useRef(false)
+
+  /* Fade/scale the overlay IN once mounted (next frame, so the transition runs). */
+  useEffect(() => {
+    const id = requestAnimationFrame(() => setVisible(true))
+    return () => cancelAnimationFrame(id)
+  }, [])
+
+  /* Play the exit animation, then run the chosen action once — guarded so the
+     auto-advance timer and a click can't both fire. */
+  const finish = useCallback((action: () => void) => {
+    if (actedRef.current) return
+    actedRef.current = true
+    setVisible(false)
+    window.setTimeout(action, EXIT_MS)
+  }, [])
+
+  const goTour = useCallback(() => finish(startTour), [finish, startTour])
+  const goExplore = useCallback(() => finish(dismissWelcome), [finish, dismissWelcome])
 
   /* Esc dismisses; lock background scroll while the overlay is up. */
   useEffect(() => {
     if (!welcomeOpen) return
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') dismissWelcome()
+      if (e.key === 'Escape') goExplore()
     }
     window.addEventListener('keydown', onKey)
     const prevOverflow = document.body.style.overflow
@@ -47,7 +74,18 @@ export function WelcomeScreen() {
       window.removeEventListener('keydown', onKey)
       document.body.style.overflow = prevOverflow
     }
-  }, [welcomeOpen, dismissWelcome])
+  }, [welcomeOpen, goExplore])
+
+  /* Unattended links walk themselves: after a comfortable read, glide into the
+     tour. Visitors who prefer reduced motion are left to choose for themselves. */
+  useEffect(() => {
+    const reduce =
+      typeof window !== 'undefined' &&
+      window.matchMedia?.('(prefers-reduced-motion: reduce)').matches
+    if (reduce) return
+    const id = window.setTimeout(goTour, AUTO_ADVANCE_MS)
+    return () => window.clearTimeout(id)
+  }, [goTour])
 
   if (!welcomeOpen) return null
 
@@ -60,13 +98,19 @@ export function WelcomeScreen() {
     >
       {/* Backdrop */}
       <div
-        onClick={dismissWelcome}
-        className="absolute inset-0 bg-base-950/80 backdrop-blur-md animate-fade-in"
+        onClick={goExplore}
+        className={`absolute inset-0 bg-base-950/80 backdrop-blur-md transition-opacity duration-300 ease-out ${
+          visible ? 'opacity-100' : 'opacity-0'
+        }`}
         aria-hidden="true"
       />
 
       {/* Card */}
-      <div className="edge-accent glass animate-scale-in relative w-full max-w-2xl overflow-hidden rounded-3xl border border-accent/25 shadow-glow">
+      <div
+        className={`edge-accent glass relative w-full max-w-2xl overflow-hidden rounded-3xl border border-accent/25 shadow-glow transition-all duration-[360ms] ease-[cubic-bezier(0.22,1,0.36,1)] ${
+          visible ? 'translate-y-0 scale-100 opacity-100' : 'translate-y-3 scale-[0.97] opacity-0'
+        }`}
+      >
         {/* Ambient orbs */}
         <span className="pointer-events-none absolute -right-20 -top-24 h-64 w-64 rounded-full bg-accent/12 blur-3xl" />
         <span className="pointer-events-none absolute -bottom-28 -left-16 h-60 w-60 rounded-full bg-brand-red/[0.07] blur-3xl" />
@@ -133,14 +177,14 @@ export function WelcomeScreen() {
           {/* CTAs */}
           <div className="mt-7 flex flex-col gap-3 sm:flex-row sm:items-center">
             <button
-              onClick={startTour}
+              onClick={goTour}
               className="group inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-accent to-accent-soft px-5 py-3 text-sm font-semibold text-white shadow-[0_8px_24px_-8px_rgba(47,134,224,0.8)] transition-all hover:brightness-110 active:scale-[0.98]"
             >
               <Play className="h-4 w-4 transition-transform group-hover:scale-110" />
               Watch the 90-second tour
             </button>
             <button
-              onClick={dismissWelcome}
+              onClick={goExplore}
               className="group inline-flex items-center justify-center gap-2 rounded-xl border border-white/[0.1] bg-white/[0.03] px-5 py-3 text-sm font-semibold text-slate-200 transition-colors hover:bg-white/[0.07]"
             >
               Explore on my own
