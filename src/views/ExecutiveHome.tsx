@@ -55,6 +55,7 @@ export function ExecutiveHome() {
 
       {/* KPI grid */}
       <div
+        data-tour="kpis"
         className={`grid gap-4 ${
           boardroomMode ? 'grid-cols-2 lg:grid-cols-3' : 'grid-cols-2 lg:grid-cols-3 xl:grid-cols-6'
         }`}
@@ -108,7 +109,7 @@ export function ExecutiveHome() {
         </Card>
 
         {/* Exception drawer */}
-        <Card padded={false} className="flex flex-col">
+        <Card padded={false} className="flex flex-col" tourId="exceptions">
           <div className="flex items-center justify-between border-b border-white/[0.07] p-4">
             <div className="flex items-center gap-2">
               <AlertTriangle className="h-4 w-4 text-amber-400" />

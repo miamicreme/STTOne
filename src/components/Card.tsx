@@ -7,12 +7,15 @@ interface CardProps {
   padded?: boolean
   /** Subtle lift + glow on hover */
   hover?: boolean
+  /** Anchor id for the guided tour (renders data-tour) */
+  tourId?: string
 }
 
 /** Base surface — subtle border, soft navy glass fill, no heavy shadows. */
-export function Card({ children, className = '', padded = true, hover = false }: CardProps) {
+export function Card({ children, className = '', padded = true, hover = false, tourId }: CardProps) {
   return (
     <div
+      data-tour={tourId}
       className={`rounded-2xl border border-white/[0.07] bg-base-850/55 shadow-inset backdrop-blur-sm ${
         hover ? 'lift' : ''
       } ${padded ? 'p-5' : ''} ${className}`}

@@ -66,6 +66,15 @@ Those exceptions immediately propagate to:
 
 Retrying/resolving an exception anywhere removes it everywhere.
 
+## Guided Tour
+
+The top-bar **Guided Tour** button starts a step-by-step walkthrough: a spotlight
+dims the screen, highlights the relevant element, and a bubble explains it in plain
+language — navigating across pages (Executive Home → New Hire Automation → Integration
+Health → Board View) as it goes. Drive it with Next/Back, the progress dots, the arrow
+keys, or `Esc` to exit. The bubble docks as a bottom sheet on phones and anchors to the
+highlighted element on larger screens.
+
 ## Boardroom Mode
 
 The top-bar **Boardroom Mode** toggle hides the sidebar nav and enlarges KPI cards and
