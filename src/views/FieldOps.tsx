@@ -145,7 +145,7 @@ export function FieldOps() {
                 />
                 <div className="min-w-0 flex-1">
                   <p className="truncate text-sm font-medium text-slate-100">{m.asset}</p>
-                  <p className="text-xs text-slate-500">
+                  <p className="truncate text-xs text-slate-500">
                     {m.type} · {m.region}
                   </p>
                 </div>

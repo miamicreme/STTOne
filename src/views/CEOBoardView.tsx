@@ -92,7 +92,7 @@ export function CEOBoardView() {
             hint="Operational exposure by region across five dimensions — payroll sync health, fleet coverage, AR billing accuracy, document classification, and schedule fidelity."
           />
           <div className="overflow-x-auto">
-            <table className="w-full border-separate border-spacing-1 text-sm">
+            <table className="w-full min-w-[560px] border-separate border-spacing-1 text-sm">
               <thead>
                 <tr>
                   <th className="px-2 py-1 text-left text-[11px] font-medium uppercase tracking-wider text-slate-500">

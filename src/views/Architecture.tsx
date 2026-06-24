@@ -91,7 +91,10 @@ export function Architecture() {
         </div>
 
         {/* Data-flow diagram */}
-        <div className="overflow-x-auto rounded-xl border border-white/[0.06] bg-base-900/40 p-3">
+        <div
+          data-tour="arch-diagram"
+          className="overflow-x-auto rounded-xl border border-white/[0.06] bg-base-900/40 p-3"
+        >
           <svg
             viewBox="0 0 920 440"
             className="w-full min-w-[680px]"
@@ -206,19 +209,23 @@ export function Architecture() {
             return (
               <div
                 key={job.name}
-                className="flex flex-wrap items-center gap-x-4 gap-y-2 rounded-xl border border-white/[0.06] bg-base-900/40 p-3"
+                className="flex flex-wrap items-center justify-between gap-x-4 gap-y-2 rounded-xl border border-white/[0.06] bg-base-900/40 p-3"
               >
-                <div className="flex min-w-[160px] items-center gap-2.5">
+                {/* Identity + flow — flexes and truncates */}
+                <div className="flex min-w-0 flex-1 items-center gap-2.5">
                   <Icon className={`h-4 w-4 shrink-0 ${meta.cls}`} />
-                  <span className="text-sm font-semibold text-slate-100">{job.name}</span>
+                  <span className="shrink-0 text-sm font-semibold text-slate-100">{job.name}</span>
+                  <span className="truncate font-mono text-[11px] text-slate-400">{job.flow}</span>
                 </div>
-                <span className="font-mono text-[11px] text-slate-400">{job.flow}</span>
-                <span className="rounded-md border border-white/10 bg-white/[0.03] px-1.5 py-0.5 text-[10px] uppercase tracking-wide text-slate-400">
-                  {meta.label} · {job.cadence}
-                </span>
-                <span className="ml-auto text-[11px] text-slate-500">{job.throughput}</span>
-                <span className="text-[11px] tabular text-slate-500">{job.lastRun}</span>
-                <StatusBadge tone={job.health} label={job.health} pulse={job.health === 'active'} />
+                {/* Meta — wraps as one coherent group */}
+                <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5">
+                  <span className="rounded-md border border-white/10 bg-white/[0.03] px-1.5 py-0.5 text-[10px] uppercase tracking-wide text-slate-400">
+                    {meta.label} · {job.cadence}
+                  </span>
+                  <span className="hidden text-[11px] text-slate-500 sm:inline">{job.throughput}</span>
+                  <span className="text-[11px] tabular text-slate-500">{job.lastRun}</span>
+                  <StatusBadge tone={job.health} label={job.health} pulse={job.health === 'active'} />
+                </div>
               </div>
             )
           })}

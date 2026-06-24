@@ -173,18 +173,18 @@ export function NewHireAutomation() {
           {/* Candidate card */}
           <Card>
             <div className="flex flex-wrap items-center justify-between gap-4">
-              <div className="flex items-center gap-3">
-                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-accent to-accent-deep text-base font-bold text-white">
+              <div className="flex min-w-0 items-center gap-3">
+                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-accent to-accent-deep text-base font-bold text-white">
                   {sampleNewHire.name.split(' ').map((n) => n[0]).join('')}
                 </div>
-                <div>
-                  <p className="text-base font-semibold text-white">{sampleNewHire.name}</p>
-                  <p className="text-xs text-slate-400">
+                <div className="min-w-0">
+                  <p className="truncate text-base font-semibold text-white">{sampleNewHire.name}</p>
+                  <p className="truncate text-xs text-slate-400">
                     {sampleNewHire.role} · {sampleNewHire.region}
                   </p>
                 </div>
               </div>
-              <div className="grid grid-cols-2 gap-x-6 gap-y-1 text-xs sm:grid-cols-4">
+              <div className="grid grid-cols-2 gap-x-6 gap-y-1 text-xs sm:grid-cols-2 lg:grid-cols-4">
                 <Field label="Paychex ID" value={sampleNewHire.paychexId} />
                 <Field label="Crew" value={sampleNewHire.crew} />
                 <Field label="Supervisor" value={sampleNewHire.supervisor} />
