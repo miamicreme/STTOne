@@ -1,12 +1,14 @@
+'use client'
+
 import { AppProvider, useApp } from './state/AppContext'
 import { Sidebar } from './components/Sidebar'
 import { TopBar } from './components/TopBar'
-import { ExecutiveHome } from './pages/ExecutiveHome'
-import { NewHireAutomation } from './pages/NewHireAutomation'
-import { DriveCleanup } from './pages/DriveCleanup'
-import { IntegrationHealth } from './pages/IntegrationHealth'
-import { FieldOps } from './pages/FieldOps'
-import { ProjectPortfolio } from './pages/ProjectPortfolio'
+import { ExecutiveHome } from './views/ExecutiveHome'
+import { NewHireAutomation } from './views/NewHireAutomation'
+import { DriveCleanup } from './views/DriveCleanup'
+import { IntegrationHealth } from './views/IntegrationHealth'
+import { FieldOps } from './views/FieldOps'
+import { ProjectPortfolio } from './views/ProjectPortfolio'
 
 function Shell() {
   const { page, boardroomMode } = useApp()

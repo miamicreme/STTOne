@@ -1,8 +1,11 @@
 node_modules
-dist
-dist-ssr
-*.local
 .DS_Store
-.vite
+*.local
 
+# Next.js
+.next
+out
+next-env.d.ts
 *.tsbuildinfo
+.vercel
+dist
