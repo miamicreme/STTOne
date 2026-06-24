@@ -167,3 +167,19 @@ body::before {
     transform-origin: left center;
   }
 }
+
+/* Architecture diagram: animated "data flowing through pipes" on connectors. */
+@keyframes flowDash {
+  to { stroke-dashoffset: -24; }
+}
+
+@layer utilities {
+  .flow-pipe {
+    stroke-dasharray: 5 7;
+    animation: flowDash 0.85s linear infinite;
+  }
+  .flow-pipe-warn {
+    stroke-dasharray: 5 7;
+    animation: flowDash 1.1s linear infinite;
+  }
+}

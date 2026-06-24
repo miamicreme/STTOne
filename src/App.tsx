@@ -7,6 +7,7 @@ import { ErrorBoundary } from './components/ErrorBoundary'
 import { TourController } from './components/TourController'
 import { ExecutiveHome } from './views/ExecutiveHome'
 import { CEOBoardView } from './views/CEOBoardView'
+import { Architecture } from './views/Architecture'
 import { NewHireAutomation } from './views/NewHireAutomation'
 import { DriveCleanup } from './views/DriveCleanup'
 import { IntegrationHealth } from './views/IntegrationHealth'
@@ -23,6 +24,8 @@ function Shell() {
         return <ExecutiveHome />
       case 'board':
         return <CEOBoardView />
+      case 'architecture':
+        return <Architecture />
       case 'newhire':
         return <NewHireAutomation />
       case 'drive':

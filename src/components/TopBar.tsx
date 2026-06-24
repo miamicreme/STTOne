@@ -7,6 +7,7 @@ import type { PageKey } from '../data'
 const pageTitles: Record<PageKey, string> = {
   home: 'Executive Home',
   board: 'CEO / Board View',
+  architecture: 'Integration Architecture',
   newhire: 'New Hire Automation',
   drive: 'Google Drive Cleanup Center',
   integration: 'Integration Health',
