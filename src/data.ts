@@ -761,16 +761,16 @@ export interface TourScene {
 }
 
 export const tourScenes: TourScene[] = [
-  { page: 'home', caption: 'The number that matters: ~$214K/yr in preventable leakage', ms: 5200 },
-  { page: 'board', caption: 'The board view — risk by region and the transformation roadmap', ms: 5200 },
-  { page: 'newhire', caption: 'New-hire automation: Paychex → PenguinData in a single pass', ms: 7800, run: 'success' },
-  { page: 'newhire', caption: 'The catch — a hire with no CDL is stopped before dispatch', ms: 7000, run: 'failure' },
-  { page: 'integration', caption: 'That blocked hire lands here as a live exception — nothing fails silently', ms: 5000 },
-  { page: 'architecture', caption: 'One governed layer between your systems — validate, de-dupe, audit, never fail silently', ms: 5400 },
-  { page: 'drive', caption: 'The Google Drive "junk drawer," classified, de-duped, and de-risked', ms: 4800 },
-  { page: 'projects', caption: 'Portfolio health across every active program', ms: 4000 },
-  { page: 'portal', caption: 'And the field tech’s own portal — schedule, truck, and certs in one place', ms: 4400 },
-  { page: 'home', caption: 'Keep the systems of record. Add one governed layer between them. Nothing fails silently.', ms: 3800 },
+  { page: 'home', caption: 'The number that matters: ~$214K/yr in preventable leakage', ms: 7600 },
+  { page: 'board', caption: 'The board view — risk by region and the transformation roadmap', ms: 7800 },
+  { page: 'newhire', caption: 'New-hire automation: Paychex → PenguinData in a single pass', ms: 10500, run: 'success' },
+  { page: 'newhire', caption: 'The catch — a hire with no CDL is stopped before dispatch', ms: 9800, run: 'failure' },
+  { page: 'integration', caption: 'That blocked hire lands here as a live exception — nothing fails silently', ms: 7400 },
+  { page: 'architecture', caption: 'One governed layer between your systems — validate, de-dupe, audit, never fail silently', ms: 8200 },
+  { page: 'drive', caption: 'The Google Drive "junk drawer," classified, de-duped, and de-risked', ms: 7000 },
+  { page: 'projects', caption: 'Portfolio health across every active program', ms: 6400 },
+  { page: 'portal', caption: 'And the field tech’s own portal — schedule, truck, and certs in one place', ms: 6800 },
+  { page: 'home', caption: 'Keep the systems of record. Add one governed layer between them. Nothing fails silently.', ms: 6000 },
 ]
 
 /* ------------------------------------------------------------------ */
