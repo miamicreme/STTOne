@@ -12,11 +12,13 @@
 
 export type PageKey =
   | 'home'
+  | 'board'
   | 'newhire'
   | 'drive'
   | 'integration'
   | 'fleet'
   | 'projects'
+  | 'portal'
 
 export type SystemStatus = 'healthy' | 'warning' | 'active' | 'critical'
 
@@ -506,3 +508,198 @@ export const projects: Project[] = [
     issue: 'Trailer + trench-unit serial mismatch',
   },
 ]
+
+/* ------------------------------------------------------------------ */
+/* CEO / Board View                                                    */
+/* ------------------------------------------------------------------ */
+
+export const boardKpis: KPI[] = [
+  { label: 'Duplicate Entry Reduction', value: '61%', delta: 'vs. baseline', trend: 'up', hint: 'Paychex dedupe' },
+  { label: 'Legacy Files Classified', value: '41,280', delta: '71% of drive', trend: 'up', hint: 'Audit progress' },
+  { label: 'Admin Hours Saved / mo', value: '126', delta: '+18 MoM', trend: 'up', hint: 'Automation' },
+  { label: 'Projects Behind Schedule', value: '3', delta: 'of 17', trend: 'down', hint: 'Recovering' },
+  { label: 'Onboarding Cycle', value: '2.4 days', delta: '-0.6d', trend: 'down', hint: 'Was 3.0d' },
+  { label: 'Est. Annual Impact', value: '$189K', delta: 'admin + leakage', trend: 'up', hint: 'Modeled' },
+]
+
+export type RiskLevel = 0 | 1 | 2 | 3
+
+export interface RiskRow {
+  region: string
+  payroll: RiskLevel
+  fleet: RiskLevel
+  billing: RiskLevel
+  docs: RiskLevel
+  schedule: RiskLevel
+}
+
+export const riskDimensions = ['Payroll', 'Fleet', 'Billing', 'Docs', 'Schedule'] as const
+
+export const riskHeatmap: RiskRow[] = [
+  { region: 'SW Florida', payroll: 1, fleet: 2, billing: 1, docs: 2, schedule: 1 },
+  { region: 'Ohio', payroll: 0, fleet: 1, billing: 1, docs: 1, schedule: 2 },
+  { region: 'Nevada', payroll: 1, fleet: 2, billing: 3, docs: 1, schedule: 2 },
+  { region: 'Central FL', payroll: 0, fleet: 1, billing: 2, docs: 3, schedule: 1 },
+  { region: 'Fort Myers HQ', payroll: 1, fleet: 1, billing: 0, docs: 1, schedule: 0 },
+  { region: 'Gulf Coast', payroll: 0, fleet: 1, billing: 1, docs: 1, schedule: 1 },
+]
+
+export const riskLabels: Record<RiskLevel, string> = {
+  0: 'Nominal',
+  1: 'Watch',
+  2: 'Elevated',
+  3: 'Critical',
+}
+
+export type MilestoneStatus = 'done' | 'in-progress' | 'planned'
+
+export interface Milestone {
+  title: string
+  detail: string
+  status: MilestoneStatus
+  quarter: string
+}
+
+export const transformationRoadmap: Milestone[] = [
+  {
+    title: 'Paychex set as HR source of truth',
+    detail: 'Worker master consolidated; duplicate records reconciled.',
+    status: 'done',
+    quarter: 'Q1 2026',
+  },
+  {
+    title: 'PenguinData onboarding automation live',
+    detail: 'New-hire pipeline provisions profiles, crews & vehicle checks.',
+    status: 'done',
+    quarter: 'Q1 2026',
+  },
+  {
+    title: 'Google Drive audit & classification',
+    detail: '58,412 files indexed; 41,280 classified, 7,936 duplicates flagged.',
+    status: 'in-progress',
+    quarter: 'Q2 2026',
+  },
+  {
+    title: 'QuickBooks job-code reconciliation',
+    detail: 'Customer/job-code mapping to clear billing holds.',
+    status: 'in-progress',
+    quarter: 'Q2 2026',
+  },
+  {
+    title: 'Legacy Drive migration cutover',
+    detail: 'HR → Paychex, Fleet/Projects → PenguinData, Finance → QuickBooks.',
+    status: 'planned',
+    quarter: 'Q3 2026',
+  },
+  {
+    title: 'Unified exception governance',
+    detail: 'Single queue with SLAs across all four systems.',
+    status: 'planned',
+    quarter: 'Q3 2026',
+  },
+]
+
+/* ------------------------------------------------------------------ */
+/* Employee Portal                                                     */
+/* ------------------------------------------------------------------ */
+
+export interface EmployeeProfile {
+  name: string
+  role: string
+  employeeId: string
+  region: string
+  crew: string
+  supervisor: string
+  truck: string
+  tenure: string
+  assignment: string
+}
+
+export const employeeProfile: EmployeeProfile = {
+  name: 'Andre Whitfield',
+  role: 'Fiber Splice Technician',
+  employeeId: 'STT-0418',
+  region: 'SW Florida',
+  crew: 'SW FL Fiber Crew 3',
+  supervisor: 'D. Okafor',
+  truck: 'F-214',
+  tenure: '3.2 yrs',
+  assignment: 'Fort Myers MDU Install Program',
+}
+
+export const employeeStats: KPI[] = [
+  { label: 'Hours This Week', value: '32.5', delta: '/ 40 sched', trend: 'flat' },
+  { label: 'Certifications Valid', value: '4', delta: 'of 6', trend: 'flat', hint: '2 need attention' },
+  { label: 'Docs Outstanding', value: '3', delta: 'action needed', trend: 'flat' },
+  { label: 'Work Orders Closed', value: '11', delta: 'this week', trend: 'up' },
+]
+
+export type CertStatus = 'valid' | 'expiring' | 'expired'
+
+export interface Certification {
+  name: string
+  status: CertStatus
+  detail: string
+}
+
+export const employeeCerts: Certification[] = [
+  { name: 'OSHA 10', status: 'valid', detail: 'Valid through Mar 2027' },
+  { name: 'Fiber Splicing (BICSI)', status: 'valid', detail: 'Valid through Aug 2026' },
+  { name: 'First Aid / CPR', status: 'valid', detail: 'Valid through Nov 2026' },
+  { name: 'CDL Class B', status: 'expiring', detail: 'Expires in 18 days — renew now' },
+  { name: 'Aerial Lift Operator', status: 'expiring', detail: 'Expires in 6 days — schedule recert' },
+  { name: 'Confined Space Entry', status: 'expired', detail: 'Lapsed — blocks underground assignment' },
+]
+
+export type DocStatus = 'complete' | 'pending' | 'action'
+
+export interface EmployeeDoc {
+  name: string
+  status: DocStatus
+  detail: string
+}
+
+export const employeeDocs: EmployeeDoc[] = [
+  { name: 'I-9 Verification', status: 'complete', detail: 'On file in Paychex' },
+  { name: 'W-4 Withholding', status: 'complete', detail: 'On file in Paychex' },
+  { name: 'Direct Deposit', status: 'complete', detail: 'Verified' },
+  { name: 'Vehicle Use Agreement', status: 'action', detail: 'Required for F-214 — sign to clear hold' },
+  { name: 'Safety Handbook Ack', status: 'pending', detail: 'Due before next shift' },
+  { name: '2026 Benefits Election', status: 'pending', detail: 'Open enrollment closes soon' },
+]
+
+export type ShiftStatus = 'done' | 'active' | 'upcoming'
+
+export interface ShiftTask {
+  time: string
+  title: string
+  detail: string
+  status: ShiftStatus
+}
+
+export const employeeSchedule: ShiftTask[] = [
+  { time: '06:30', title: 'Yard check-in & truck inspection', detail: 'F-214 pre-trip DOT walkaround', status: 'done' },
+  { time: '07:15', title: 'Mobilize to MDU site', detail: 'Fort Myers — Building C riser', status: 'done' },
+  { time: '08:00', title: 'Riser splicing — Bldg C', detail: '288-count distribution closures', status: 'active' },
+  { time: '12:00', title: 'Lunch', detail: '30 min', status: 'upcoming' },
+  { time: '13:00', title: 'OTDR testing & closures', detail: 'Validate splice loss budget', status: 'upcoming' },
+  { time: '15:30', title: 'Daily production report', detail: 'Log footage & work-order closeout', status: 'upcoming' },
+]
+
+export interface TruckDetail {
+  unit: string
+  type: string
+  status: SystemStatus
+  mileage: string
+  nextService: string
+  fuel: string
+}
+
+export const employeeTruck: TruckDetail = {
+  unit: 'F-214',
+  type: 'Bucket Truck — Altec AT40',
+  status: 'warning',
+  mileage: '84,210 mi',
+  nextService: 'Hydraulic inspection overdue 4d',
+  fuel: '⅝ tank',
+}

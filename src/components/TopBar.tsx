@@ -6,11 +6,13 @@ import type { PageKey } from '../data'
 
 const pageTitles: Record<PageKey, string> = {
   home: 'Executive Home',
+  board: 'CEO / Board View',
   newhire: 'New Hire Automation',
   drive: 'Google Drive Cleanup Center',
   integration: 'Integration Health',
   fleet: 'Field Ops / Fleet',
   projects: 'Project Portfolio',
+  portal: 'Employee Portal',
 }
 
 export function TopBar() {

@@ -42,11 +42,13 @@ App Router shell (`src/app/layout.tsx`, `src/app/page.tsx`) just hosts it.
 | Page | What it shows |
 |---|---|
 | **Executive Home** | 6 KPI cards, operational-pulse banner, stacked portfolio-by-region chart, and a live exception drawer. |
+| **CEO / Board View** | Board KPIs, a regional risk heat map, a transformation roadmap, an at-risk programs list, and a modeled-impact (ROI) panel. |
 | **New Hire Automation** | The signature feature: an animated 8-step onboarding pipeline (Paychex → Integration → PenguinData → Fleet → Audit) with a **failure-variant toggle** that halts at vehicle eligibility and routes the worker to the exception queue. Every run appends to an audit timeline. |
 | **Drive Cleanup Center** | File-volume cards, a donut by document domain, a duplicate tracker, a permission-risk panel, and per-domain migration progress bars. |
 | **Integration Health** | System status cards (Paychex / PenguinData / QuickBooks / Drive), a live event feed, a live exception taxonomy chart, and a retryable exception queue. |
 | **Field Ops / Fleet** | Fleet-health chart, utilization gauge, overdue-maintenance list, and a crew board. |
 | **Project Portfolio** | Project table with per-project issues, a phase funnel, and an at-risk panel. |
+| **Employee Portal** | Technician identity, today’s assignment schedule, a my-truck card, certifications with expiry status, and a documents checklist. |
 
 ## Cross-page reactivity (the part that makes it feel real)
 
