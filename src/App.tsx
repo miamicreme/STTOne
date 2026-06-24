@@ -16,7 +16,7 @@ import { ProjectPortfolio } from './views/ProjectPortfolio'
 import { EmployeePortal } from './views/EmployeePortal'
 
 function Shell() {
-  const { page, boardroomMode } = useApp()
+  const { page, boardroomMode, tour } = useApp()
 
   const renderPage = () => {
     switch (page) {
@@ -48,7 +48,13 @@ function Shell() {
       {!boardroomMode && <Sidebar />}
       <div className="flex min-w-0 flex-1 flex-col">
         <TopBar />
-        <main className="flex-1 overflow-y-auto scroll-smooth">
+        {/* While the tour runs, pad the bottom so its fixed control bar never
+            covers page content or the footer. */}
+        <main
+          className={`flex-1 overflow-y-auto scroll-smooth ${
+            tour.active ? 'pb-40' : ''
+          }`}
+        >
           <div
             className={`mx-auto w-full ${
               boardroomMode
