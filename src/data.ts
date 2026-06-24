@@ -766,11 +766,11 @@ export const tourScenes: TourScene[] = [
   { page: 'newhire', caption: 'New-hire automation: Paychex → PenguinData in a single pass', ms: 7800, run: 'success' },
   { page: 'newhire', caption: 'The catch — a hire with no CDL is stopped before dispatch', ms: 7000, run: 'failure' },
   { page: 'integration', caption: 'That blocked hire lands here as a live exception — nothing fails silently', ms: 5000 },
-  { page: 'architecture', caption: 'The architecture beneath it: one source of truth, a governed integration layer', ms: 5400 },
+  { page: 'architecture', caption: 'One governed layer between your systems — validate, de-dupe, audit, never fail silently', ms: 5400 },
   { page: 'drive', caption: 'The Google Drive "junk drawer," classified, de-duped, and de-risked', ms: 4800 },
   { page: 'projects', caption: 'Portfolio health across every active program', ms: 4000 },
   { page: 'portal', caption: 'And the field tech’s own portal — schedule, truck, and certs in one place', ms: 4400 },
-  { page: 'home', caption: 'Built on Execution. Elevated by Excellence.', ms: 3600 },
+  { page: 'home', caption: 'Keep the systems of record. Add one governed layer between them. Nothing fails silently.', ms: 3800 },
 ]
 
 /* ------------------------------------------------------------------ */
