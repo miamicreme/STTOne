@@ -52,7 +52,7 @@ export function ExecutiveHome() {
             </p>
             <button
               onClick={startTour}
-              className="group mt-4 inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-accent to-accent-soft px-4 py-2.5 text-sm font-semibold text-base-950 shadow-[0_8px_24px_-8px_rgba(47,134,224,0.8)] transition-all hover:brightness-110 active:scale-[0.98]"
+              className="group mt-4 inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-accent to-accent-soft px-4 py-2.5 text-sm font-semibold text-white shadow-[0_8px_24px_-8px_rgba(47,134,224,0.8)] transition-all hover:brightness-110 active:scale-[0.98]"
             >
               <Play className="h-4 w-4 transition-transform group-hover:scale-110" />
               Watch the auto-tour
