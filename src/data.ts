@@ -703,3 +703,70 @@ export const employeeTruck: TruckDetail = {
   nextService: 'Hydraulic inspection overdue 4d',
   fuel: '⅝ tank',
 }
+
+/* -------------------------------------------------------------------- */
+/* Executive leakage model (above-the-fold headline)                    */
+/* -------------------------------------------------------------------- */
+
+export interface LeakageLine {
+  label: string
+  amount: number // annual USD
+  driver: string // the evidence behind the figure
+  system: string
+}
+
+/** Illustrative, simulated — anchored to STT's public scale and the seeded exceptions. */
+export const leakageLines: LeakageLine[] = [
+  {
+    label: 'Onboarding & data-entry admin',
+    amount: 72000,
+    driver: '126 admin hrs/mo reclaimed @ ~$48/hr loaded',
+    system: 'Paychex → PenguinData',
+  },
+  {
+    label: 'Billing leakage — unmapped job codes',
+    amount: 82000,
+    driver: 'Held + mis-coded work across active programs',
+    system: 'QuickBooks',
+  },
+  {
+    label: 'Payroll rework & overpayment',
+    amount: 38000,
+    driver: 'Duplicate / mismatched worker records',
+    system: 'Paychex',
+  },
+  {
+    label: 'Drive sprawl — storage & retrieval drag',
+    amount: 22000,
+    driver: '7,936 duplicate files + permission cleanup',
+    system: 'Google Drive',
+  },
+]
+
+/** $214,000 — the four lines reconcile exactly to the headline. */
+export const leakageTotal = leakageLines.reduce((sum, l) => sum + l.amount, 0)
+
+/* -------------------------------------------------------------------- */
+/* Guided auto-tour                                                     */
+/* -------------------------------------------------------------------- */
+
+export interface TourScene {
+  page: PageKey
+  caption: string
+  /** Dwell time on this scene, in ms. */
+  ms: number
+  /** If set, auto-trigger the New Hire pipeline shortly after the scene loads. */
+  run?: 'success' | 'failure'
+}
+
+export const tourScenes: TourScene[] = [
+  { page: 'home', caption: 'The number that matters: ~$214K/yr in preventable leakage', ms: 5200 },
+  { page: 'board', caption: 'The board view — risk by region and the transformation roadmap', ms: 5200 },
+  { page: 'newhire', caption: 'New-hire automation: Paychex → PenguinData in a single pass', ms: 7800, run: 'success' },
+  { page: 'newhire', caption: 'The catch — a hire with no CDL is stopped before dispatch', ms: 7000, run: 'failure' },
+  { page: 'integration', caption: 'That blocked hire lands here as a live exception — nothing fails silently', ms: 5000 },
+  { page: 'drive', caption: 'The Google Drive "junk drawer," classified, de-duped, and de-risked', ms: 4800 },
+  { page: 'projects', caption: 'Portfolio health across every active program', ms: 4000 },
+  { page: 'portal', caption: 'And the field tech’s own portal — schedule, truck, and certs in one place', ms: 4400 },
+  { page: 'home', caption: 'Built on Execution. Elevated by Excellence.', ms: 3600 },
+]

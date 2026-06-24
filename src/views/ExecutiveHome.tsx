@@ -8,12 +8,13 @@ import {
   CartesianGrid,
   Legend,
 } from 'recharts'
-import { AlertTriangle, ArrowRight, ShieldCheck } from 'lucide-react'
+import { AlertTriangle, ArrowRight, ShieldCheck, DollarSign, Play } from 'lucide-react'
 import { Card, SectionHeader } from '../components/Card'
 import { KPICard } from '../components/KPICard'
 import { ExceptionRow } from '../components/ExceptionRow'
+import { AnimatedNumber } from '../components/AnimatedNumber'
 import { Hint } from '../components/Hint'
-import { executiveKpis, portfolioByRegion } from '../data'
+import { executiveKpis, portfolioByRegion, leakageLines, leakageTotal } from '../data'
 import { useApp } from '../state/AppContext'
 
 const chartColors = {
@@ -24,10 +25,65 @@ const chartColors = {
 }
 
 export function ExecutiveHome() {
-  const { exceptions, resolveException, setPage, boardroomMode } = useApp()
+  const { exceptions, resolveException, setPage, boardroomMode, startTour } = useApp()
 
   return (
     <div className="space-y-6">
+      {/* Executive headline — the number that matters, above the fold */}
+      <div className="sheen relative overflow-hidden rounded-2xl border border-accent/20 bg-gradient-to-br from-base-850/80 via-base-850/55 to-base-900/70 p-5 shadow-glow sm:p-6">
+        <div className="relative flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
+          {/* Big number + CTA */}
+          <div className="min-w-0">
+            <div className="flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.16em] text-accent">
+              <DollarSign className="h-3.5 w-3.5" />
+              Preventable annual leakage
+              <Hint text="Modeled, simulated figure: the four lines below reconcile exactly to this headline. Recoverable once Paychex is the system of record and exceptions stop failing silently." />
+            </div>
+            <div className="mt-2 flex items-end gap-2">
+              <AnimatedNumber
+                value={`$${leakageTotal.toLocaleString('en-US')}`}
+                className="font-display text-[2.7rem] font-bold leading-none tracking-tightest text-gradient tabular sm:text-[3.5rem]"
+              />
+              <span className="mb-1.5 text-lg font-semibold text-slate-400">/yr</span>
+            </div>
+            <p className="mt-2 max-w-md text-sm text-slate-400">
+              Recoverable across payroll, billing, and admin once Paychex is the source of truth and
+              exceptions stop failing silently.
+            </p>
+            <button
+              onClick={startTour}
+              className="group mt-4 inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-accent to-accent-soft px-4 py-2.5 text-sm font-semibold text-base-950 shadow-[0_8px_24px_-8px_rgba(56,189,248,0.8)] transition-all hover:brightness-110 active:scale-[0.98]"
+            >
+              <Play className="h-4 w-4 transition-transform group-hover:scale-110" />
+              Watch the auto-tour
+            </button>
+          </div>
+
+          {/* Breakdown — reconciles exactly to the headline */}
+          <div className="grid w-full shrink-0 grid-cols-2 gap-2 lg:w-[26rem]">
+            {leakageLines.map((line) => (
+              <div
+                key={line.label}
+                className="rounded-xl border border-white/[0.07] bg-base-900/50 p-3"
+              >
+                <div className="flex items-baseline justify-between gap-2">
+                  <span className="font-display text-base font-bold tabular text-white">
+                    ${Math.round(line.amount / 1000)}K
+                  </span>
+                  <span className="text-[9.5px] uppercase tracking-wide text-slate-500">
+                    {line.system}
+                  </span>
+                </div>
+                <p className="mt-1 text-[11.5px] font-medium leading-tight text-slate-300">
+                  {line.label}
+                </p>
+                <p className="mt-0.5 text-[10.5px] leading-snug text-slate-500">{line.driver}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
       {/* Operational pulse banner */}
       <div className="sheen relative overflow-hidden rounded-2xl border border-accent/20 bg-gradient-to-r from-accent/[0.14] via-base-850/50 to-base-850/40 p-5 shadow-glow">
         <div className="relative flex flex-wrap items-center justify-between gap-4">

@@ -3,7 +3,7 @@
 import { AppProvider, useApp } from './state/AppContext'
 import { Sidebar } from './components/Sidebar'
 import { TopBar } from './components/TopBar'
-import { TourGuide } from './components/TourGuide'
+import { TourController } from './components/TourController'
 import { ExecutiveHome } from './views/ExecutiveHome'
 import { CEOBoardView } from './views/CEOBoardView'
 import { NewHireAutomation } from './views/NewHireAutomation'
@@ -63,7 +63,7 @@ function Shell() {
           </footer>
         </main>
       </div>
-      <TourGuide />
+      <TourController />
     </div>
   )
 }
