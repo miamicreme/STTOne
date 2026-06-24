@@ -1,6 +1,6 @@
 'use client'
 
-import { Presentation, Search, Bell, ChevronRight, Menu } from 'lucide-react'
+import { Presentation, Search, Bell, ChevronRight, Menu, Compass } from 'lucide-react'
 import { useApp } from '../state/AppContext'
 import type { PageKey } from '../data'
 
@@ -16,11 +16,11 @@ const pageTitles: Record<PageKey, string> = {
 }
 
 export function TopBar() {
-  const { page, boardroomMode, toggleBoardroom, toggleMobileNav, exceptions } = useApp()
+  const { page, boardroomMode, toggleBoardroom, toggleMobileNav, startTour, exceptions } = useApp()
 
   return (
     <header className="glass sticky top-0 z-20 flex h-16 items-center justify-between gap-3 border-b border-white/[0.07] px-4 sm:px-6">
-      <div className="flex min-w-0 items-center gap-3">
+      <div className="flex min-w-0 items-center gap-3" data-tour="topbar">
         {/* Mobile hamburger */}
         {!boardroomMode && (
           <button
@@ -72,9 +72,20 @@ export function TopBar() {
           )}
         </button>
 
+        {/* Guided Tour trigger */}
+        <button
+          onClick={startTour}
+          className="flex items-center gap-2 rounded-xl border border-white/[0.07] bg-white/[0.02] px-3 py-2 text-xs font-semibold text-slate-400 transition-all duration-300 hover:border-accent/30 hover:text-accent"
+          aria-label="Start guided tour"
+        >
+          <Compass className="h-4 w-4" />
+          <span className="hidden sm:inline">Guided Tour</span>
+        </button>
+
         {/* Boardroom Mode toggle */}
         <button
           onClick={toggleBoardroom}
+          data-tour="boardroom"
           className={`flex items-center gap-2 rounded-xl border px-3 py-2 text-xs font-semibold transition-all duration-300 ${
             boardroomMode
               ? 'border-accent/40 bg-accent/15 text-accent shadow-[0_0_18px_-4px_rgba(56,189,248,0.6)]'

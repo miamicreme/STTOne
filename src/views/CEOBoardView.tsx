@@ -84,7 +84,7 @@ export function CEOBoardView() {
 
       <div className="grid gap-6 lg:grid-cols-3">
         {/* Risk heat map */}
-        <Card className="lg:col-span-2">
+        <Card className="lg:col-span-2" tourId="risk">
           <SectionHeader
             title="Regional Risk Heat Map"
             subtitle="Operational risk by region & dimension · simulated"

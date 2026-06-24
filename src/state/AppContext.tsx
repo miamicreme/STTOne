@@ -23,6 +23,7 @@ interface AppState {
   sidebarCollapsed: boolean
   boardroomMode: boolean
   mobileNavOpen: boolean
+  tourActive: boolean
   exceptions: ExceptionItem[]
   auditLog: AuditEntry[]
   events: IntegrationEvent[]
@@ -35,6 +36,8 @@ type Action =
   | { type: 'TOGGLE_BOARDROOM' }
   | { type: 'TOGGLE_MOBILE_NAV' }
   | { type: 'CLOSE_MOBILE_NAV' }
+  | { type: 'START_TOUR' }
+  | { type: 'END_TOUR' }
   | { type: 'ADD_EXCEPTION'; exception: ExceptionItem }
   | { type: 'RESOLVE_EXCEPTION'; id: string }
   | { type: 'ADD_AUDIT'; entry: AuditEntry }
@@ -46,6 +49,7 @@ const initialState: AppState = {
   sidebarCollapsed: false,
   boardroomMode: false,
   mobileNavOpen: false,
+  tourActive: false,
   exceptions: seedExceptions,
   auditLog: [],
   events: seedIntegrationEvents,
@@ -65,6 +69,11 @@ function reducer(state: AppState, action: Action): AppState {
       return { ...state, mobileNavOpen: !state.mobileNavOpen }
     case 'CLOSE_MOBILE_NAV':
       return { ...state, mobileNavOpen: false }
+    case 'START_TOUR':
+      // Tours present the standard layout — exit boardroom/mobile-nav first.
+      return { ...state, tourActive: true, boardroomMode: false, mobileNavOpen: false, page: 'home' }
+    case 'END_TOUR':
+      return { ...state, tourActive: false }
     case 'ADD_EXCEPTION':
       return { ...state, exceptions: [action.exception, ...state.exceptions] }
     case 'RESOLVE_EXCEPTION':
@@ -96,6 +105,8 @@ interface AppContextValue extends AppState {
   toggleBoardroom: () => void
   toggleMobileNav: () => void
   closeMobileNav: () => void
+  startTour: () => void
+  endTour: () => void
   addException: (exception: ExceptionItem) => void
   resolveException: (id: string) => void
   addAudit: (entry: AuditEntry) => void
@@ -113,6 +124,8 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const toggleBoardroom = useCallback(() => dispatch({ type: 'TOGGLE_BOARDROOM' }), [])
   const toggleMobileNav = useCallback(() => dispatch({ type: 'TOGGLE_MOBILE_NAV' }), [])
   const closeMobileNav = useCallback(() => dispatch({ type: 'CLOSE_MOBILE_NAV' }), [])
+  const startTour = useCallback(() => dispatch({ type: 'START_TOUR' }), [])
+  const endTour = useCallback(() => dispatch({ type: 'END_TOUR' }), [])
   const addException = useCallback(
     (exception: ExceptionItem) => dispatch({ type: 'ADD_EXCEPTION', exception }),
     [],
@@ -134,6 +147,8 @@ export function AppProvider({ children }: { children: ReactNode }) {
         toggleBoardroom,
         toggleMobileNav,
         closeMobileNav,
+        startTour,
+        endTour,
         addException,
         resolveException,
         addAudit,
