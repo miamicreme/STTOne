@@ -22,6 +22,7 @@ export function TourController() {
     stopTour,
     startTour,
     nhRun,
+    welcomeOpen,
   } = useApp()
 
   const sceneTimer = useRef<number | null>(null)
@@ -31,10 +32,16 @@ export function TourController() {
   const autoStarted = useRef(false)
   const [showDone, setShowDone] = useState(false)
 
-  /* Auto-start once per load — unless the visitor prefers reduced motion. */
+  /* Auto-start once per load, after the visitor leaves the welcome overlay —
+     unless they prefer reduced motion. The welcome screen is the front door;
+     if they choose "Explore on my own", the tour still auto-opens shortly after
+     so an unattended link keeps walking itself. */
   useEffect(() => {
-    if (autoStarted.current) return
+    if (autoStarted.current || welcomeOpen) return
     autoStarted.current = true
+    // If the visitor launched the tour straight from the welcome CTA, it's
+    // already running — don't restart it.
+    if (tour.active || tour.completed) return
     const reduce =
       typeof window !== 'undefined' &&
       window.matchMedia?.('(prefers-reduced-motion: reduce)').matches
@@ -43,7 +50,7 @@ export function TourController() {
     const id = window.setTimeout(() => startTour(), 2800)
     return () => window.clearTimeout(id)
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [welcomeOpen])
 
   /* Reset the per-scene run guard whenever a fresh tour begins at scene 0. */
   useEffect(() => {

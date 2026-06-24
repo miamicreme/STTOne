@@ -73,7 +73,7 @@ A full custom platform is built only where it clearly beats integration on retur
 | **Field ops & fleet** | Fleet health, utilization, and maintenance at a glance |
 | **Project portfolio** | Program health and at-risk work across every region |
 
-The prototype also ships with a **self-running guided tour** — open the link and it walks the full story in about 80 seconds, including the onboarding pipeline catching a non-compliant hire in real time. A **Boardroom Mode** enlarges everything for screen-share or projector, and a **⌘K command palette** jumps to any screen or action from the keyboard.
+A **welcome screen** greets every visitor with a one-screen brief on what's being demonstrated and two doors: watch the guided tour, or explore freely. The prototype also ships with a **self-running guided tour** — open the link and it walks the full story in about 80 seconds, including the onboarding pipeline catching a non-compliant hire in real time. A **Boardroom Mode** enlarges everything for screen-share or projector, and a **⌘K command palette** jumps to any screen or action from the keyboard.
 
 ---
 
@@ -131,7 +131,7 @@ Working software, not slideware. To run it locally:
 npm install
 npm run dev      # http://localhost:3000
 npm run build    # static export → ./out
-npm test         # 19 unit tests (Node test runner — no Vite)
+npm test         # 20 unit tests (Node test runner — no Vite)
 ```
 
 **Stack:** Next.js 14 (App Router, static export) · React 18 · TypeScript · Tailwind CSS · Recharts. No backend and no persistence — all data is simulated in memory, and every screen is labeled *"Demo data — interview prototype only."* Fonts are self-hosted, so the build has no external dependencies; it deploys to any static host (a Render blueprint is included).
@@ -145,15 +145,15 @@ Honesty up front, because it's the first question worth asking:
 | The full UI, state model, and cross-page reactivity — run a New Hire and the exception propagates live to the Executive, Integration, and Board views | The records themselves (workers, projects, files, fleet) — in-memory mock data, no live systems |
 | The integration **model**: source-of-truth per domain, governed layer, exception routing, ingest guards | The dollar figures (~$214K, 126 hrs/mo, etc.) — *modeled* estimates anchored to STT's public scale, to be validated in week one |
 | The automation **logic** — the onboarding pipeline genuinely runs, validates, and halts a non-compliant hire before dispatch | The Paychex / PenguinData / QuickBooks connections — represented, not yet wired to real APIs |
-| Reducer + data integrity covered by **18 automated tests** (`npm test`) | — |
+| Reducer + data integrity covered by **20 automated tests** (`npm test`) | — |
 
 The point of the prototype is to make the *operating model* tangible and testable. Phase 0 of the [execution plan](./STT-Execution-Plan.md) replaces the simulated layer with live system access and a measured baseline.
 
 ### Tests
 
-`npm test` runs 19 unit tests on Node's built-in runner (via `tsx` — **no Vite**, consistent with the rest of the stack):
+`npm test` runs 20 unit tests on Node's built-in runner (via `tsx` — **no Vite**, consistent with the rest of the stack):
 
-- **Reducer** — the cross-page reactivity that makes the app feel real: tour control, command-palette state, New-Hire command nonces, exception add/resolve, event-feed capping, and reducer purity.
+- **Reducer** — the cross-page reactivity that makes the app feel real: welcome-overlay and tour control, command-palette state, New-Hire command nonces, exception add/resolve, event-feed capping, and reducer purity.
 - **Data integrity** — the leakage breakdown reconciles exactly to the $214K headline, board figures stay consistent, every tour scene targets a real page with a readable dwell time, and KPI values stay compact enough not to clip.
 
 Every push and pull request runs the tests **and** the production build in CI (GitHub Actions — `.github/workflows/ci.yml`), so `main` stays green.
@@ -166,7 +166,7 @@ Every push and pull request runs the tests **and** the production build in CI (G
 | Click through all nine screens at your own pace | ~3–5 minutes |
 | Run locally from a clean clone (`npm install` → `npm run dev`) | ~2 minutes |
 | Production build + static export (`npm run build`) | <1 minute |
-| Automated test suite (`npm test`) | <1 second (19 tests) |
+| Automated test suite (`npm test`) | <1 second (20 tests) |
 
 Fastest way to evaluate: open the link and let the tour drive — it provisions a new hire, catches a non-compliant one, and lands the resulting exception live, end to end, in about a minute and a half.
 
