@@ -41,13 +41,13 @@ export function KPICard({ kpi, index = 0 }: { kpi: KPI; index?: number }) {
         </span>
       </div>
 
-      <div className="relative mt-3 flex items-end justify-between gap-3">
+      <div className="relative mt-3 flex min-w-0 items-end justify-between gap-3">
         <AnimatedNumber
           value={kpi.value}
-          className={`font-display font-bold leading-none tracking-tightest text-white tabular ${
+          className={`min-w-0 whitespace-nowrap font-display font-bold leading-none tracking-tightest text-white tabular ${
             boardroomMode
-              ? 'text-[2.6rem] sm:text-[3.4rem]'
-              : 'text-[2.1rem] sm:text-[2.6rem]'
+              ? 'text-[2.4rem] sm:text-[3.4rem]'
+              : 'text-[1.9rem] sm:text-[2.6rem]'
           }`}
         />
         <Sparkline
