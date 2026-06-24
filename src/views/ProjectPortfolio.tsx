@@ -47,7 +47,7 @@ export function ProjectPortfolio() {
       {/* Phase funnel */}
       <Card>
         <SectionHeader title="Portfolio by Phase" subtitle="Program count across delivery phases" />
-        <div className="grid grid-cols-4 gap-3">
+        <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
           {phaseOrder.map((ph) => {
             const count = projects.filter((p) => p.phase === ph).length
             return (

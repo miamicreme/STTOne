@@ -40,7 +40,9 @@ function Shell() {
         <main className="flex-1 overflow-y-auto scroll-smooth">
           <div
             className={`mx-auto w-full ${
-              boardroomMode ? 'max-w-[1640px] p-8' : 'max-w-[1440px] p-6 lg:p-8'
+              boardroomMode
+                ? 'max-w-[1640px] p-4 sm:p-6 lg:p-8'
+                : 'max-w-[1440px] p-4 sm:p-6 lg:p-8'
             }`}
           >
             <div key={page} className="animate-fade-in">

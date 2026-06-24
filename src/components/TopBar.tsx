@@ -1,6 +1,6 @@
 'use client'
 
-import { Presentation, Search, Bell, ChevronRight } from 'lucide-react'
+import { Presentation, Search, Bell, ChevronRight, Menu } from 'lucide-react'
 import { useApp } from '../state/AppContext'
 import type { PageKey } from '../data'
 
@@ -14,22 +14,34 @@ const pageTitles: Record<PageKey, string> = {
 }
 
 export function TopBar() {
-  const { page, boardroomMode, toggleBoardroom, exceptions } = useApp()
+  const { page, boardroomMode, toggleBoardroom, toggleMobileNav, exceptions } = useApp()
 
   return (
-    <header className="glass sticky top-0 z-20 flex h-16 items-center justify-between gap-4 border-b border-white/[0.07] px-6">
-      <div className="min-w-0">
-        <div className="flex items-center gap-1.5 text-[11px] font-medium uppercase tracking-[0.14em] text-slate-500">
-          <span>Southern Tier Telecommunications</span>
-          <ChevronRight className="h-3 w-3 text-slate-700" />
-          <span className="text-slate-400">Fort Myers HQ</span>
+    <header className="glass sticky top-0 z-20 flex h-16 items-center justify-between gap-3 border-b border-white/[0.07] px-4 sm:px-6">
+      <div className="flex min-w-0 items-center gap-3">
+        {/* Mobile hamburger */}
+        {!boardroomMode && (
+          <button
+            onClick={toggleMobileNav}
+            className="rounded-lg border border-white/[0.07] bg-white/[0.02] p-2 text-slate-300 transition-colors hover:bg-white/[0.06] hover:text-white md:hidden"
+            aria-label="Open navigation"
+          >
+            <Menu className="h-5 w-5" />
+          </button>
+        )}
+        <div className="min-w-0">
+          <div className="hidden items-center gap-1.5 text-[11px] font-medium uppercase tracking-[0.14em] text-slate-500 sm:flex">
+            <span>Southern Tier Telecommunications</span>
+            <ChevronRight className="h-3 w-3 text-slate-700" />
+            <span className="text-slate-400">Fort Myers HQ</span>
+          </div>
+          <h1 className="truncate font-display text-base font-bold tracking-tight text-white sm:text-[19px]">
+            {pageTitles[page]}
+          </h1>
         </div>
-        <h1 className="truncate font-display text-[19px] font-bold tracking-tight text-white">
-          {pageTitles[page]}
-        </h1>
       </div>
 
-      <div className="flex items-center gap-3">
+      <div className="flex items-center gap-2 sm:gap-3">
         {/* Operational Pulse chip */}
         <div className="hidden items-center gap-2 rounded-full border border-emerald-500/25 bg-emerald-500/[0.08] px-3 py-1.5 md:flex">
           <span className="relative flex h-2 w-2">
