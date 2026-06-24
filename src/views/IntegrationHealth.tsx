@@ -102,7 +102,7 @@ export function IntegrationHealth() {
       </div>
 
       {/* Summary strip */}
-      <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
+      <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
         <MiniStat label="Open Exceptions" value={exceptions.length} tone="rose" hint="Total unresolved items across all integration systems. Each exception blocks a payroll record, a hire, or an invoice until resolved." />
         <MiniStat label="Retryable" value={retryable.length} tone="amber" hint="Exceptions that can be automatically reprocessed on the next sync once the underlying data issue is corrected — typically a missing field or ID mismatch." />
         <MiniStat label="Blocked" value={blocked.length} tone="rose" hint="Exceptions requiring direct human action — typically a missing credential or unresolvable conflict — before the record can move forward." />

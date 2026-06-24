@@ -156,7 +156,7 @@ export function ExecutiveHome() {
                   }}
                   labelStyle={{ color: '#e2e8f0' }}
                 />
-                <Legend wrapperStyle={{ fontSize: 11, paddingTop: 8 }} />
+                <Legend wrapperStyle={{ fontSize: 11, paddingTop: 8 }} height={40} />
                 <Bar dataKey="underground" stackId="a" fill={chartColors.underground} name="Underground" radius={[0, 0, 0, 0]} />
                 <Bar dataKey="aerial" stackId="a" fill={chartColors.aerial} name="Aerial" />
                 <Bar dataKey="wireless" stackId="a" fill={chartColors.wireless} name="Wireless" />

@@ -32,7 +32,7 @@ export function ProjectPortfolio() {
   return (
     <div className="space-y-6">
       {/* Summary strip */}
-      <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
+      <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
         <SummaryStat label="Active Programs" value={`${projects.length}`} hint="In portfolio" />
         <SummaryStat label="Avg Completion" value={`${avgComplete}%`} hint="Across active jobs" />
         <SummaryStat label="At Risk" value={`${atRisk.length}`} hint="Need attention" tone="amber" />
@@ -78,7 +78,7 @@ export function ProjectPortfolio() {
             action={<span className="text-[11px] text-slate-500">{projects.length} programs</span>}
           />
           <div className="overflow-x-auto">
-            <table className="w-full text-left text-sm">
+            <table className="w-full min-w-[640px] text-left text-sm">
               <thead>
                 <tr className="border-b border-white/[0.06] text-[11px] uppercase tracking-wider text-slate-500">
                   <th className="px-4 py-3 font-medium">Project</th>
