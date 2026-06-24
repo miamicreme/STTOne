@@ -53,7 +53,7 @@ export function KPICard({ kpi, index = 0 }: { kpi: KPI; index?: number }) {
         <Sparkline
           seed={kpi.label}
           trend={trend}
-          className="mb-1 hidden shrink-0 opacity-80 sm:block"
+          className="mb-1 hidden shrink-0 opacity-80 sm:block xl:hidden"
         />
       </div>
 
