@@ -9,8 +9,9 @@ import {
   UserPlus,
   ShieldAlert,
   ArrowRight,
+  ScrollText,
 } from 'lucide-react'
-import { Card, SectionHeader } from '../components/Card'
+import { Card, SectionHeader, CardHeader, EmptyState } from '../components/Card'
 import { KPICard } from '../components/KPICard'
 import { Hint } from '../components/Hint'
 import { newHireSteps, newHireStats, sampleNewHire, type ExceptionItem } from '../data'
@@ -283,20 +284,19 @@ export function NewHireAutomation() {
 
         {/* Right: audit timeline */}
         <Card padded={false} className="flex flex-col">
-          <div className="flex items-center justify-between border-b border-white/[0.07] p-4">
-            <div className="flex items-center gap-2">
-              <h2 className="text-sm font-semibold text-slate-100">Audit Timeline</h2>
-              <Hint text="Immutable record of every automation run — worker name, outcome, and resolution path. Appended on each run for compliance and audit trail purposes." />
-            </div>
-            <span className="text-[11px] text-slate-500">{auditLog.length} entries</span>
-          </div>
+          <CardHeader
+            title="Audit Timeline"
+            icon={<ScrollText className="h-4 w-4 text-accent" />}
+            hint="Immutable record of every automation run — worker name, outcome, and resolution path. Appended on each run for compliance and audit trail purposes."
+            action={<span className="text-[11px] text-slate-500">{auditLog.length} entries</span>}
+          />
           <div className="max-h-[36rem] flex-1 space-y-3 overflow-y-auto p-4">
             {auditLog.length === 0 ? (
-              <div className="flex flex-col items-center justify-center py-12 text-center text-slate-500">
-                <CircleDashed className="mb-2 h-8 w-8" />
-                <p className="text-sm">No runs yet.</p>
-                <p className="text-xs">Run the automation to append an audit record.</p>
-              </div>
+              <EmptyState
+                icon={<CircleDashed className="h-8 w-8" />}
+                title="No runs yet"
+                subtitle="Run the automation to append an audit record."
+              />
             ) : (
               auditLog.map((entry) => (
                 <div

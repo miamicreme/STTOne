@@ -14,8 +14,7 @@ import {
   ArrowUpRight,
   Lock,
 } from 'lucide-react'
-import { Card, SectionHeader } from '../components/Card'
-import { Hint } from '../components/Hint'
+import { Card, SectionHeader, CardHeader, CountPill } from '../components/Card'
 import { ProgressBar } from '../components/ProgressBar'
 import { StatusBadge } from '../components/StatusBadge'
 import { AnimatedNumber } from '../components/AnimatedNumber'
@@ -108,15 +107,11 @@ export function DriveCleanup() {
 
         {/* Duplicate tracker */}
         <Card className="lg:col-span-2" padded={false} tourId="drive-dupes">
-          <div className="flex items-center justify-between border-b border-white/[0.07] p-4">
-            <div className="flex items-center gap-2">
-              <Copy className="h-4 w-4 text-amber-400" />
-              <h2 className="text-sm font-semibold text-slate-100">Duplicate Tracker</h2>
-            </div>
-            <span className="rounded-full bg-amber-500/15 px-2 py-0.5 text-xs font-semibold tabular text-amber-300">
-              7,936 candidates
-            </span>
-          </div>
+          <CardHeader
+            title="Duplicate Tracker"
+            icon={<Copy className="h-4 w-4 text-amber-400" />}
+            action={<CountPill tone="amber">7,936 candidates</CountPill>}
+          />
           <div className="divide-y divide-white/[0.05]">
             {duplicateGroups.map((g) => (
               <div key={g.name} className="flex items-center gap-4 p-3.5">
@@ -141,14 +136,12 @@ export function DriveCleanup() {
       <div className="grid gap-6 lg:grid-cols-2">
         {/* Permission risk */}
         <Card padded={false}>
-          <div className="flex items-center justify-between border-b border-white/[0.07] p-4">
-            <div className="flex items-center gap-2">
-              <ShieldAlert className="h-4 w-4 text-rose-400" />
-              <h2 className="text-sm font-semibold text-slate-100">Permission Risk Panel</h2>
-              <Hint text="Files shared externally or with overly broad internal access, flagged during the Drive audit. Target is zero external shares for payroll and HR document domains." />
-            </div>
-            <Lock className="h-4 w-4 text-slate-600" />
-          </div>
+          <CardHeader
+            title="Permission Risk Panel"
+            icon={<ShieldAlert className="h-4 w-4 text-rose-400" />}
+            hint="Files shared externally or with overly broad internal access, flagged during the Drive audit. Target is zero external shares for payroll and HR document domains."
+            action={<Lock className="h-4 w-4 text-slate-600" />}
+          />
           <div className="space-y-2 p-4">
             {permissionRisks.map((r) => (
               <div

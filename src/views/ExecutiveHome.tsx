@@ -9,7 +9,7 @@ import {
   Legend,
 } from 'recharts'
 import { AlertTriangle, ArrowRight, ShieldCheck, DollarSign, Play } from 'lucide-react'
-import { Card, SectionHeader } from '../components/Card'
+import { Card, SectionHeader, CardHeader, CountPill, EmptyState } from '../components/Card'
 import { KPICard } from '../components/KPICard'
 import { ExceptionRow } from '../components/ExceptionRow'
 import { AnimatedNumber } from '../components/AnimatedNumber'
@@ -168,23 +168,20 @@ export function ExecutiveHome() {
 
         {/* Exception drawer */}
         <Card padded={false} className="flex flex-col" tourId="exceptions">
-          <div className="flex items-center justify-between border-b border-white/[0.07] p-4">
-            <div className="flex items-center gap-2">
-              <AlertTriangle className="h-4 w-4 text-amber-400" />
-              <h2 className="text-sm font-semibold text-slate-100">Exception Drawer</h2>
-              <Hint text="Cross-system data conflicts or missing records that block payroll or onboarding. Each item must be resolved or retried before the weekly payroll lock." />
-            </div>
-            <span className="rounded-full bg-rose-500/15 px-2 py-0.5 text-xs font-semibold tabular text-rose-300">
-              {exceptions.length}
-            </span>
-          </div>
+          <CardHeader
+            title="Exception Drawer"
+            icon={<AlertTriangle className="h-4 w-4 text-amber-400" />}
+            hint="Cross-system data conflicts or missing records that block payroll or onboarding. Each item must be resolved or retried before the weekly payroll lock."
+            action={<CountPill tone="rose">{exceptions.length}</CountPill>}
+          />
           <div className="max-h-[19rem] flex-1 space-y-2 overflow-y-auto p-4">
             {exceptions.length === 0 ? (
-              <div className="flex h-full flex-col items-center justify-center py-12 text-center">
-                <ShieldCheck className="mb-2 h-8 w-8 text-emerald-400" />
-                <p className="text-sm font-medium text-slate-200">All clear</p>
-                <p className="text-xs text-slate-500">No exceptions before payroll lock.</p>
-              </div>
+              <EmptyState
+                icon={<ShieldCheck className="h-8 w-8 text-emerald-400" />}
+                title="All clear"
+                subtitle="No exceptions before payroll lock."
+                className="h-full"
+              />
             ) : (
               exceptions.map((exc) => (
                 <ExceptionRow

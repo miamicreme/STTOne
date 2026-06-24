@@ -12,7 +12,7 @@ import {
   MapPin,
   ArrowRight,
 } from 'lucide-react'
-import { Card, SectionHeader } from '../components/Card'
+import { Card, SectionHeader, CardHeader } from '../components/Card'
 import { KPICard } from '../components/KPICard'
 import { StatusBadge } from '../components/StatusBadge'
 import {
@@ -89,15 +89,11 @@ export function EmployeePortal() {
       <div className="grid gap-6 lg:grid-cols-3">
         {/* Today's schedule */}
         <Card className="lg:col-span-2" padded={false} tourId="portal-schedule">
-          <div className="flex items-center justify-between border-b border-white/[0.07] p-4">
-            <div className="flex items-center gap-2">
-              <CalendarClock className="h-4 w-4 text-accent" />
-              <h2 className="font-display text-[15px] font-semibold text-slate-100">
-                Today’s Assignment
-              </h2>
-            </div>
-            <span className="text-[11px] text-slate-500">{p.assignment}</span>
-          </div>
+          <CardHeader
+            title="Today’s Assignment"
+            icon={<CalendarClock className="h-4 w-4 text-accent" />}
+            action={<span className="truncate text-[11px] text-slate-500">{p.assignment}</span>}
+          />
           <div className="relative p-4 pl-6">
             <div className="absolute bottom-6 left-[26px] top-6 w-px bg-white/[0.08]" />
             <ul className="space-y-4">
@@ -160,15 +156,15 @@ export function EmployeePortal() {
       <div className="grid gap-6 lg:grid-cols-2">
         {/* Certifications */}
         <Card padded={false}>
-          <div className="flex items-center justify-between border-b border-white/[0.07] p-4">
-            <div className="flex items-center gap-2">
-              <BadgeCheck className="h-4 w-4 text-accent" />
-              <h2 className="font-display text-[15px] font-semibold text-slate-100">Certifications</h2>
-            </div>
-            <span className="text-[11px] text-slate-500">
-              {employeeCerts.filter((c) => c.status === 'valid').length}/{employeeCerts.length} valid
-            </span>
-          </div>
+          <CardHeader
+            title="Certifications"
+            icon={<BadgeCheck className="h-4 w-4 text-accent" />}
+            action={
+              <span className="text-[11px] text-slate-500">
+                {employeeCerts.filter((c) => c.status === 'valid').length}/{employeeCerts.length} valid
+              </span>
+            }
+          />
           <div className="divide-y divide-white/[0.05]">
             {employeeCerts.map((c) => {
               const meta = certMeta[c.status]
@@ -189,15 +185,15 @@ export function EmployeePortal() {
 
         {/* Docs needed */}
         <Card padded={false}>
-          <div className="flex items-center justify-between border-b border-white/[0.07] p-4">
-            <div className="flex items-center gap-2">
-              <FileText className="h-4 w-4 text-accent" />
-              <h2 className="font-display text-[15px] font-semibold text-slate-100">Documents</h2>
-            </div>
-            <span className="text-[11px] text-slate-500">
-              {employeeDocs.filter((d) => d.status !== 'complete').length} outstanding
-            </span>
-          </div>
+          <CardHeader
+            title="Documents"
+            icon={<FileText className="h-4 w-4 text-accent" />}
+            action={
+              <span className="text-[11px] text-slate-500">
+                {employeeDocs.filter((d) => d.status !== 'complete').length} outstanding
+              </span>
+            }
+          />
           <div className="divide-y divide-white/[0.05]">
             {employeeDocs.map((d) => {
               const meta = docMeta[d.status]

@@ -1,7 +1,7 @@
 'use client'
 
 import { Gauge, ShieldAlert, Map, Flag, CheckCircle2, Loader2, Circle, ArrowRight } from 'lucide-react'
-import { Card, SectionHeader } from '../components/Card'
+import { Card, SectionHeader, CardHeader } from '../components/Card'
 import { KPICard } from '../components/KPICard'
 import { StatusBadge } from '../components/StatusBadge'
 import { ProgressBar } from '../components/ProgressBar'
@@ -145,17 +145,15 @@ export function CEOBoardView() {
 
         {/* Transformation roadmap */}
         <Card padded={false} className="flex flex-col">
-          <div className="border-b border-white/[0.07] p-4">
-            <div className="flex items-center gap-2">
-              <Flag className="h-4 w-4 text-accent" />
-              <h2 className="font-display text-[15px] font-semibold text-slate-100">
-                Transformation Roadmap
-              </h2>
-            </div>
-            <div className="mt-3">
-              <ProgressBar value={roadmapProgress} caption={`${roadmapProgress}% delivered`} size="sm" />
-            </div>
-          </div>
+          <CardHeader
+            title="Transformation Roadmap"
+            icon={<Flag className="h-4 w-4 text-accent" />}
+            below={
+              <div className="mt-3">
+                <ProgressBar value={roadmapProgress} caption={`${roadmapProgress}% delivered`} size="sm" />
+              </div>
+            }
+          />
           <div className="space-y-3 p-4">
             {transformationRoadmap.map((m) => {
               const meta = milestoneMeta[m.status]
@@ -186,21 +184,19 @@ export function CEOBoardView() {
       {/* At-risk portfolio + savings callout */}
       <div className="grid gap-6 lg:grid-cols-3">
         <Card className="lg:col-span-2" padded={false}>
-          <div className="flex items-center justify-between border-b border-white/[0.07] p-4">
-            <div className="flex items-center gap-2">
-              <ShieldAlert className="h-4 w-4 text-amber-400" />
-              <h2 className="font-display text-[15px] font-semibold text-slate-100">
-                Programs Needing Board Attention
-              </h2>
-            </div>
-            <button
-              onClick={() => setPage('projects')}
-              className="inline-flex items-center gap-1 text-xs font-semibold text-accent hover:underline"
-            >
-              Full portfolio
-              <ArrowRight className="h-3.5 w-3.5" />
-            </button>
-          </div>
+          <CardHeader
+            title="Programs Needing Board Attention"
+            icon={<ShieldAlert className="h-4 w-4 text-amber-400" />}
+            action={
+              <button
+                onClick={() => setPage('projects')}
+                className="inline-flex items-center gap-1 text-xs font-semibold text-accent hover:underline"
+              >
+                Full portfolio
+                <ArrowRight className="h-3.5 w-3.5" />
+              </button>
+            }
+          />
           <div className="divide-y divide-white/[0.05]">
             {atRisk.map((p) => (
               <div key={p.name} className="flex items-center gap-4 p-3.5">
