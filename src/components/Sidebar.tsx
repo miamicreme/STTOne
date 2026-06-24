@@ -77,8 +77,8 @@ export function Sidebar() {
               <span className="text-white">Southern</span>
               <span className="text-accent">Tier</span>
             </p>
-            <p className="truncate text-[10px] uppercase tracking-[0.22em] text-slate-500">
-              Command Center
+            <p className="truncate text-[10px] uppercase tracking-[0.16em] text-slate-500">
+              Telecommunications
             </p>
           </div>
           {/* Mobile close */}
