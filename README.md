@@ -131,9 +131,30 @@ Working software, not slideware. To run it locally:
 npm install
 npm run dev      # http://localhost:3000
 npm run build    # static export → ./out
+npm test         # 18 unit tests (Node test runner — no Vite)
 ```
 
 **Stack:** Next.js 14 (App Router, static export) · React 18 · TypeScript · Tailwind CSS · Recharts. No backend and no persistence — all data is simulated in memory, and every screen is labeled *"Demo data — interview prototype only."* Fonts are self-hosted, so the build has no external dependencies; it deploys to any static host (a Render blueprint is included).
+
+### What's real vs. simulated
+
+Honesty up front, because it's the first question worth asking:
+
+| Real, working software | Simulated for the demo |
+|---|---|
+| The full UI, state model, and cross-page reactivity — run a New Hire and the exception propagates live to the Executive, Integration, and Board views | The records themselves (workers, projects, files, fleet) — in-memory mock data, no live systems |
+| The integration **model**: source-of-truth per domain, governed layer, exception routing, ingest guards | The dollar figures (~$214K, 126 hrs/mo, etc.) — *modeled* estimates anchored to STT's public scale, to be validated in week one |
+| The automation **logic** — the onboarding pipeline genuinely runs, validates, and halts a non-compliant hire before dispatch | The Paychex / PenguinData / QuickBooks connections — represented, not yet wired to real APIs |
+| Reducer + data integrity covered by **18 automated tests** (`npm test`) | — |
+
+The point of the prototype is to make the *operating model* tangible and testable. Phase 0 of the [execution plan](./STT-Execution-Plan.md) replaces the simulated layer with live system access and a measured baseline.
+
+### Tests
+
+`npm test` runs 18 unit tests on Node's built-in runner (via `tsx` — **no Vite**, consistent with the rest of the stack):
+
+- **Reducer** — the cross-page reactivity that makes the app feel real: tour control, New-Hire command nonces, exception add/resolve, event-feed capping, and reducer purity.
+- **Data integrity** — the leakage breakdown reconciles exactly to the $214K headline, board figures stay consistent, every tour scene targets a real page with a readable dwell time, and KPI values stay compact enough not to clip.
 
 ### Testing time
 
@@ -143,6 +164,7 @@ npm run build    # static export → ./out
 | Click through all nine screens at your own pace | ~3–5 minutes |
 | Run locally from a clean clone (`npm install` → `npm run dev`) | ~2 minutes |
 | Production build + static export (`npm run build`) | <1 minute |
+| Automated test suite (`npm test`) | <1 second (18 tests) |
 
 Fastest way to evaluate: open the link and let the tour drive — it provisions a new hire, catches a non-compliant one, and lands the resulting exception live, end to end, in about a minute and a half.
 
