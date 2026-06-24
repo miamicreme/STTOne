@@ -17,7 +17,8 @@ const pageTitles: Record<PageKey, string> = {
 }
 
 export function TopBar() {
-  const { page, boardroomMode, toggleBoardroom, toggleMobileNav, startTour, exceptions } = useApp()
+  const { page, boardroomMode, toggleBoardroom, toggleMobileNav, startTour, openCommand, exceptions } =
+    useApp()
 
   return (
     <header className="glass sticky top-0 z-20 flex h-16 items-center justify-between gap-3 border-b border-white/[0.07] px-4 sm:px-6">
@@ -56,8 +57,12 @@ export function TopBar() {
           <span className="text-xs font-semibold text-emerald-300">Operational Pulse · Nominal</span>
         </div>
 
-        {/* Fake search */}
-        <button className="hidden items-center gap-2 rounded-xl border border-white/[0.07] bg-white/[0.02] px-3 py-2 text-xs text-slate-500 transition-colors hover:border-white/[0.14] hover:text-slate-300 lg:flex">
+        {/* Command palette trigger (⌘K) */}
+        <button
+          onClick={openCommand}
+          className="hidden items-center gap-2 rounded-xl border border-white/[0.07] bg-white/[0.02] px-3 py-2 text-xs text-slate-500 transition-colors hover:border-accent/30 hover:text-slate-300 lg:flex"
+          aria-label="Open command palette"
+        >
           <Search className="h-3.5 w-3.5" />
           <span>Search operations…</span>
           <kbd className="rounded border border-white/10 bg-white/[0.04] px-1.5 py-0.5 text-[10px] text-slate-500">
