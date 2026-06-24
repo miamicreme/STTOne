@@ -519,8 +519,8 @@ export const boardKpis: KPI[] = [
   { label: 'Legacy Files Classified', value: '41,280', delta: '71% of drive', trend: 'up', hint: 'Audit progress' },
   { label: 'Admin Hours Saved / mo', value: '126', delta: '+18 MoM', trend: 'up', hint: 'Automation' },
   { label: 'Projects Behind Schedule', value: '3', delta: 'of 17', trend: 'down', hint: 'Recovering' },
-  { label: 'Onboarding Cycle', value: '2.4 days', delta: '-0.6d', trend: 'down', hint: 'Was 3.0d' },
-  { label: 'Est. Annual Impact', value: '$189K', delta: 'admin + leakage', trend: 'up', hint: 'Modeled' },
+  { label: 'Onboarding Cycle', value: '2.4d', delta: '-0.6d', trend: 'down', hint: 'Was 3.0d' },
+  { label: 'Est. Annual Impact', value: '$214K', delta: 'admin + leakage', trend: 'up', hint: 'Modeled' },
 ]
 
 export type RiskLevel = 0 | 1 | 2 | 3

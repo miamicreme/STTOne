@@ -232,7 +232,7 @@ export function CEOBoardView() {
             <ImpactRow label="Onboarding cycle cut" value="20%" pct={20} />
           </div>
           <div className="mt-5 rounded-xl border border-accent/20 bg-accent/[0.06] p-3 text-xs text-slate-300">
-            Combined <span className="font-semibold text-accent">~$189K/yr</span> modeled impact from
+            Combined <span className="font-semibold text-accent">~$214K/yr</span> modeled impact from
             reclaimed admin time and reduced billing leakage once migration cutover completes.
           </div>
         </Card>
