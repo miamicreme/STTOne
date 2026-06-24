@@ -1,2 +1,83 @@
-# STTOne
-STT DEMO
+# Southern Tier Operations Command Center
+
+A premium, boardroom-ready internal cockpit for **Southern Tier Telecommunications** —
+a multi-state telecom field-construction contractor (Fort Myers HQ; active work in
+Ohio, Nevada, and Southwest Florida).
+
+> _Built on Execution. Elevated by Excellence._
+
+This is a **single-page React + TypeScript prototype** built for a live leadership
+interview demo. All data is simulated in-memory — there is no backend, no API calls,
+and no persistence. Every page is labeled **"Demo data — interview prototype only."**
+
+## Quick start
+
+```bash
+npm install
+npm run dev
+```
+
+Then open the printed local URL (default http://localhost:5173).
+
+Other scripts:
+
+```bash
+npm run build     # typecheck (tsc --noEmit) + production build
+npm run preview   # preview the production build
+```
+
+## Tech stack
+
+- **Vite + React 18 + TypeScript** — client-side only
+- **Tailwind CSS** — deep navy/slate theme, single cyan accent
+- **Recharts** — all charts
+- **lucide-react** — all icons
+- State held entirely in React via a single `useReducer` context (no localStorage).
+
+## The pages
+
+| Page | What it shows |
+|---|---|
+| **Executive Home** | 6 KPI cards, operational-pulse banner, stacked portfolio-by-region chart, and a live exception drawer. |
+| **New Hire Automation** | The signature feature: an animated 8-step onboarding pipeline (Paychex → Integration → PenguinData → Fleet → Audit) with a **failure-variant toggle** that halts at vehicle eligibility and routes the worker to the exception queue. Every run appends to an audit timeline. |
+| **Drive Cleanup Center** | File-volume cards, a donut by document domain, a duplicate tracker, a permission-risk panel, and per-domain migration progress bars. |
+| **Integration Health** | System status cards (Paychex / PenguinData / QuickBooks / Drive), a live event feed, a live exception taxonomy chart, and a retryable exception queue. |
+| **Field Ops / Fleet** | Fleet-health chart, utilization gauge, overdue-maintenance list, and a crew board. |
+| **Project Portfolio** | Project table with per-project issues, a phase funnel, and an at-risk panel. |
+
+## Cross-page reactivity (the part that makes it feel real)
+
+A single app-level state object (`src/state/AppContext.tsx`) is the source of truth.
+When the **New Hire Automation** flow runs:
+
+- a **success** appends an audit entry + a live integration event;
+- a **failure** additionally pushes a new **exception** into shared state.
+
+Those exceptions immediately propagate to:
+
+- the **Executive Home** exception drawer and the operational-pulse banner count,
+- the **Integration Health** exception queue, taxonomy chart, and counters,
+- the sidebar badge.
+
+Retrying/resolving an exception anywhere removes it everywhere.
+
+## Boardroom Mode
+
+The top-bar **Boardroom Mode** toggle hides the sidebar nav and enlarges KPI cards and
+spacing for screen-share / projector legibility.
+
+## Project structure
+
+```
+src/
+  data.ts                  All typed mock data + interfaces
+  state/AppContext.tsx     Shared reducer-backed app state
+  components/              Reusable: Card, KPICard, StatusBadge,
+                           ProgressBar, ExceptionRow, Timeline, Sidebar, TopBar
+  pages/                   One file per page
+  utils/time.ts            Live timestamp helpers
+  App.tsx                  Shell + routing
+```
+
+See [`SttoneContext.md`](./SttoneContext.md) for the company research brief that
+informs the tone, copy, and simulated figures.
