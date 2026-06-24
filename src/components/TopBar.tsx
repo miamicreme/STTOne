@@ -35,7 +35,7 @@ export function TopBar() {
           </button>
         )}
         <div className="min-w-0">
-          <div className="hidden items-center gap-1.5 text-[11px] font-medium uppercase tracking-[0.14em] text-slate-500 sm:flex">
+          <div className="hidden items-center gap-1.5 text-[11px] font-medium uppercase tracking-[0.14em] text-slate-500 xl:flex">
             <span>Southern Tier Telecommunications</span>
             <ChevronRight className="h-3 w-3 text-slate-700" />
             <span className="text-slate-400">Fort Myers HQ</span>
@@ -48,7 +48,7 @@ export function TopBar() {
 
       <div className="flex items-center gap-2 sm:gap-3">
         {/* Operational Pulse chip */}
-        <div className="hidden items-center gap-2 rounded-full border border-emerald-500/25 bg-emerald-500/[0.08] px-3 py-1.5 md:flex">
+        <div className="hidden items-center gap-2 rounded-full border border-emerald-500/25 bg-emerald-500/[0.08] px-3 py-1.5 lg:flex">
           <span className="relative flex h-2 w-2">
             <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-70" />
             <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-400" />

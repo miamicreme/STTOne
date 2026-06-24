@@ -199,7 +199,7 @@ export function NewHireAutomation() {
                 onClick={() => run()}
                 disabled={running}
                 data-tour="runhire"
-                className="group inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-accent to-accent-soft px-5 py-2.5 text-sm font-semibold text-base-950 shadow-[0_8px_24px_-8px_rgba(47,134,224,0.8)] transition-all hover:shadow-[0_10px_28px_-6px_rgba(47,134,224,0.95)] hover:brightness-110 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-60 disabled:shadow-none"
+                className="group inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-accent to-accent-soft px-5 py-2.5 text-sm font-semibold text-white shadow-[0_8px_24px_-8px_rgba(47,134,224,0.8)] transition-all hover:shadow-[0_10px_28px_-6px_rgba(47,134,224,0.95)] hover:brightness-110 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-60 disabled:shadow-none"
               >
                 {running ? (
                   <>
