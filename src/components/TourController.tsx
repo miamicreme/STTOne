@@ -38,7 +38,8 @@ export function TourController() {
       typeof window !== 'undefined' &&
       window.matchMedia?.('(prefers-reduced-motion: reduce)').matches
     if (reduce) return
-    const id = window.setTimeout(() => startTour(), 1300)
+    // Let the landing page settle and the count-ups finish before the tour opens.
+    const id = window.setTimeout(() => startTour(), 2800)
     return () => window.clearTimeout(id)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
