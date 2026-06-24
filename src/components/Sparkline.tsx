@@ -14,7 +14,7 @@ interface SparklineProps {
 const trendColor = {
   up: '#34d399',
   down: '#fb7185',
-  flat: '#38bdf8',
+  flat: '#2f86e0',
 }
 
 /** Lightweight hand-rolled SVG sparkline — gradient area, smooth stroke, end dot. */

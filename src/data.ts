@@ -280,7 +280,7 @@ export interface DomainSlice {
 }
 
 export const driveByDomain: DomainSlice[] = [
-  { name: 'Projects', value: 10447, color: '#38bdf8' },
+  { name: 'Projects', value: 10447, color: '#2f86e0' },
   { name: 'Archive', value: 12330, color: '#64748b' },
   { name: 'HR', value: 2184, color: '#22c55e' },
   { name: 'Fleet', value: 1062, color: '#a78bfa' },
@@ -388,7 +388,7 @@ export interface FleetStatus {
 
 export const fleetHealth: FleetStatus[] = [
   { status: 'Available', count: 41, color: '#22c55e' },
-  { status: 'In Use', count: 19, color: '#38bdf8' },
+  { status: 'In Use', count: 19, color: '#2f86e0' },
   { status: 'Maintenance Due', count: 7, color: '#f59e0b' },
   { status: 'Out of Service', count: 4, color: '#ef4444' },
 ]

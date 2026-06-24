@@ -37,7 +37,7 @@ export function ProgressBar({ value, label, caption, tone, size = 'md' }: Progre
         }`}
       >
         <div
-          className={`h-full rounded-full bg-gradient-to-r ${fill} shadow-[0_0_10px_-2px_rgba(56,189,248,0.5)] transition-[width] duration-1000 ease-[cubic-bezier(0.22,1,0.36,1)]`}
+          className={`h-full rounded-full bg-gradient-to-r ${fill} shadow-[0_0_10px_-2px_rgba(47,134,224,0.5)] transition-[width] duration-1000 ease-[cubic-bezier(0.22,1,0.36,1)]`}
           style={{ width: `${clamped}%` }}
         />
       </div>

@@ -18,7 +18,7 @@ import { executiveKpis, portfolioByRegion, leakageLines, leakageTotal } from '..
 import { useApp } from '../state/AppContext'
 
 const chartColors = {
-  underground: '#38bdf8',
+  underground: '#2f86e0',
   aerial: '#a78bfa',
   wireless: '#f59e0b',
   fulfillment: '#22c55e',
@@ -52,7 +52,7 @@ export function ExecutiveHome() {
             </p>
             <button
               onClick={startTour}
-              className="group mt-4 inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-accent to-accent-soft px-4 py-2.5 text-sm font-semibold text-base-950 shadow-[0_8px_24px_-8px_rgba(56,189,248,0.8)] transition-all hover:brightness-110 active:scale-[0.98]"
+              className="group mt-4 inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-accent to-accent-soft px-4 py-2.5 text-sm font-semibold text-base-950 shadow-[0_8px_24px_-8px_rgba(47,134,224,0.8)] transition-all hover:brightness-110 active:scale-[0.98]"
             >
               <Play className="h-4 w-4 transition-transform group-hover:scale-110" />
               Watch the auto-tour
@@ -89,7 +89,7 @@ export function ExecutiveHome() {
       <div className="sheen relative overflow-hidden rounded-2xl border border-accent/20 bg-gradient-to-r from-accent/[0.14] via-base-850/50 to-base-850/40 p-5 shadow-glow">
         <div className="relative flex flex-wrap items-center justify-between gap-4">
           <div className="flex items-start gap-3.5">
-            <div className="mt-0.5 flex h-11 w-11 items-center justify-center rounded-xl border border-accent/25 bg-accent/15 text-accent shadow-[0_0_20px_-6px_rgba(56,189,248,0.7)]">
+            <div className="mt-0.5 flex h-11 w-11 items-center justify-center rounded-xl border border-accent/25 bg-accent/15 text-accent shadow-[0_0_20px_-6px_rgba(47,134,224,0.7)]">
               <ShieldCheck className="h-5 w-5" />
             </div>
             <div>
@@ -103,7 +103,7 @@ export function ExecutiveHome() {
           </div>
           <button
             onClick={() => setPage('integration')}
-            className="group inline-flex items-center gap-1.5 rounded-xl border border-accent/30 bg-accent/10 px-4 py-2.5 text-sm font-semibold text-accent transition-all hover:bg-accent/20 hover:shadow-[0_0_18px_-4px_rgba(56,189,248,0.6)]"
+            className="group inline-flex items-center gap-1.5 rounded-xl border border-accent/30 bg-accent/10 px-4 py-2.5 text-sm font-semibold text-accent transition-all hover:bg-accent/20 hover:shadow-[0_0_18px_-4px_rgba(47,134,224,0.6)]"
           >
             Review exceptions
             <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
@@ -147,7 +147,7 @@ export function ExecutiveHome() {
                   allowDecimals={false}
                 />
                 <Tooltip
-                  cursor={{ fill: 'rgba(56,189,248,0.06)' }}
+                  cursor={{ fill: 'rgba(47,134,224,0.06)' }}
                   contentStyle={{
                     background: '#0f1729',
                     border: '1px solid #28374f',

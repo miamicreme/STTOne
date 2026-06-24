@@ -36,7 +36,7 @@ const categoryLabels: Record<ExceptionCategory, string> = {
 }
 
 const categoryColor: Record<ExceptionCategory, string> = {
-  'missing-field': '#38bdf8',
+  'missing-field': '#2f86e0',
   'id-mismatch': '#a78bfa',
   duplicate: '#f59e0b',
   'accounting-map': '#f97316',
@@ -156,7 +156,7 @@ export function IntegrationHealth() {
                     width={92}
                   />
                   <Tooltip
-                    cursor={{ fill: 'rgba(56,189,248,0.06)' }}
+                    cursor={{ fill: 'rgba(47,134,224,0.06)' }}
                     contentStyle={{
                       background: '#0f1729',
                       border: '1px solid #28374f',

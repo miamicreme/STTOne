@@ -58,7 +58,7 @@ export function FieldOps() {
                   allowDecimals={false}
                 />
                 <Tooltip
-                  cursor={{ fill: 'rgba(56,189,248,0.06)' }}
+                  cursor={{ fill: 'rgba(47,134,224,0.06)' }}
                   contentStyle={{
                     background: '#0f1729',
                     border: '1px solid #28374f',
@@ -92,7 +92,7 @@ export function FieldOps() {
                   cy="60"
                   r="52"
                   fill="none"
-                  stroke="#38bdf8"
+                  stroke="#2f86e0"
                   strokeWidth="12"
                   strokeLinecap="round"
                   strokeDasharray={`${2 * Math.PI * 52}`}
