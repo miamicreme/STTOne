@@ -48,6 +48,25 @@ const edges: {
 export function Architecture() {
   return (
     <div className="space-y-6">
+      {/* Architect's note — the POV, always visible for an unattended viewer */}
+      <div className="sheen relative overflow-hidden rounded-2xl border border-accent/20 bg-gradient-to-br from-accent/[0.10] via-base-850/55 to-base-850/45 p-5 shadow-glow">
+        <div className="relative">
+          <p className="flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.16em] text-accent">
+            <Network className="h-3.5 w-3.5" />
+            Architect&apos;s note
+          </p>
+          <p className="mt-2 max-w-3xl text-sm leading-relaxed text-slate-300">
+            The fastest, lowest-risk path here isn&apos;t a rip-and-replace. Keep Paychex,
+            PenguinData, and QuickBooks as the systems of record and put one thin, governed
+            integration layer between them — validating, mapping, de-duping, and auditing every
+            change. Anything it can&apos;t resolve becomes a visible exception routed to a human,
+            never a silent failure, and ingest-time guards keep the data clean so crews can&apos;t
+            re-clutter it. If a custom platform ever beats that integration on ROI, it&apos;s a
+            deliberate, measured call — not the default.
+          </p>
+        </div>
+      </div>
+
       {/* Architecture POV + live data-flow diagram */}
       <Card>
         <SectionHeader
