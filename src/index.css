@@ -152,3 +152,18 @@ body::before {
     pointer-events: none;
   }
 }
+
+/* Guided-tour: current segment fills smoothly over the scene's dwell time. */
+@keyframes tourSegFill {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
+}
+
+@layer utilities {
+  .tour-seg-fill {
+    animation-name: tourSegFill;
+    animation-timing-function: linear;
+    animation-fill-mode: forwards;
+    transform-origin: left center;
+  }
+}

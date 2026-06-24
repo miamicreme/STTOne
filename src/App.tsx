@@ -3,6 +3,7 @@
 import { AppProvider, useApp } from './state/AppContext'
 import { Sidebar } from './components/Sidebar'
 import { TopBar } from './components/TopBar'
+import { ErrorBoundary } from './components/ErrorBoundary'
 import { TourController } from './components/TourController'
 import { ExecutiveHome } from './views/ExecutiveHome'
 import { CEOBoardView } from './views/CEOBoardView'
@@ -71,7 +72,9 @@ function Shell() {
 export default function App() {
   return (
     <AppProvider>
-      <Shell />
+      <ErrorBoundary>
+        <Shell />
+      </ErrorBoundary>
     </AppProvider>
   )
 }

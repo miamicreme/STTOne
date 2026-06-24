@@ -61,10 +61,11 @@ export function ExecutiveHome() {
 
           {/* Breakdown — reconciles exactly to the headline */}
           <div className="grid w-full shrink-0 grid-cols-2 gap-2 lg:w-[26rem]">
-            {leakageLines.map((line) => (
+            {leakageLines.map((line, i) => (
               <div
                 key={line.label}
-                className="rounded-xl border border-white/[0.07] bg-base-900/50 p-3"
+                className="animate-rise rounded-xl border border-white/[0.07] bg-base-900/50 p-3"
+                style={{ animationDelay: `${i * 70}ms` }}
               >
                 <div className="flex items-baseline justify-between gap-2">
                   <span className="font-display text-base font-bold tabular text-white">
