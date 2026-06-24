@@ -147,19 +147,26 @@ export function TourController() {
           </div>
         </div>
 
-        {/* Progress pips */}
+        {/* Progress — current segment fills over its dwell time */}
         <div className="mt-2 flex items-center gap-1.5">
-          {tourScenes.map((_, i) => (
+          {tourScenes.map((s, i) => (
             <span
               key={i}
-              className={`h-1 flex-1 rounded-full transition-colors duration-300 ${
-                i < tour.sceneIndex
-                  ? 'bg-accent/60'
-                  : i === tour.sceneIndex
-                    ? 'bg-accent'
-                    : 'bg-white/10'
+              className={`relative h-1 flex-1 overflow-hidden rounded-full ${
+                i < tour.sceneIndex ? 'bg-accent/60' : 'bg-white/10'
               }`}
-            />
+            >
+              {i === tour.sceneIndex && (
+                <span
+                  key={tour.sceneIndex}
+                  className="tour-seg-fill absolute inset-0 rounded-full bg-accent"
+                  style={{
+                    animationDuration: `${s.ms}ms`,
+                    animationPlayState: tour.playing ? 'running' : 'paused',
+                  }}
+                />
+              )}
+            </span>
           ))}
         </div>
         <div className="mt-1 text-right text-[10px] tabular text-slate-500">

@@ -1,18 +1,20 @@
 import type { Metadata } from 'next'
-import { Inter, Sora } from 'next/font/google'
+import localFont from 'next/font/local'
 import '../index.css'
 
-// Self-hosted via next/font — no layout shift, crisp rendering.
+// Self-hosted variable fonts — no network at build time, no layout shift.
 // Inter for body/numerics (excellent tabular figures); Sora for display.
-const inter = Inter({
-  subsets: ['latin'],
+const inter = localFont({
+  src: './fonts/inter-var.woff2',
   variable: '--font-inter',
   display: 'swap',
+  weight: '100 900',
 })
-const sora = Sora({
-  subsets: ['latin'],
+const sora = localFont({
+  src: './fonts/sora-var.woff2',
   variable: '--font-sora',
   display: 'swap',
+  weight: '100 800',
 })
 
 export const metadata: Metadata = {
