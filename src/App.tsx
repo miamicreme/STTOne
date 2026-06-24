@@ -6,6 +6,7 @@ import { TopBar } from './components/TopBar'
 import { ErrorBoundary } from './components/ErrorBoundary'
 import { TourController } from './components/TourController'
 import { CommandPalette } from './components/CommandPalette'
+import { WelcomeScreen } from './components/WelcomeScreen'
 import { ExecutiveHome } from './views/ExecutiveHome'
 import { CEOBoardView } from './views/CEOBoardView'
 import { Architecture } from './views/Architecture'
@@ -76,6 +77,7 @@ function Shell() {
       </div>
       <TourController />
       <CommandPalette />
+      <WelcomeScreen />
     </div>
   )
 }

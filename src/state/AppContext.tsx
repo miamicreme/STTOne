@@ -27,6 +27,8 @@ interface AppContextValue extends AppState {
   openCommand: () => void
   closeCommand: () => void
   toggleCommand: () => void
+  // Welcome overlay
+  dismissWelcome: () => void
   // Guided tour controls
   startTour: () => void
   stopTour: () => void
@@ -55,6 +57,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const openCommand = useCallback(() => dispatch({ type: 'OPEN_COMMAND' }), [])
   const closeCommand = useCallback(() => dispatch({ type: 'CLOSE_COMMAND' }), [])
   const toggleCommand = useCallback(() => dispatch({ type: 'TOGGLE_COMMAND' }), [])
+  const dismissWelcome = useCallback(() => dispatch({ type: 'DISMISS_WELCOME' }), [])
   const startTour = useCallback(() => dispatch({ type: 'TOUR_START' }), [])
   const stopTour = useCallback(() => dispatch({ type: 'TOUR_STOP' }), [])
   const tourGotoScene = useCallback((index: number) => dispatch({ type: 'TOUR_GOTO_SCENE', index }), [])
@@ -89,6 +92,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
         openCommand,
         closeCommand,
         toggleCommand,
+        dismissWelcome,
         startTour,
         stopTour,
         tourGotoScene,

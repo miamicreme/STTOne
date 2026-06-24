@@ -30,6 +30,8 @@ export interface AppState {
   boardroomMode: boolean
   mobileNavOpen: boolean
   commandOpen: boolean
+  /** First-load welcome overlay — the front door that explains the demo. */
+  welcomeOpen: boolean
   tour: TourState
   nhCommand: NhCommand | null
   exceptions: ExceptionItem[]
@@ -47,6 +49,7 @@ export type Action =
   | { type: 'OPEN_COMMAND' }
   | { type: 'CLOSE_COMMAND' }
   | { type: 'TOGGLE_COMMAND' }
+  | { type: 'DISMISS_WELCOME' }
   | { type: 'TOUR_START' }
   | { type: 'TOUR_STOP' }
   | { type: 'TOUR_GOTO_SCENE'; index: number }
@@ -69,6 +72,7 @@ export const initialState: AppState = {
   boardroomMode: false,
   mobileNavOpen: false,
   commandOpen: false,
+  welcomeOpen: true,
   tour: { active: false, sceneIndex: 0, playing: false, completed: false },
   nhCommand: null,
   exceptions: seedExceptions,
@@ -106,13 +110,19 @@ export function reducer(state: AppState, action: Action): AppState {
     case 'TOGGLE_COMMAND':
       return { ...state, commandOpen: !state.commandOpen }
 
+    /* ---- Welcome overlay ---- */
+    case 'DISMISS_WELCOME':
+      return { ...state, welcomeOpen: false }
+
     /* ---- Guided tour ---- */
     case 'TOUR_START':
-      // Tours present the standard layout — exit boardroom/mobile-nav first.
+      // Tours present the standard layout — exit boardroom/mobile-nav first,
+      // and close the welcome overlay if it's still up (its CTA starts here).
       return {
         ...state,
         boardroomMode: false,
         mobileNavOpen: false,
+        welcomeOpen: false,
         tour: { active: true, sceneIndex: 0, playing: true, completed: false },
       }
     case 'TOUR_STOP':

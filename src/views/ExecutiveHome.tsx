@@ -30,7 +30,10 @@ export function ExecutiveHome() {
   return (
     <div className="space-y-6">
       {/* Executive headline — the number that matters, above the fold */}
-      <div className="sheen relative overflow-hidden rounded-2xl border border-accent/20 bg-gradient-to-br from-base-850/80 via-base-850/55 to-base-900/70 p-5 shadow-glow sm:p-6">
+      <div className="edge-accent sheen relative overflow-hidden rounded-2xl border border-accent/20 bg-gradient-to-br from-base-850/80 via-base-850/55 to-base-900/70 p-5 shadow-glow sm:p-6">
+        {/* Floating accent orbs for depth */}
+        <span className="pointer-events-none absolute -right-16 -top-20 h-56 w-56 rounded-full bg-accent/10 blur-3xl" />
+        <span className="pointer-events-none absolute -bottom-24 left-1/3 h-48 w-48 rounded-full bg-brand-red/[0.06] blur-3xl" />
         <div className="relative flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
           {/* Big number + CTA */}
           <div className="min-w-0">

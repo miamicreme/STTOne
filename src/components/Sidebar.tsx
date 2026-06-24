@@ -69,8 +69,9 @@ export function Sidebar() {
       >
         {/* Brand */}
         <div className="flex h-16 items-center gap-3 border-b border-white/[0.07] px-4">
-          <div className="relative flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-white/10 bg-white/[0.04] shadow-lg shadow-black/30">
-            <BrandMark className="h-6 w-6" />
+          <div className="glow-ring relative flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-white/10 bg-white/[0.04] shadow-lg shadow-black/30">
+            <span className="pointer-events-none absolute inset-0 rounded-xl bg-accent/15 opacity-60 blur-md" />
+            <BrandMark className="relative h-6 w-6" />
           </div>
           <div className={`min-w-0 leading-tight ${collapsedMd}`}>
             <p className="truncate font-display text-[15px] font-bold tracking-tight">
@@ -101,14 +102,17 @@ export function Sidebar() {
                 key={item.key}
                 onClick={() => setPage(item.key)}
                 title={sidebarCollapsed ? item.label : undefined}
-                className={`group relative flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left text-sm transition-all duration-200 ${
+                className={`group relative flex w-full items-center gap-3 overflow-hidden rounded-xl px-3 py-2.5 text-left text-sm transition-all duration-200 ${
                   active
-                    ? 'bg-accent/[0.12] font-semibold text-accent shadow-[inset_0_0_0_1px_rgba(47,134,224,0.18)]'
+                    ? 'bg-gradient-to-r from-accent/[0.18] via-accent/[0.10] to-transparent font-semibold text-accent shadow-[inset_0_0_0_1px_rgba(47,134,224,0.22)]'
                     : 'text-slate-400 hover:bg-white/[0.05] hover:text-slate-100'
                 }`}
               >
                 {active && (
-                  <span className="absolute inset-y-1.5 left-0 w-[3px] rounded-full bg-accent shadow-[0_0_12px_rgba(47,134,224,0.7)]" />
+                  <>
+                    <span className="absolute inset-y-1.5 left-0 w-[3px] rounded-full bg-gradient-to-b from-brand-red via-accent to-accent-glow shadow-[0_0_12px_rgba(47,134,224,0.8)]" />
+                    <span className="pointer-events-none absolute -left-2 top-1/2 h-10 w-10 -translate-y-1/2 rounded-full bg-accent/20 blur-xl" />
+                  </>
                 )}
                 <Icon
                   className={`h-[18px] w-[18px] shrink-0 transition-transform duration-200 ${

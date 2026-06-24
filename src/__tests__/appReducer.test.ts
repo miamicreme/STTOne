@@ -87,6 +87,13 @@ test('command palette: open / close / toggle, and SET_PAGE dismisses it', () => 
   assert.equal(reducer(opened, { type: 'SET_PAGE', page: 'drive' }).commandOpen, false)
 })
 
+test('welcome overlay: starts open, DISMISS_WELCOME closes it, TOUR_START closes it too', () => {
+  assert.equal(initialState.welcomeOpen, true)
+  assert.equal(reducer(initialState, { type: 'DISMISS_WELCOME' }).welcomeOpen, false)
+  // Launching the tour from the welcome CTA also closes the overlay.
+  assert.equal(reducer(initialState, { type: 'TOUR_START' }).welcomeOpen, false)
+})
+
 test('NH_RUN issues a one-shot command with a strictly increasing nonce', () => {
   const a = reducer(initialState, { type: 'NH_RUN', kind: 'success' })
   assert.deepEqual(a.nhCommand, { kind: 'success', nonce: 1 })

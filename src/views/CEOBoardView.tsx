@@ -40,24 +40,25 @@ export function CEOBoardView() {
   const roadmapProgress = Math.round((doneCount / transformationRoadmap.length) * 100)
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4">
       {/* Executive summary hero */}
-      <div className="sheen relative overflow-hidden rounded-2xl border border-accent/20 bg-gradient-to-r from-accent/[0.14] via-base-850/50 to-base-850/40 p-6 shadow-glow">
-        <div className="relative flex flex-wrap items-start justify-between gap-5">
+      <div className="edge-accent sheen relative overflow-hidden rounded-2xl border border-accent/20 bg-gradient-to-r from-accent/[0.14] via-base-850/50 to-base-850/40 p-5 shadow-glow">
+        <span className="pointer-events-none absolute -right-16 -top-20 h-56 w-56 rounded-full bg-accent/10 blur-3xl" />
+        <div className="relative flex flex-wrap items-start justify-between gap-4">
           <div className="max-w-2xl">
             <p className="font-display text-[11px] uppercase tracking-[0.2em] text-accent">
               Board Brief · Q2 2026
             </p>
-            <h2 className="mt-2 font-display text-2xl font-bold tracking-tight text-white">
+            <h2 className="mt-1.5 font-display text-xl font-bold tracking-tight text-white sm:text-[22px]">
               Professionalizing the back office, at execution speed.
             </h2>
-            <p className="mt-2 text-sm leading-relaxed text-slate-300">
+            <p className="mt-1.5 text-[13px] leading-relaxed text-slate-300">
               A decade of HR, fleet, and project data is being moved out of the Google Drive
               “junk drawer” into a clean stack — Paychex for people, PenguinData for operations,
               QuickBooks for finance — with exception governance instead of silent failures.
             </p>
           </div>
-          <div className="flex w-full items-center justify-between gap-3 rounded-xl border border-white/10 bg-base-900/50 px-4 py-3 sm:w-auto sm:justify-start">
+          <div className="flex w-full items-center justify-between gap-3 rounded-xl border border-white/10 bg-base-900/50 px-4 py-2.5 sm:w-auto sm:justify-start">
             <div className="text-right">
               <p className="text-[11px] uppercase tracking-wider text-slate-500">Open Exceptions</p>
               <p className="font-display text-3xl font-bold tabular text-rose-300">
@@ -76,13 +77,13 @@ export function CEOBoardView() {
       </div>
 
       {/* Board KPIs */}
-      <div className="grid grid-cols-2 gap-4 lg:grid-cols-3 xl:grid-cols-6">
+      <div className="grid grid-cols-2 gap-3 lg:grid-cols-3 xl:grid-cols-6">
         {boardKpis.map((kpi, i) => (
           <KPICard key={kpi.label} kpi={kpi} index={i} />
         ))}
       </div>
 
-      <div className="grid gap-6 lg:grid-cols-3">
+      <div className="grid gap-4 lg:grid-cols-3">
         {/* Risk heat map */}
         <Card className="lg:col-span-2" tourId="risk">
           <SectionHeader
@@ -120,7 +121,7 @@ export function CEOBoardView() {
                         <td key={dim} className="px-1 py-1">
                           <div
                             title={`${row.region} · ${dim}: ${riskLabels[lvl]}`}
-                            className={`flex h-9 items-center justify-center rounded-lg text-[11px] font-semibold ring-1 ring-inset ${riskCell[lvl]}`}
+                            className={`flex h-8 items-center justify-center rounded-lg text-[11px] font-semibold ring-1 ring-inset ${riskCell[lvl]}`}
                           >
                             {riskLabels[lvl]}
                           </div>
@@ -133,7 +134,7 @@ export function CEOBoardView() {
             </table>
           </div>
           {/* Legend */}
-          <div className="mt-4 flex flex-wrap items-center gap-3 border-t border-white/[0.06] pt-3">
+          <div className="mt-3 flex flex-wrap items-center gap-3 border-t border-white/[0.06] pt-3">
             {([0, 1, 2, 3] as RiskLevel[]).map((lvl) => (
               <span key={lvl} className="flex items-center gap-1.5 text-[11px] text-slate-400">
                 <span className={`h-3 w-3 rounded ring-1 ring-inset ${riskCell[lvl]}`} />
@@ -154,7 +155,7 @@ export function CEOBoardView() {
               </div>
             }
           />
-          <div className="space-y-3 p-4">
+          <div className="space-y-2.5 p-4">
             {transformationRoadmap.map((m) => {
               const meta = milestoneMeta[m.status]
               const Icon = meta.icon
@@ -182,7 +183,7 @@ export function CEOBoardView() {
       </div>
 
       {/* At-risk portfolio + savings callout */}
-      <div className="grid gap-6 lg:grid-cols-3">
+      <div className="grid gap-4 lg:grid-cols-3">
         <Card className="lg:col-span-2" padded={false}>
           <CardHeader
             title="Programs Needing Board Attention"
@@ -199,7 +200,7 @@ export function CEOBoardView() {
           />
           <div className="divide-y divide-white/[0.05]">
             {atRisk.map((p) => (
-              <div key={p.name} className="flex items-center gap-4 p-3.5">
+              <div key={p.name} className="flex items-center gap-4 px-3.5 py-2.5">
                 <div className="min-w-0 flex-1">
                   <p className="truncate text-sm font-medium text-slate-100">{p.name}</p>
                   <p className="truncate text-xs text-slate-400">
@@ -225,13 +226,13 @@ export function CEOBoardView() {
             icon={<Gauge className="h-4 w-4" />}
             hint="Annualized estimate from reclaimed admin time (126 hrs/mo at blended $25/hr) plus billing leakage reduction once the Drive migration cutover completes. Conservative baseline only."
           />
-          <div className="space-y-4">
+          <div className="space-y-3">
             <ImpactRow label="Admin hours saved / mo" value="126 hrs" pct={70} />
             <ImpactRow label="Duplicate entry reduction" value="61%" pct={61} />
             <ImpactRow label="Drive classified" value="71%" pct={71} />
             <ImpactRow label="Onboarding cycle cut" value="20%" pct={20} />
           </div>
-          <div className="mt-5 rounded-xl border border-accent/20 bg-accent/[0.06] p-3 text-xs text-slate-300">
+          <div className="mt-4 rounded-xl border border-accent/20 bg-accent/[0.06] p-3 text-xs text-slate-300">
             Combined <span className="font-semibold text-accent">~$214K/yr</span> modeled impact from
             reclaimed admin time and reduced billing leakage once migration cutover completes.
           </div>

@@ -22,8 +22,8 @@ export function TopBar() {
 
   return (
     <header className="glass sticky top-0 z-20 flex h-16 items-center justify-between gap-3 border-b border-white/[0.07] px-4 sm:px-6">
-      {/* STT brand ribbon — red→blue, echoes the logo swoosh */}
-      <span className="pointer-events-none absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-brand-red/70 via-accent/60 to-transparent" />
+      {/* STT brand ribbon — red→blue, echoes the logo swoosh, gently panning */}
+      <span className="edge-accent pointer-events-none absolute inset-x-0 bottom-0 h-px" />
       <div className="flex min-w-0 items-center gap-3" data-tour="topbar">
         {/* Mobile hamburger */}
         {!boardroomMode && (
