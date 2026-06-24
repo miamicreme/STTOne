@@ -39,7 +39,7 @@ export function SectionHeader({ title, subtitle, action, icon, hint }: SectionHe
     <div className="mb-5 flex items-start justify-between gap-3">
       <div className="flex items-start gap-2.5">
         {icon && (
-          <div className="mt-0.5 flex h-7 w-7 items-center justify-center rounded-lg border border-accent/20 bg-accent/10 text-accent">
+          <div className="mt-0.5 flex h-7 w-7 items-center justify-center rounded-lg border border-accent/25 bg-gradient-to-br from-accent/20 to-accent/[0.06] text-accent shadow-[0_0_14px_-4px_rgba(47,134,224,0.6)]">
             {icon}
           </div>
         )}
