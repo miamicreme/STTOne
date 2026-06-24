@@ -60,7 +60,7 @@ export function ExecutiveHome() {
           </div>
 
           {/* Breakdown — reconciles exactly to the headline */}
-          <div className="grid w-full shrink-0 grid-cols-2 gap-2 lg:w-[26rem]">
+          <div className="grid w-full shrink-0 grid-cols-2 gap-2.5 sm:grid-cols-4 lg:w-[26rem] lg:grid-cols-2 lg:gap-2">
             {leakageLines.map((line, i) => (
               <div
                 key={line.label}
@@ -115,7 +115,7 @@ export function ExecutiveHome() {
       <div
         data-tour="kpis"
         className={`grid gap-4 ${
-          boardroomMode ? 'grid-cols-2 lg:grid-cols-3' : 'grid-cols-2 lg:grid-cols-3 xl:grid-cols-6'
+          boardroomMode ? 'grid-cols-2 md:grid-cols-3' : 'grid-cols-2 md:grid-cols-3 xl:grid-cols-6'
         }`}
       >
         {executiveKpis.map((kpi, i) => (
