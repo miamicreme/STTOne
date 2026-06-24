@@ -28,14 +28,14 @@ export function ExecutiveHome() {
   return (
     <div className="space-y-6">
       {/* Operational pulse banner */}
-      <div className="overflow-hidden rounded-xl border border-accent/20 bg-gradient-to-r from-accent/10 via-base-850/40 to-base-850/40 p-5">
-        <div className="flex flex-wrap items-center justify-between gap-4">
-          <div className="flex items-start gap-3">
-            <div className="mt-0.5 flex h-10 w-10 items-center justify-center rounded-lg bg-accent/15">
-              <ShieldCheck className="h-5 w-5 text-accent" />
+      <div className="sheen relative overflow-hidden rounded-2xl border border-accent/20 bg-gradient-to-r from-accent/[0.14] via-base-850/50 to-base-850/40 p-5 shadow-glow">
+        <div className="relative flex flex-wrap items-center justify-between gap-4">
+          <div className="flex items-start gap-3.5">
+            <div className="mt-0.5 flex h-11 w-11 items-center justify-center rounded-xl border border-accent/25 bg-accent/15 text-accent shadow-[0_0_20px_-6px_rgba(56,189,248,0.7)]">
+              <ShieldCheck className="h-5 w-5" />
             </div>
             <div>
-              <p className="text-sm font-semibold text-white">
+              <p className="font-display text-base font-semibold tracking-tight text-white">
                 17 active programs across 6 regions.
               </p>
               <p className="mt-0.5 text-sm text-amber-300">
@@ -45,10 +45,10 @@ export function ExecutiveHome() {
           </div>
           <button
             onClick={() => setPage('integration')}
-            className="inline-flex items-center gap-1.5 rounded-lg border border-accent/30 bg-accent/10 px-3.5 py-2 text-sm font-medium text-accent transition-colors hover:bg-accent/20"
+            className="group inline-flex items-center gap-1.5 rounded-xl border border-accent/30 bg-accent/10 px-4 py-2.5 text-sm font-semibold text-accent transition-all hover:bg-accent/20 hover:shadow-[0_0_18px_-4px_rgba(56,189,248,0.6)]"
           >
             Review exceptions
-            <ArrowRight className="h-4 w-4" />
+            <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
           </button>
         </div>
       </div>
@@ -59,8 +59,8 @@ export function ExecutiveHome() {
           boardroomMode ? 'grid-cols-2 lg:grid-cols-3' : 'grid-cols-2 lg:grid-cols-3 xl:grid-cols-6'
         }`}
       >
-        {executiveKpis.map((kpi) => (
-          <KPICard key={kpi.label} kpi={kpi} />
+        {executiveKpis.map((kpi, i) => (
+          <KPICard key={kpi.label} kpi={kpi} index={i} />
         ))}
       </div>
 

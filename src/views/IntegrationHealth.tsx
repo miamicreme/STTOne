@@ -20,6 +20,7 @@ import {
 } from 'lucide-react'
 import { Card, SectionHeader } from '../components/Card'
 import { StatusBadge } from '../components/StatusBadge'
+import { AnimatedNumber } from '../components/AnimatedNumber'
 import { ExceptionRow } from '../components/ExceptionRow'
 import { Timeline, type TimelineRow } from '../components/Timeline'
 import { systemCards, type ExceptionCategory } from '../data'
@@ -76,7 +77,7 @@ export function IntegrationHealth() {
       {/* System status cards */}
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {systemCards.map((sys) => (
-          <Card key={sys.name}>
+          <Card key={sys.name} hover>
             <div className="flex items-start justify-between">
               <div className="flex items-center gap-2">
                 {sys.status === 'healthy' ? (
@@ -214,9 +215,12 @@ function MiniStat({
     sky: 'text-sky-300',
   }[tone]
   return (
-    <Card>
-      <p className="text-[11px] uppercase tracking-wider text-slate-500">{label}</p>
-      <p className={`mt-1 text-3xl font-bold tabular ${color}`}>{value}</p>
+    <Card hover>
+      <p className="text-[10.5px] uppercase tracking-[0.12em] text-slate-500">{label}</p>
+      <AnimatedNumber
+        value={String(value)}
+        className={`mt-1 block font-display text-[1.9rem] font-bold leading-none tabular ${color}`}
+      />
     </Card>
   )
 }

@@ -12,13 +12,47 @@ body,
   height: 100%;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   margin: 0;
-  background-color: #070b16;
-  color: #e2e8f0;
-  font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
+  min-height: 100%;
+  color: #e8eef7;
+  font-family: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11', 'ss01';
+  letter-spacing: -0.011em;
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
+  /* Layered ambient glows over the deep navy base */
+  background-color: #070b16;
+  background-image:
+    radial-gradient(900px circle at 8% -8%, rgba(56, 189, 248, 0.11), transparent 42%),
+    radial-gradient(820px circle at 102% -2%, rgba(99, 102, 241, 0.09), transparent 40%),
+    radial-gradient(1100px circle at 88% 112%, rgba(56, 189, 248, 0.07), transparent 46%);
+  background-attachment: fixed;
+}
+
+/* Faint dot/line grid that fades toward the edges — adds depth without noise */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.022) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.022) 1px, transparent 1px);
+  background-size: 46px 46px;
+  -webkit-mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, #000 5%, transparent 70%);
+  mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, #000 5%, transparent 70%);
+}
+
+::selection {
+  background: rgba(56, 189, 248, 0.28);
+  color: #f8fafc;
 }
 
 /* Refined, unobtrusive scrollbars for screen-share legibility */
@@ -40,8 +74,81 @@ body {
   background-clip: content-box;
 }
 
+*:focus-visible {
+  outline: 2px solid rgba(56, 189, 248, 0.7);
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
 @layer utilities {
   .tabular {
     font-variant-numeric: tabular-nums;
+  }
+  .font-display {
+    font-family: var(--font-sora), var(--font-inter), sans-serif;
+  }
+
+  /* Premium glass surface */
+  .glass {
+    background: linear-gradient(
+      160deg,
+      rgba(19, 28, 48, 0.72) 0%,
+      rgba(11, 17, 32, 0.62) 100%
+    );
+    backdrop-filter: blur(14px) saturate(140%);
+    -webkit-backdrop-filter: blur(14px) saturate(140%);
+  }
+
+  /* Accent gradient text for wordmarks / hero numbers */
+  .text-gradient {
+    background: linear-gradient(120deg, #e8f6ff 0%, #7dd3fc 45%, #38bdf8 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+  }
+
+  /* Lift-on-hover surface */
+  .lift {
+    transition:
+      transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+      box-shadow 0.35s ease,
+      border-color 0.35s ease;
+    will-change: transform;
+  }
+  .lift:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 24px 48px -22px rgba(2, 8, 23, 0.9), 0 0 0 1px rgba(56, 189, 248, 0.18);
+  }
+
+  /* Shimmering top hairline used on hero cards */
+  .sheen {
+    position: relative;
+    overflow: hidden;
+  }
+  .sheen::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      105deg,
+      transparent 40%,
+      rgba(255, 255, 255, 0.06) 50%,
+      transparent 60%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 3.5s linear infinite;
+    pointer-events: none;
   }
 }

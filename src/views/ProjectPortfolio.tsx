@@ -2,6 +2,7 @@ import { FolderKanban, AlertTriangle, MapPin } from 'lucide-react'
 import { Card, SectionHeader } from '../components/Card'
 import { ProgressBar } from '../components/ProgressBar'
 import { StatusBadge } from '../components/StatusBadge'
+import { AnimatedNumber } from '../components/AnimatedNumber'
 import { projects, type ProjectPhase, type ProjectStatus } from '../data'
 
 const phaseLabel: Record<ProjectPhase, string> = {
@@ -177,10 +178,13 @@ function SummaryStat({
     rose: 'text-rose-300',
   }[tone]
   return (
-    <Card>
-      <p className="text-[11px] uppercase tracking-wider text-slate-500">{label}</p>
-      <p className={`mt-1 text-3xl font-bold tabular ${color}`}>{value}</p>
-      <p className="mt-1 text-[11px] text-slate-500">{hint}</p>
+    <Card hover>
+      <p className="text-[10.5px] uppercase tracking-[0.12em] text-slate-500">{label}</p>
+      <AnimatedNumber
+        value={value}
+        className={`mt-1 block font-display text-[1.9rem] font-bold leading-none tabular ${color}`}
+      />
+      <p className="mt-1.5 text-[11px] text-slate-500">{hint}</p>
     </Card>
   )
 }

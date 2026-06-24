@@ -33,23 +33,23 @@ function Shell() {
   }
 
   return (
-    <div className="flex h-screen overflow-hidden bg-base-950 text-slate-200">
+    <div className="relative z-10 flex h-screen overflow-hidden text-slate-200">
       {!boardroomMode && <Sidebar />}
       <div className="flex min-w-0 flex-1 flex-col">
         <TopBar />
-        <main className="flex-1 overflow-y-auto">
+        <main className="flex-1 overflow-y-auto scroll-smooth">
           <div
             className={`mx-auto w-full ${
-              boardroomMode ? 'max-w-[1600px] p-8' : 'max-w-[1400px] p-6'
+              boardroomMode ? 'max-w-[1640px] p-8' : 'max-w-[1440px] p-6 lg:p-8'
             }`}
           >
             <div key={page} className="animate-fade-in">
               {renderPage()}
             </div>
           </div>
-          <footer className="border-t border-white/[0.06] px-6 py-4 text-center">
-            <p className="text-[11px] tracking-wide text-slate-600">
-              Demo data — interview prototype only.
+          <footer className="border-t border-white/[0.06] px-6 py-5 text-center">
+            <p className="text-[11px] tracking-[0.18em] text-slate-600 uppercase">
+              Demo data — interview prototype only
             </p>
           </footer>
         </main>
