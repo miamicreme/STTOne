@@ -92,7 +92,7 @@ export function EmployeePortal() {
           <CardHeader
             title="Today’s Assignment"
             icon={<CalendarClock className="h-4 w-4 text-accent" />}
-            action={<span className="truncate text-[11px] text-slate-500">{p.assignment}</span>}
+            action={<span className="block max-w-[40vw] truncate text-[11px] text-slate-500 sm:max-w-[16rem]">{p.assignment}</span>}
           />
           <div className="relative p-4 pl-6">
             <div className="absolute bottom-6 left-[26px] top-6 w-px bg-white/[0.08]" />
@@ -227,9 +227,9 @@ export function EmployeePortal() {
 
 function Field({ label, value, span = false }: { label: string; value: string; span?: boolean }) {
   return (
-    <div className={span ? 'col-span-2 sm:col-span-1' : ''}>
+    <div className={`min-w-0 ${span ? 'col-span-2 sm:col-span-1' : ''}`}>
       <p className="text-[10px] uppercase tracking-wider text-slate-500">{label}</p>
-      <p className="font-medium text-slate-200">{value}</p>
+      <p className="truncate font-medium text-slate-200">{value}</p>
     </div>
   )
 }

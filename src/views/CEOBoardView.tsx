@@ -57,7 +57,7 @@ export function CEOBoardView() {
               QuickBooks for finance — with exception governance instead of silent failures.
             </p>
           </div>
-          <div className="flex items-center gap-3 rounded-xl border border-white/10 bg-base-900/50 px-4 py-3">
+          <div className="flex w-full items-center justify-between gap-3 rounded-xl border border-white/10 bg-base-900/50 px-4 py-3 sm:w-auto sm:justify-start">
             <div className="text-right">
               <p className="text-[11px] uppercase tracking-wider text-slate-500">Open Exceptions</p>
               <p className="font-display text-3xl font-bold tabular text-rose-300">
@@ -211,7 +211,9 @@ export function CEOBoardView() {
                     <ProgressBar value={p.complete} caption={`${p.complete}%`} size="sm" />
                   </span>
                 )}
-                <StatusBadge tone={p.status === 'blocked' ? 'blocked' : 'at-risk'} label={p.status} dot={false} />
+                <span className="shrink-0">
+                  <StatusBadge tone={p.status === 'blocked' ? 'blocked' : 'at-risk'} label={p.status} dot={false} />
+                </span>
               </div>
             ))}
           </div>

@@ -64,9 +64,9 @@ export function DriveCleanup() {
             subtitle="58,412 indexed · simulated"
             icon={<HardDrive className="h-4 w-4" />}
           />
-          <div className="relative h-72 w-full">
+          <div className="relative h-80 w-full">
             <ResponsiveContainer width="100%" height="100%">
-              <PieChart>
+              <PieChart margin={{ top: 0, right: 0, bottom: 0, left: 0 }}>
                 <Pie
                   data={driveByDomain}
                   dataKey="value"
@@ -93,10 +93,12 @@ export function DriveCleanup() {
                   wrapperStyle={{ fontSize: 11 }}
                   iconType="circle"
                   layout="horizontal"
+                  verticalAlign="bottom"
+                  height={52}
                 />
               </PieChart>
             </ResponsiveContainer>
-            <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center pb-8">
+            <div className="pointer-events-none absolute inset-x-0 top-0 bottom-[52px] flex flex-col items-center justify-center">
               <span className="text-2xl font-bold tabular text-white">
                 {(totalFiles / 1000).toFixed(1)}k
               </span>
