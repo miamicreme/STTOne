@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
-import { Play, Pause, X, Compass, RotateCcw, Check } from 'lucide-react'
+import { Play, Pause, X, Compass, RotateCcw, Check, ChevronLeft, ChevronRight } from 'lucide-react'
 import { useApp } from '../state/AppContext'
 import { tourScenes } from '../data'
 
@@ -50,9 +50,11 @@ export function TourController() {
     if (tour.active && tour.sceneIndex === 0) ranForScene.current = -1
   }, [tour.active, tour.sceneIndex])
 
-  /* Drive the active scene: navigate, optionally fire a run, then advance. */
+  /* Navigate to the scene's page and gently bring its subject into view.
+     Runs whenever the scene changes — even while paused — so the Back/Next
+     buttons move the screen too. */
   useEffect(() => {
-    if (!tour.active || !tour.playing) return
+    if (!tour.active) return
     const scene = tourScenes[tour.sceneIndex]
     if (!scene) {
       tourComplete()
@@ -61,8 +63,8 @@ export function TourController() {
 
     tourPage(scene.page)
 
-    // Direct the viewer's eye: once the new page renders, bring the scene's
-    // subject into view (centered). Scenes without an anchor reset to the top.
+    // Once the new page renders, smoothly center the scene's subject.
+    // Scenes without an anchor calmly return to the top.
     scrollTimer.current = window.setTimeout(() => {
       const main = document.querySelector('main')
       const target = scene.anchor
@@ -73,12 +75,26 @@ export function TourController() {
       } else if (main) {
         main.scrollTo({ top: 0, behavior: 'smooth' })
       }
-    }, 480)
+    }, 560)
 
     if (scene.run && ranForScene.current !== tour.sceneIndex) {
       ranForScene.current = tour.sceneIndex
-      runTimer.current = window.setTimeout(() => nhRun(scene.run!), 700)
+      runTimer.current = window.setTimeout(() => nhRun(scene.run!), 900)
     }
+
+    return () => {
+      if (runTimer.current) window.clearTimeout(runTimer.current)
+      if (scrollTimer.current) window.clearTimeout(scrollTimer.current)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [tour.active, tour.sceneIndex])
+
+  /* Auto-advance to the next scene after its dwell time — only while playing.
+     Pausing freezes here, so the viewer can read as long as they like. */
+  useEffect(() => {
+    if (!tour.active || !tour.playing) return
+    const scene = tourScenes[tour.sceneIndex]
+    if (!scene) return
 
     sceneTimer.current = window.setTimeout(() => {
       if (tour.sceneIndex + 1 >= tourScenes.length) tourComplete()
@@ -87,11 +103,15 @@ export function TourController() {
 
     return () => {
       if (sceneTimer.current) window.clearTimeout(sceneTimer.current)
-      if (runTimer.current) window.clearTimeout(runTimer.current)
-      if (scrollTimer.current) window.clearTimeout(scrollTimer.current)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tour.active, tour.playing, tour.sceneIndex])
+
+  const goPrev = () => tourGotoScene(Math.max(0, tour.sceneIndex - 1))
+  const goNext = () => {
+    if (tour.sceneIndex + 1 >= tourScenes.length) tourComplete()
+    else tourGotoScene(tour.sceneIndex + 1)
+  }
 
   /* Brief "complete" confirmation chip after the tour ends. */
   useEffect(() => {
@@ -148,16 +168,32 @@ export function TourController() {
           {/* Controls */}
           <div className="flex shrink-0 items-center gap-1.5">
             <button
+              onClick={goPrev}
+              disabled={tour.sceneIndex === 0}
+              aria-label="Previous step"
+              className="rounded-lg border border-white/10 bg-white/[0.04] p-1.5 text-slate-300 transition-colors hover:bg-white/[0.1] hover:text-white disabled:cursor-not-allowed disabled:opacity-40"
+            >
+              <ChevronLeft className="h-4 w-4" />
+            </button>
+            <button
               onClick={() => tourSetPlaying(!tour.playing)}
               aria-label={tour.playing ? 'Pause tour' : 'Play tour'}
-              className="rounded-lg border border-white/10 bg-white/[0.04] p-1.5 text-slate-200 transition-colors hover:bg-white/[0.1]"
+              className="inline-flex items-center gap-1.5 rounded-lg border border-accent/30 bg-accent/15 px-2.5 py-1.5 text-xs font-semibold text-accent transition-colors hover:bg-accent/25"
             >
               {tour.playing ? <Pause className="h-4 w-4" /> : <Play className="h-4 w-4" />}
+              <span className="hidden sm:inline">{tour.playing ? 'Pause' : 'Play'}</span>
+            </button>
+            <button
+              onClick={goNext}
+              aria-label="Next step"
+              className="rounded-lg border border-white/10 bg-white/[0.04] p-1.5 text-slate-300 transition-colors hover:bg-white/[0.1] hover:text-white"
+            >
+              <ChevronRight className="h-4 w-4" />
             </button>
             <button
               onClick={stopTour}
               aria-label="Exit tour"
-              className="rounded-lg border border-white/10 bg-white/[0.04] p-1.5 text-slate-400 transition-colors hover:bg-rose-500/15 hover:text-rose-300"
+              className="ml-0.5 rounded-lg border border-white/10 bg-white/[0.04] p-1.5 text-slate-400 transition-colors hover:bg-rose-500/15 hover:text-rose-300"
             >
               <X className="h-4 w-4" />
             </button>
