@@ -245,7 +245,7 @@ export const sampleNewHire = {
 }
 
 export const newHireStats: KPI[] = [
-  { label: 'Avg Onboarding Cycle', value: '2.4 days', delta: '-0.6d', trend: 'down', hint: 'Down from 3.0d' },
+  { label: 'Avg Onboarding Cycle', value: '2.4d', delta: '-0.6d', trend: 'down', hint: 'Down from 3.0d' },
   { label: 'Pending Starts', value: '6', delta: 'this week', trend: 'flat' },
   { label: 'Required Docs Complete', value: '83%', delta: '+5%', trend: 'up' },
   { label: 'Failed Syncs Today', value: '2', delta: 'routed to queue', trend: 'flat' },
