@@ -17,22 +17,25 @@ npm install
 npm run dev
 ```
 
-Then open the printed local URL (default http://localhost:5173).
+Then open http://localhost:3000.
 
 Other scripts:
 
 ```bash
-npm run build     # typecheck (tsc --noEmit) + production build
-npm run preview   # preview the production build
+npm run build     # production build → static export in ./out
+npm run start     # serve the production build
 ```
 
 ## Tech stack
 
-- **Vite + React 18 + TypeScript** — client-side only
+- **Next.js 14 (App Router) + React 18 + TypeScript** — `output: 'export'`, fully static
 - **Tailwind CSS** — deep navy/slate theme, single cyan accent
 - **Recharts** — all charts
 - **lucide-react** — all icons
 - State held entirely in React via a single `useReducer` context (no localStorage).
+
+The entire UI is a client component tree (`src/App.tsx` is `'use client'`); the
+App Router shell (`src/app/layout.tsx`, `src/app/page.tsx`) just hosts it.
 
 ## The pages
 
@@ -70,14 +73,26 @@ spacing for screen-share / projector legibility.
 
 ```
 src/
+  app/
+    layout.tsx             Root layout (fonts, metadata)
+    page.tsx               Renders <App/>
+  App.tsx                  'use client' shell + in-app routing
   data.ts                  All typed mock data + interfaces
   state/AppContext.tsx     Shared reducer-backed app state
   components/              Reusable: Card, KPICard, StatusBadge,
                            ProgressBar, ExceptionRow, Timeline, Sidebar, TopBar
   pages/                   One file per page
   utils/time.ts            Live timestamp helpers
-  App.tsx                  Shell + routing
 ```
+
+## Deploy (Render static site)
+
+A `render.yaml` blueprint is included. In Render: **New + → Blueprint →**
+connect this repo **→ Apply**. It builds with `npm run build` and publishes
+the `./out` directory. Build command / publish dir for a manual Static Site:
+
+- Build Command: `npm install && npm run build`
+- Publish Directory: `out`
 
 See [`SttoneContext.md`](./SttoneContext.md) for the company research brief that
 informs the tone, copy, and simulated figures.
