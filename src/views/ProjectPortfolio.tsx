@@ -72,7 +72,7 @@ export function ProjectPortfolio() {
 
       <div className="grid gap-6 lg:grid-cols-3">
         {/* Project table */}
-        <Card className="lg:col-span-2" padded={false}>
+        <Card className="lg:col-span-2" padded={false} tourId="project-table">
           <div className="flex items-center justify-between border-b border-white/[0.07] p-4">
             <div className="flex items-center gap-2">
               <FolderKanban className="h-4 w-4 text-accent" />

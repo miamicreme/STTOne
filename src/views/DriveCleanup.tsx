@@ -107,7 +107,7 @@ export function DriveCleanup() {
         </Card>
 
         {/* Duplicate tracker */}
-        <Card className="lg:col-span-2" padded={false}>
+        <Card className="lg:col-span-2" padded={false} tourId="drive-dupes">
           <div className="flex items-center justify-between border-b border-white/[0.07] p-4">
             <div className="flex items-center gap-2">
               <Copy className="h-4 w-4 text-amber-400" />
@@ -125,7 +125,7 @@ export function DriveCleanup() {
                 </div>
                 <div className="min-w-0 flex-1">
                   <p className="truncate text-sm font-medium text-slate-100">{g.name}</p>
-                  <p className="text-xs text-slate-500">
+                  <p className="truncate text-xs text-slate-500">
                     {g.domain} · {g.sizeMb} MB · {g.recommendation}
                   </p>
                 </div>
