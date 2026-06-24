@@ -23,18 +23,31 @@ const STEP_MS = 700
 const FAIL_STEP = 5 // "Vehicle eligibility check"
 
 export function NewHireAutomation() {
-  const { addAudit, addException, addEvent, incrementRun, auditLog, setPage } = useApp()
+  const { addAudit, addException, addEvent, incrementRun, auditLog, setPage, nhCommand } = useApp()
 
   const [states, setStates] = useState<StepState[]>(() => newHireSteps.map(() => 'pending'))
   const [running, setRunning] = useState(false)
   const [failureMode, setFailureMode] = useState(false)
   const [result, setResult] = useState<'success' | 'blocked' | null>(null)
   const timers = useRef<number[]>([])
+  const lastNhNonce = useRef<number>(nhCommand?.nonce ?? 0)
 
   // Clean up any pending timers on unmount.
   useEffect(() => {
     return () => timers.current.forEach((t) => window.clearTimeout(t))
   }, [])
+
+  // The guided tour drives the pipeline via a one-shot command in shared state.
+  // Only act on a strictly newer nonce, so a stale command never re-fires on mount.
+  useEffect(() => {
+    if (!nhCommand) return
+    if (nhCommand.nonce <= lastNhNonce.current) return
+    lastNhNonce.current = nhCommand.nonce
+    const failure = nhCommand.kind === 'failure'
+    setFailureMode(failure)
+    run(failure)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [nhCommand])
 
   function setStep(index: number, value: StepState) {
     setStates((prev) => {
@@ -44,7 +57,7 @@ export function NewHireAutomation() {
     })
   }
 
-  function run() {
+  function run(forceFailure?: boolean) {
     if (running) return
     // Reset
     timers.current.forEach((t) => window.clearTimeout(t))
@@ -53,7 +66,7 @@ export function NewHireAutomation() {
     setResult(null)
     setRunning(true)
 
-    const willFail = failureMode
+    const willFail = forceFailure ?? failureMode
 
     const schedule = (fn: () => void, delay: number) => {
       const id = window.setTimeout(fn, delay)
@@ -182,7 +195,7 @@ export function NewHireAutomation() {
             {/* Controls */}
             <div className="mt-5 flex flex-wrap items-center gap-3 border-t border-white/[0.07] pt-4">
               <button
-                onClick={run}
+                onClick={() => run()}
                 disabled={running}
                 data-tour="runhire"
                 className="group inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-accent to-accent-soft px-5 py-2.5 text-sm font-semibold text-base-950 shadow-[0_8px_24px_-8px_rgba(56,189,248,0.8)] transition-all hover:shadow-[0_10px_28px_-6px_rgba(56,189,248,0.95)] hover:brightness-110 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-60 disabled:shadow-none"

@@ -18,12 +18,26 @@ import {
 /* State shape                                                         */
 /* ------------------------------------------------------------------ */
 
+interface TourState {
+  active: boolean
+  sceneIndex: number
+  playing: boolean
+  completed: boolean
+}
+
+/** One-shot command the New Hire view reacts to (driven by the guided tour). */
+interface NhCommand {
+  kind: 'success' | 'failure'
+  nonce: number
+}
+
 interface AppState {
   page: PageKey
   sidebarCollapsed: boolean
   boardroomMode: boolean
   mobileNavOpen: boolean
-  tourActive: boolean
+  tour: TourState
+  nhCommand: NhCommand | null
   exceptions: ExceptionItem[]
   auditLog: AuditEntry[]
   events: IntegrationEvent[]
@@ -36,8 +50,13 @@ type Action =
   | { type: 'TOGGLE_BOARDROOM' }
   | { type: 'TOGGLE_MOBILE_NAV' }
   | { type: 'CLOSE_MOBILE_NAV' }
-  | { type: 'START_TOUR' }
-  | { type: 'END_TOUR' }
+  | { type: 'TOUR_START' }
+  | { type: 'TOUR_STOP' }
+  | { type: 'TOUR_GOTO_SCENE'; index: number }
+  | { type: 'TOUR_SET_PLAYING'; playing: boolean }
+  | { type: 'TOUR_COMPLETE' }
+  | { type: 'TOUR_PAGE'; page: PageKey }
+  | { type: 'NH_RUN'; kind: 'success' | 'failure' }
   | { type: 'ADD_EXCEPTION'; exception: ExceptionItem }
   | { type: 'RESOLVE_EXCEPTION'; id: string }
   | { type: 'ADD_AUDIT'; entry: AuditEntry }
@@ -49,7 +68,8 @@ const initialState: AppState = {
   sidebarCollapsed: false,
   boardroomMode: false,
   mobileNavOpen: false,
-  tourActive: false,
+  tour: { active: false, sceneIndex: 0, playing: false, completed: false },
+  nhCommand: null,
   exceptions: seedExceptions,
   auditLog: [],
   events: seedIntegrationEvents,
@@ -59,8 +79,14 @@ const initialState: AppState = {
 function reducer(state: AppState, action: Action): AppState {
   switch (action.type) {
     case 'SET_PAGE':
-      // Navigating always dismisses the mobile drawer.
-      return { ...state, page: action.page, mobileNavOpen: false }
+      // A manual navigation always dismisses the mobile drawer AND yields the tour:
+      // if the visitor takes the wheel, the auto-tour gets out of the way.
+      return {
+        ...state,
+        page: action.page,
+        mobileNavOpen: false,
+        tour: { ...state.tour, active: false, playing: false },
+      }
     case 'TOGGLE_SIDEBAR':
       return { ...state, sidebarCollapsed: !state.sidebarCollapsed }
     case 'TOGGLE_BOARDROOM':
@@ -69,11 +95,33 @@ function reducer(state: AppState, action: Action): AppState {
       return { ...state, mobileNavOpen: !state.mobileNavOpen }
     case 'CLOSE_MOBILE_NAV':
       return { ...state, mobileNavOpen: false }
-    case 'START_TOUR':
+
+    /* ---- Guided tour ---- */
+    case 'TOUR_START':
       // Tours present the standard layout — exit boardroom/mobile-nav first.
-      return { ...state, tourActive: true, boardroomMode: false, mobileNavOpen: false, page: 'home' }
-    case 'END_TOUR':
-      return { ...state, tourActive: false }
+      return {
+        ...state,
+        boardroomMode: false,
+        mobileNavOpen: false,
+        tour: { active: true, sceneIndex: 0, playing: true, completed: false },
+      }
+    case 'TOUR_STOP':
+      return { ...state, tour: { ...state.tour, active: false, playing: false } }
+    case 'TOUR_GOTO_SCENE':
+      return { ...state, tour: { ...state.tour, sceneIndex: action.index } }
+    case 'TOUR_SET_PLAYING':
+      return { ...state, tour: { ...state.tour, playing: action.playing } }
+    case 'TOUR_COMPLETE':
+      return { ...state, tour: { ...state.tour, active: false, playing: false, completed: true } }
+    case 'TOUR_PAGE':
+      // Tour-driven navigation — does NOT cancel the tour (unlike SET_PAGE).
+      return { ...state, page: action.page }
+    case 'NH_RUN':
+      return {
+        ...state,
+        nhCommand: { kind: action.kind, nonce: (state.nhCommand?.nonce ?? 0) + 1 },
+      }
+
     case 'ADD_EXCEPTION':
       return { ...state, exceptions: [action.exception, ...state.exceptions] }
     case 'RESOLVE_EXCEPTION':
@@ -105,8 +153,14 @@ interface AppContextValue extends AppState {
   toggleBoardroom: () => void
   toggleMobileNav: () => void
   closeMobileNav: () => void
+  // Guided tour controls
   startTour: () => void
-  endTour: () => void
+  stopTour: () => void
+  tourGotoScene: (index: number) => void
+  tourSetPlaying: (playing: boolean) => void
+  tourComplete: () => void
+  tourPage: (page: PageKey) => void
+  nhRun: (kind: 'success' | 'failure') => void
   addException: (exception: ExceptionItem) => void
   resolveException: (id: string) => void
   addAudit: (entry: AuditEntry) => void
@@ -124,8 +178,16 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const toggleBoardroom = useCallback(() => dispatch({ type: 'TOGGLE_BOARDROOM' }), [])
   const toggleMobileNav = useCallback(() => dispatch({ type: 'TOGGLE_MOBILE_NAV' }), [])
   const closeMobileNav = useCallback(() => dispatch({ type: 'CLOSE_MOBILE_NAV' }), [])
-  const startTour = useCallback(() => dispatch({ type: 'START_TOUR' }), [])
-  const endTour = useCallback(() => dispatch({ type: 'END_TOUR' }), [])
+  const startTour = useCallback(() => dispatch({ type: 'TOUR_START' }), [])
+  const stopTour = useCallback(() => dispatch({ type: 'TOUR_STOP' }), [])
+  const tourGotoScene = useCallback((index: number) => dispatch({ type: 'TOUR_GOTO_SCENE', index }), [])
+  const tourSetPlaying = useCallback(
+    (playing: boolean) => dispatch({ type: 'TOUR_SET_PLAYING', playing }),
+    [],
+  )
+  const tourComplete = useCallback(() => dispatch({ type: 'TOUR_COMPLETE' }), [])
+  const tourPage = useCallback((page: PageKey) => dispatch({ type: 'TOUR_PAGE', page }), [])
+  const nhRun = useCallback((kind: 'success' | 'failure') => dispatch({ type: 'NH_RUN', kind }), [])
   const addException = useCallback(
     (exception: ExceptionItem) => dispatch({ type: 'ADD_EXCEPTION', exception }),
     [],
@@ -148,7 +210,12 @@ export function AppProvider({ children }: { children: ReactNode }) {
         toggleMobileNav,
         closeMobileNav,
         startTour,
-        endTour,
+        stopTour,
+        tourGotoScene,
+        tourSetPlaying,
+        tourComplete,
+        tourPage,
+        nhRun,
         addException,
         resolveException,
         addAudit,

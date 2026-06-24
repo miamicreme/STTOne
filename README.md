@@ -66,14 +66,20 @@ Those exceptions immediately propagate to:
 
 Retrying/resolving an exception anywhere removes it everywhere.
 
-## Guided Tour
+## Guided auto-tour
 
-The top-bar **Guided Tour** button starts a step-by-step walkthrough: a spotlight
-dims the screen, highlights the relevant element, and a bubble explains it in plain
-language — navigating across pages (Executive Home → New Hire Automation → Integration
-Health → Board View) as it goes. Drive it with Next/Back, the progress dots, the arrow
-keys, or `Esc` to exit. The bubble docks as a bottom sheet on phones and anchors to the
-highlighted element on larger screens.
+The app ships with a **self-running tour** built for an unattended demo link. On load
+(after a short beat) it auto-starts, walks the key screens in sequence, and even
+**auto-plays the New Hire pipeline** — first a clean success, then the failure variant
+that catches a non-compliant hire before dispatch and routes it to the exception queue.
+A bottom control bar shows the live caption, progress pips, and **Play/Pause** + **Exit**
+controls. Any manual navigation (sidebar, a card link) instantly yields control to the
+visitor. When it finishes, a **Replay** chip appears. The top-bar **Guided Tour** button
+and the Executive Home **Watch the auto-tour** button restart it on demand. Visitors with
+`prefers-reduced-motion` never get auto-started.
+
+The scene order: leakage headline → Board View → New Hire (success) → New Hire (blocked)
+→ Integration Health → Drive Cleanup → Project Portfolio → Employee Portal → closing.
 
 ## Boardroom Mode
 
