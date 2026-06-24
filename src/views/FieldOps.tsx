@@ -10,6 +10,7 @@ import {
 } from 'recharts'
 import { Truck, Wrench, Users, Gauge } from 'lucide-react'
 import { Card, SectionHeader } from '../components/Card'
+import { Hint } from '../components/Hint'
 import { KPICard } from '../components/KPICard'
 import { StatusBadge } from '../components/StatusBadge'
 import { ProgressBar } from '../components/ProgressBar'
@@ -78,7 +79,11 @@ export function FieldOps() {
 
         {/* Utilization gauge + summary */}
         <Card className="flex flex-col justify-between">
-          <SectionHeader title="Fleet Utilization" icon={<Gauge className="h-4 w-4" />} />
+          <SectionHeader
+            title="Fleet Utilization"
+            icon={<Gauge className="h-4 w-4" />}
+            hint="Percentage of the 64-asset fleet on active assignment or en route this week. Target is ≥85%. Assets in scheduled maintenance or standby reduce this figure."
+          />
           <div className="flex flex-col items-center py-2">
             <div className="relative flex h-40 w-40 items-center justify-center">
               <svg className="h-40 w-40 -rotate-90" viewBox="0 0 120 120">
@@ -122,6 +127,7 @@ export function FieldOps() {
             <div className="flex items-center gap-2">
               <Wrench className="h-4 w-4 text-amber-400" />
               <h2 className="text-sm font-semibold text-slate-100">Overdue & Upcoming Maintenance</h2>
+              <Hint text="Assets past or within 14 days of a scheduled service interval. High-severity items risk field downtime and should be scheduled immediately; medium-severity within the current sprint." />
             </div>
             <span className="text-[11px] text-slate-500">{overdueMaintenance.length} assets</span>
           </div>

@@ -89,6 +89,7 @@ export function CEOBoardView() {
             title="Regional Risk Heat Map"
             subtitle="Operational risk by region & dimension · simulated"
             icon={<Map className="h-4 w-4" />}
+            hint="Operational exposure by region across five dimensions — payroll sync health, fleet coverage, AR billing accuracy, document classification, and schedule fidelity."
           />
           <div className="overflow-x-auto">
             <table className="w-full border-separate border-spacing-1 text-sm">
@@ -221,7 +222,11 @@ export function CEOBoardView() {
         </Card>
 
         <Card className="flex flex-col justify-between">
-          <SectionHeader title="Modeled Impact" icon={<Gauge className="h-4 w-4" />} />
+          <SectionHeader
+            title="Modeled Impact"
+            icon={<Gauge className="h-4 w-4" />}
+            hint="Annualized estimate from reclaimed admin time (126 hrs/mo at blended $25/hr) plus billing leakage reduction once the Drive migration cutover completes. Conservative baseline only."
+          />
           <div className="space-y-4">
             <ImpactRow label="Admin hours saved / mo" value="126 hrs" pct={70} />
             <ImpactRow label="Duplicate entry reduction" value="61%" pct={61} />

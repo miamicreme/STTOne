@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react'
+import { Hint } from './Hint'
 
 interface CardProps {
   children: ReactNode
@@ -30,9 +31,10 @@ interface SectionHeaderProps {
   subtitle?: string
   action?: ReactNode
   icon?: ReactNode
+  hint?: string
 }
 
-export function SectionHeader({ title, subtitle, action, icon }: SectionHeaderProps) {
+export function SectionHeader({ title, subtitle, action, icon, hint }: SectionHeaderProps) {
   return (
     <div className="mb-5 flex items-start justify-between gap-3">
       <div className="flex items-start gap-2.5">
@@ -42,8 +44,9 @@ export function SectionHeader({ title, subtitle, action, icon }: SectionHeaderPr
           </div>
         )}
         <div>
-          <h2 className="font-display text-[15px] font-semibold tracking-tight text-slate-100">
+          <h2 className="flex items-center gap-1.5 font-display text-[15px] font-semibold tracking-tight text-slate-100">
             {title}
+            {hint && <Hint text={hint} />}
           </h2>
           {subtitle && <p className="mt-0.5 text-xs text-slate-400">{subtitle}</p>}
         </div>

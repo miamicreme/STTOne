@@ -12,6 +12,7 @@ import {
 } from 'lucide-react'
 import { Card, SectionHeader } from '../components/Card'
 import { KPICard } from '../components/KPICard'
+import { Hint } from '../components/Hint'
 import { newHireSteps, newHireStats, sampleNewHire, type ExceptionItem } from '../data'
 import { useApp } from '../state/AppContext'
 import { nowStamp } from '../utils/time'
@@ -224,6 +225,7 @@ export function NewHireAutomation() {
                     className={`h-3.5 w-3.5 ${failureMode ? 'text-rose-400' : 'text-slate-500'}`}
                   />
                   Simulate failure variant
+                  <Hint text="Halts the pipeline at Vehicle Eligibility (step 6) to demonstrate how a missing CDL credential routes the worker to the exception queue instead of blocking the entire onboarding flow." />
                 </span>
               </label>
             </div>
@@ -269,7 +271,10 @@ export function NewHireAutomation() {
         {/* Right: audit timeline */}
         <Card padded={false} className="flex flex-col">
           <div className="flex items-center justify-between border-b border-white/[0.07] p-4">
-            <h2 className="text-sm font-semibold text-slate-100">Audit Timeline</h2>
+            <div className="flex items-center gap-2">
+              <h2 className="text-sm font-semibold text-slate-100">Audit Timeline</h2>
+              <Hint text="Immutable record of every automation run — worker name, outcome, and resolution path. Appended on each run for compliance and audit trail purposes." />
+            </div>
             <span className="text-[11px] text-slate-500">{auditLog.length} entries</span>
           </div>
           <div className="max-h-[36rem] flex-1 space-y-3 overflow-y-auto p-4">
