@@ -22,6 +22,7 @@ import { Card, SectionHeader } from '../components/Card'
 import { StatusBadge } from '../components/StatusBadge'
 import { AnimatedNumber } from '../components/AnimatedNumber'
 import { ExceptionRow } from '../components/ExceptionRow'
+import { Hint } from '../components/Hint'
 import { Timeline, type TimelineRow } from '../components/Timeline'
 import { systemCards, type ExceptionCategory } from '../data'
 import { useApp } from '../state/AppContext'
@@ -102,10 +103,10 @@ export function IntegrationHealth() {
 
       {/* Summary strip */}
       <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
-        <MiniStat label="Open Exceptions" value={exceptions.length} tone="rose" />
-        <MiniStat label="Retryable" value={retryable.length} tone="amber" />
-        <MiniStat label="Blocked" value={blocked.length} tone="rose" />
-        <MiniStat label="Automation Runs" value={runCount} tone="sky" />
+        <MiniStat label="Open Exceptions" value={exceptions.length} tone="rose" hint="Total unresolved items across all integration systems. Each exception blocks a payroll record, a hire, or an invoice until resolved." />
+        <MiniStat label="Retryable" value={retryable.length} tone="amber" hint="Exceptions that can be automatically reprocessed on the next sync once the underlying data issue is corrected — typically a missing field or ID mismatch." />
+        <MiniStat label="Blocked" value={blocked.length} tone="rose" hint="Exceptions requiring direct human action — typically a missing credential or unresolvable conflict — before the record can move forward." />
+        <MiniStat label="Automation Runs" value={runCount} tone="sky" hint="Total New Hire automation runs this session. Each run appends an entry to the audit timeline regardless of outcome." />
       </div>
 
       <div className="grid gap-6 lg:grid-cols-3">
@@ -123,7 +124,11 @@ export function IntegrationHealth() {
 
         {/* Exception taxonomy */}
         <Card>
-          <SectionHeader title="Exception Taxonomy" subtitle="By category · live" />
+          <SectionHeader
+            title="Exception Taxonomy"
+            subtitle="By category · live"
+            hint="Distribution of open exceptions by root cause. Credential failures require manual resolution; all other categories support automated retry on the next sync cycle."
+          />
           {taxonomy.length === 0 ? (
             <div className="flex h-64 items-center justify-center text-sm text-slate-500">
               No open exceptions.
@@ -179,6 +184,7 @@ export function IntegrationHealth() {
           <div className="flex items-center gap-2">
             <AlertTriangle className="h-4 w-4 text-amber-400" />
             <h2 className="text-sm font-semibold text-slate-100">Exception Queue</h2>
+            <Hint text="Retryable items reprocess automatically on the next sync once the underlying data issue is corrected. Blocked items require manual intervention before the queue can clear." />
           </div>
           <span className="text-[11px] text-slate-500">
             {retryable.length} retryable · {blocked.length} blocked
@@ -204,10 +210,12 @@ function MiniStat({
   label,
   value,
   tone,
+  hint,
 }: {
   label: string
   value: number
   tone: 'rose' | 'amber' | 'sky'
+  hint?: string
 }) {
   const color = {
     rose: 'text-rose-300',
@@ -216,7 +224,10 @@ function MiniStat({
   }[tone]
   return (
     <Card hover>
-      <p className="text-[10.5px] uppercase tracking-[0.12em] text-slate-500">{label}</p>
+      <p className="flex items-center gap-1 text-[10.5px] uppercase tracking-[0.12em] text-slate-500">
+        {label}
+        {hint && <Hint text={hint} />}
+      </p>
       <AnimatedNumber
         value={String(value)}
         className={`mt-1 block font-display text-[1.9rem] font-bold leading-none tabular ${color}`}

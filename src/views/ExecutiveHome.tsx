@@ -12,6 +12,7 @@ import { AlertTriangle, ArrowRight, ShieldCheck } from 'lucide-react'
 import { Card, SectionHeader } from '../components/Card'
 import { KPICard } from '../components/KPICard'
 import { ExceptionRow } from '../components/ExceptionRow'
+import { Hint } from '../components/Hint'
 import { executiveKpis, portfolioByRegion } from '../data'
 import { useApp } from '../state/AppContext'
 
@@ -114,6 +115,7 @@ export function ExecutiveHome() {
             <div className="flex items-center gap-2">
               <AlertTriangle className="h-4 w-4 text-amber-400" />
               <h2 className="text-sm font-semibold text-slate-100">Exception Drawer</h2>
+              <Hint text="Cross-system data conflicts or missing records that block payroll or onboarding. Each item must be resolved or retried before the weekly payroll lock." />
             </div>
             <span className="rounded-full bg-rose-500/15 px-2 py-0.5 text-xs font-semibold tabular text-rose-300">
               {exceptions.length}

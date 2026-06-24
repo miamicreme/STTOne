@@ -1,5 +1,6 @@
 import { FolderKanban, AlertTriangle, MapPin } from 'lucide-react'
 import { Card, SectionHeader } from '../components/Card'
+import { Hint } from '../components/Hint'
 import { ProgressBar } from '../components/ProgressBar'
 import { StatusBadge } from '../components/StatusBadge'
 import { AnimatedNumber } from '../components/AnimatedNumber'
@@ -46,7 +47,11 @@ export function ProjectPortfolio() {
 
       {/* Phase funnel */}
       <Card>
-        <SectionHeader title="Portfolio by Phase" subtitle="Program count across delivery phases" />
+        <SectionHeader
+          title="Portfolio by Phase"
+          subtitle="Program count across delivery phases"
+          hint="Programs move Design → Build → QC → Closeout. A heavy Build skew signals a delivery bottleneck; anything stalled in QC or Closeout warrants a sprint review."
+        />
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
           {phaseOrder.map((ph) => {
             const count = projects.filter((p) => p.phase === ph).length
@@ -130,6 +135,7 @@ export function ProjectPortfolio() {
             <div className="flex items-center gap-2">
               <AlertTriangle className="h-4 w-4 text-amber-400" />
               <h2 className="text-sm font-semibold text-slate-100">At-Risk Programs</h2>
+              <Hint text="Projects flagged at-risk or blocked needing intervention in the current sprint. Board escalation applies to any project 14+ days blocked with no resolved path forward." />
             </div>
             <span className="rounded-full bg-amber-500/15 px-2 py-0.5 text-xs font-semibold tabular text-amber-300">
               {atRisk.length}

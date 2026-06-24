@@ -15,6 +15,7 @@ import {
   Lock,
 } from 'lucide-react'
 import { Card, SectionHeader } from '../components/Card'
+import { Hint } from '../components/Hint'
 import { ProgressBar } from '../components/ProgressBar'
 import { StatusBadge } from '../components/StatusBadge'
 import { AnimatedNumber } from '../components/AnimatedNumber'
@@ -144,6 +145,7 @@ export function DriveCleanup() {
             <div className="flex items-center gap-2">
               <ShieldAlert className="h-4 w-4 text-rose-400" />
               <h2 className="text-sm font-semibold text-slate-100">Permission Risk Panel</h2>
+              <Hint text="Files shared externally or with overly broad internal access, flagged during the Drive audit. Target is zero external shares for payroll and HR document domains." />
             </div>
             <Lock className="h-4 w-4 text-slate-600" />
           </div>
@@ -177,6 +179,7 @@ export function DriveCleanup() {
             title="Migration Queue"
             subtitle="Drive → system of record"
             icon={<ArrowUpRight className="h-4 w-4" />}
+            hint="Progress moving each document domain out of the shared Drive into its authoritative system of record. Once complete, Drive becomes a staging area only — no source-of-truth files."
           />
           <div className="space-y-5 pt-1">
             {migrationQueue.map((m) => (
