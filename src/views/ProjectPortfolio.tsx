@@ -1,5 +1,5 @@
 import { FolderKanban, AlertTriangle, MapPin } from 'lucide-react'
-import { Card, SectionHeader, CardHeader, CountPill } from '../components/Card'
+import { Card, SectionHeader, CardHeader, CountPill, Tag } from '../components/Card'
 import { ProgressBar } from '../components/ProgressBar'
 import { StatusBadge } from '../components/StatusBadge'
 import { AnimatedNumber } from '../components/AnimatedNumber'
@@ -105,9 +105,7 @@ export function ProjectPortfolio() {
                       </span>
                     </td>
                     <td className="px-4 py-3 text-slate-300">
-                      <span className="rounded border border-white/10 bg-white/[0.03] px-1.5 py-0.5 text-[11px] text-slate-300">
-                        {p.type}
-                      </span>
+                      <Tag>{p.type}</Tag>
                     </td>
                     <td className="w-40 px-4 py-3">
                       {p.complete === null ? (
@@ -117,7 +115,7 @@ export function ProjectPortfolio() {
                       )}
                     </td>
                     <td className="px-4 py-3">
-                      <StatusBadge tone={statusTone[p.status]} label={p.status} />
+                      <StatusBadge tone={statusTone[p.status]} label={p.status} dot={false} />
                     </td>
                   </tr>
                 ))}

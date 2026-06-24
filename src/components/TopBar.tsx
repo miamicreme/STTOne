@@ -21,6 +21,8 @@ export function TopBar() {
 
   return (
     <header className="glass sticky top-0 z-20 flex h-16 items-center justify-between gap-3 border-b border-white/[0.07] px-4 sm:px-6">
+      {/* STT brand ribbon — red→blue, echoes the logo swoosh */}
+      <span className="pointer-events-none absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-brand-red/70 via-accent/60 to-transparent" />
       <div className="flex min-w-0 items-center gap-3" data-tour="topbar">
         {/* Mobile hamburger */}
         {!boardroomMode && (
@@ -89,7 +91,7 @@ export function TopBar() {
           data-tour="boardroom"
           className={`flex items-center gap-2 rounded-xl border px-3 py-2 text-xs font-semibold transition-all duration-300 ${
             boardroomMode
-              ? 'border-accent/40 bg-accent/15 text-accent shadow-[0_0_18px_-4px_rgba(56,189,248,0.6)]'
+              ? 'border-accent/40 bg-accent/15 text-accent shadow-[0_0_18px_-4px_rgba(47,134,224,0.6)]'
               : 'border-white/[0.07] bg-white/[0.02] text-slate-400 hover:border-white/[0.14] hover:text-slate-200'
           }`}
         >

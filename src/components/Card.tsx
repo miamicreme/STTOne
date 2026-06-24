@@ -113,6 +113,17 @@ export function CountPill({
   )
 }
 
+/** Small uppercase metadata chip (system names, types, cadences). */
+export function Tag({ children, className = '' }: { children: ReactNode; className?: string }) {
+  return (
+    <span
+      className={`rounded-md border border-white/10 bg-white/[0.03] px-1.5 py-0.5 text-[10px] uppercase tracking-wide text-slate-400 ${className}`}
+    >
+      {children}
+    </span>
+  )
+}
+
 /** Consistent empty / "all clear" placeholder for lists and panels. */
 export function EmptyState({
   icon,

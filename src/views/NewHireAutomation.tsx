@@ -11,7 +11,7 @@ import {
   ArrowRight,
   ScrollText,
 } from 'lucide-react'
-import { Card, SectionHeader, CardHeader, EmptyState } from '../components/Card'
+import { Card, SectionHeader, CardHeader, EmptyState, Tag } from '../components/Card'
 import { KPICard } from '../components/KPICard'
 import { Hint } from '../components/Hint'
 import { newHireSteps, newHireStats, sampleNewHire, type ExceptionItem } from '../data'
@@ -199,7 +199,7 @@ export function NewHireAutomation() {
                 onClick={() => run()}
                 disabled={running}
                 data-tour="runhire"
-                className="group inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-accent to-accent-soft px-5 py-2.5 text-sm font-semibold text-base-950 shadow-[0_8px_24px_-8px_rgba(56,189,248,0.8)] transition-all hover:shadow-[0_10px_28px_-6px_rgba(56,189,248,0.95)] hover:brightness-110 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-60 disabled:shadow-none"
+                className="group inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-accent to-accent-soft px-5 py-2.5 text-sm font-semibold text-base-950 shadow-[0_8px_24px_-8px_rgba(47,134,224,0.8)] transition-all hover:shadow-[0_10px_28px_-6px_rgba(47,134,224,0.95)] hover:brightness-110 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-60 disabled:shadow-none"
               >
                 {running ? (
                   <>
@@ -366,9 +366,7 @@ function StepItem({
           >
             {step.label}
           </p>
-          <span className="rounded border border-white/10 bg-white/[0.03] px-1.5 py-0.5 text-[10px] uppercase tracking-wide text-slate-500">
-            {step.system}
-          </span>
+          <Tag className="shrink-0">{step.system}</Tag>
         </div>
         <p className="mt-0.5 text-xs text-slate-500">
           {isBlocked ? '⚠ Assignment blocked: Missing driver license class' : step.detail}

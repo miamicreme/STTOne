@@ -14,12 +14,18 @@ const config: Config = {
           700: '#1c2840',
           600: '#28374f',
         },
-        // Confident single accent — signal cyan/teal
+        // Southern Tier brand — royal blue (from the logo swoosh)
         accent: {
-          DEFAULT: '#38bdf8',
-          soft: '#0ea5e9',
-          deep: '#0369a1',
-          glow: '#7dd3fc',
+          DEFAULT: '#2f86e0',
+          soft: '#1c6fd0',
+          deep: '#13518f',
+          glow: '#7db4ef',
+        },
+        // Southern Tier brand — red (upper logo swoosh), used as a fresh second accent
+        brand: {
+          red: '#ce1126',
+          'red-soft': '#e2384b',
+          navy: '#0a2348',
         },
       },
       fontFamily: {
@@ -30,8 +36,8 @@ const config: Config = {
         tightest: '-0.04em',
       },
       boxShadow: {
-        glow: '0 0 0 1px rgba(56,189,248,0.12), 0 18px 40px -16px rgba(56,189,248,0.35)',
-        'card-hover': '0 24px 48px -20px rgba(2,8,23,0.85), 0 0 0 1px rgba(56,189,248,0.16)',
+        glow: '0 0 0 1px rgba(47,134,224,0.12), 0 18px 40px -16px rgba(47,134,224,0.35)',
+        'card-hover': '0 24px 48px -20px rgba(2,8,23,0.85), 0 0 0 1px rgba(47,134,224,0.16)',
         inset: 'inset 0 1px 0 0 rgba(255,255,255,0.05)',
       },
       backgroundImage: {
@@ -56,9 +62,9 @@ const config: Config = {
           '100%': { opacity: '1', transform: 'scale(1)' },
         },
         'pulse-ring': {
-          '0%': { boxShadow: '0 0 0 0 rgba(56,189,248,0.5)' },
-          '70%': { boxShadow: '0 0 0 7px rgba(56,189,248,0)' },
-          '100%': { boxShadow: '0 0 0 0 rgba(56,189,248,0)' },
+          '0%': { boxShadow: '0 0 0 0 rgba(47,134,224,0.5)' },
+          '70%': { boxShadow: '0 0 0 7px rgba(47,134,224,0)' },
+          '100%': { boxShadow: '0 0 0 0 rgba(47,134,224,0)' },
         },
         shimmer: {
           '0%': { backgroundPosition: '-200% 0' },

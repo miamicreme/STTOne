@@ -10,7 +10,7 @@ import {
   Workflow,
   Lock,
 } from 'lucide-react'
-import { Card, SectionHeader } from '../components/Card'
+import { Card, SectionHeader, Tag } from '../components/Card'
 import { StatusBadge } from '../components/StatusBadge'
 import {
   systemsOfRecord,
@@ -104,7 +104,7 @@ export function Architecture() {
           >
             <defs>
               <marker id="arw" markerWidth="9" markerHeight="9" refX="6" refY="3" orient="auto" markerUnits="userSpaceOnUse">
-                <path d="M0 0 L6 3 L0 6 z" fill="#38bdf8" />
+                <path d="M0 0 L6 3 L0 6 z" fill="#2f86e0" />
               </marker>
               <marker id="arw-warn" markerWidth="9" markerHeight="9" refX="6" refY="3" orient="auto" markerUnits="userSpaceOnUse">
                 <path d="M0 0 L6 3 L0 6 z" fill="#f59e0b" />
@@ -118,7 +118,7 @@ export function Architecture() {
                 <path
                   d={e.d}
                   fill="none"
-                  stroke={e.warn ? '#f59e0b' : '#38bdf8'}
+                  stroke={e.warn ? '#f59e0b' : '#2f86e0'}
                   strokeWidth={2}
                   className={e.warn ? 'flow-pipe-warn' : 'flow-pipe'}
                   markerEnd={e.warn ? 'url(#arw-warn)' : 'url(#arw)'}
@@ -140,8 +140,8 @@ export function Architecture() {
               <rect x={44} y={66} width={176} height={66} rx={12} fill="#0f1729" stroke="#28374f" />
               <text x={62} y={94} fontSize={15} fontWeight={700} fill="#f1f5f9">Paychex</text>
               <text x={62} y={113} fontSize={10.5} fill="#94a3b8">People · workers & payroll</text>
-              <rect x={44} y={48} width={120} height={18} rx={9} fill="#0b3a52" stroke="#38bdf8" strokeOpacity={0.4} />
-              <text x={104} y={61} fontSize={9} fontWeight={700} fill="#7dd3fc" textAnchor="middle" letterSpacing="0.5">
+              <rect x={44} y={48} width={120} height={18} rx={9} fill="#0c2c54" stroke="#2f86e0" strokeOpacity={0.4} />
+              <text x={104} y={61} fontSize={9} fontWeight={700} fill="#7db4ef" textAnchor="middle" letterSpacing="0.5">
                 SOURCE OF TRUTH
               </text>
             </g>
@@ -155,12 +155,12 @@ export function Architecture() {
 
             {/* Integration & staging layer */}
             <g>
-              <rect x={364} y={112} width={212} height={212} rx={16} fill="#38bdf8" fillOpacity={0.06} stroke="#38bdf8" strokeOpacity={0.35} />
+              <rect x={364} y={112} width={212} height={212} rx={16} fill="#2f86e0" fillOpacity={0.06} stroke="#2f86e0" strokeOpacity={0.35} />
               <text x={384} y={150} fontSize={14.5} fontWeight={700} fill="#e8f6ff">Integration &amp;</text>
               <text x={384} y={170} fontSize={14.5} fontWeight={700} fill="#e8f6ff">Staging Layer</text>
               {['Validate', 'Map & match', 'Dedupe', 'Audit log'].map((step, i) => (
                 <g key={step}>
-                  <circle cx={390} cy={203 + i * 27} r={3} fill="#38bdf8" />
+                  <circle cx={390} cy={203 + i * 27} r={3} fill="#2f86e0" />
                   <text x={402} y={207 + i * 27} fontSize={12} fill="#cbd5e1">{step}</text>
                 </g>
               ))}
@@ -219,9 +219,7 @@ export function Architecture() {
                 </div>
                 {/* Meta — wraps as one coherent group */}
                 <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5">
-                  <span className="rounded-md border border-white/10 bg-white/[0.03] px-1.5 py-0.5 text-[10px] uppercase tracking-wide text-slate-400">
-                    {meta.label} · {job.cadence}
-                  </span>
+                  <Tag>{meta.label} · {job.cadence}</Tag>
                   <span className="hidden text-[11px] text-slate-500 sm:inline">{job.throughput}</span>
                   <span className="text-[11px] tabular text-slate-500">{job.lastRun}</span>
                   <StatusBadge tone={job.health} label={job.health} pulse={job.health === 'active'} />
@@ -250,10 +248,7 @@ export function Architecture() {
                     <Database className="h-4 w-4" />
                   )}
                 </div>
-                <span className="inline-flex items-center gap-1 rounded-full border border-emerald-500/25 bg-emerald-500/10 px-2 py-0.5 text-[10px] font-semibold text-emerald-300">
-                  <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
-                  Active
-                </span>
+                <StatusBadge tone="healthy" label="Active" />
               </div>
               <p className="mt-2.5 text-sm font-semibold text-white">{g.name}</p>
               <p className="mt-1 text-xs leading-snug text-slate-400">Prevents {g.prevents}</p>

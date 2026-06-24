@@ -29,9 +29,9 @@ body {
   /* Layered ambient glows over the deep navy base */
   background-color: #070b16;
   background-image:
-    radial-gradient(900px circle at 8% -8%, rgba(56, 189, 248, 0.11), transparent 42%),
+    radial-gradient(900px circle at 8% -8%, rgba(47, 134, 224, 0.11), transparent 42%),
     radial-gradient(820px circle at 102% -2%, rgba(99, 102, 241, 0.09), transparent 40%),
-    radial-gradient(1100px circle at 88% 112%, rgba(56, 189, 248, 0.07), transparent 46%);
+    radial-gradient(1100px circle at 88% 112%, rgba(47, 134, 224, 0.07), transparent 46%);
   background-attachment: fixed;
 }
 
@@ -51,7 +51,7 @@ body::before {
 }
 
 ::selection {
-  background: rgba(56, 189, 248, 0.28);
+  background: rgba(47, 134, 224, 0.28);
   color: #f8fafc;
 }
 
@@ -75,7 +75,7 @@ body::before {
 }
 
 *:focus-visible {
-  outline: 2px solid rgba(56, 189, 248, 0.7);
+  outline: 2px solid rgba(47, 134, 224, 0.7);
   outline-offset: 2px;
   border-radius: 6px;
 }
@@ -112,7 +112,7 @@ body::before {
 
   /* Accent gradient text for wordmarks / hero numbers */
   .text-gradient {
-    background: linear-gradient(120deg, #e8f6ff 0%, #7dd3fc 45%, #38bdf8 100%);
+    background: linear-gradient(120deg, #e8f6ff 0%, #7db4ef 45%, #2f86e0 100%);
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -129,7 +129,7 @@ body::before {
   }
   .lift:hover {
     transform: translateY(-3px);
-    box-shadow: 0 24px 48px -22px rgba(2, 8, 23, 0.9), 0 0 0 1px rgba(56, 189, 248, 0.18);
+    box-shadow: 0 24px 48px -22px rgba(2, 8, 23, 0.9), 0 0 0 1px rgba(47, 134, 224, 0.18);
   }
 
   /* Shimmering top hairline used on hero cards */
