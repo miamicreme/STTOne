@@ -78,6 +78,10 @@ const config: Config = {
           '0%,100%': { backgroundPosition: '0% 50%' },
           '50%': { backgroundPosition: '100% 50%' },
         },
+        fade: {
+          '0%': { opacity: '0' },
+          '100%': { opacity: '1' },
+        },
       },
       animation: {
         'fade-in': 'fade-in 0.4s ease-out both',
@@ -88,6 +92,9 @@ const config: Config = {
         shimmer: 'shimmer 2.5s linear infinite',
         float: 'float 6s ease-in-out infinite',
         'gradient-pan': 'gradient-pan 8s ease infinite',
+        // Opacity-only — no vertical translate, so switching views never
+        // nudges the layout (prevents the per-view "jump").
+        fade: 'fade 0.3s ease-out both',
       },
     },
   },

@@ -27,7 +27,6 @@ export function TourController() {
 
   const sceneTimer = useRef<number | null>(null)
   const runTimer = useRef<number | null>(null)
-  const scrollTimer = useRef<number | null>(null)
   const ranForScene = useRef<number>(-1) // which sceneIndex already fired its NH run
   const autoStarted = useRef(false)
   const [showDone, setShowDone] = useState(false)
@@ -70,19 +69,9 @@ export function TourController() {
 
     tourPage(scene.page)
 
-    // Once the new page renders, smoothly center the scene's subject.
-    // Scenes without an anchor calmly return to the top.
-    scrollTimer.current = window.setTimeout(() => {
-      const main = document.querySelector('main')
-      const target = scene.anchor
-        ? (document.querySelector(`[data-tour="${scene.anchor}"]`) as HTMLElement | null)
-        : null
-      if (target) {
-        target.scrollIntoView({ behavior: 'smooth', block: 'center' })
-      } else if (main) {
-        main.scrollTo({ top: 0, behavior: 'smooth' })
-      }
-    }, 560)
+    // The stage is fixed and non-scrolling — each view fits the screen — so the
+    // tour no longer scrolls or centers anything (that motion read as the screen
+    // "jumping" between scenes). It simply changes the page.
 
     if (scene.run && ranForScene.current !== tour.sceneIndex) {
       ranForScene.current = tour.sceneIndex
@@ -91,7 +80,6 @@ export function TourController() {
 
     return () => {
       if (runTimer.current) window.clearTimeout(runTimer.current)
-      if (scrollTimer.current) window.clearTimeout(scrollTimer.current)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tour.active, tour.sceneIndex])

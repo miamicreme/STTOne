@@ -18,7 +18,7 @@ import { ProjectPortfolio } from './views/ProjectPortfolio'
 import { EmployeePortal } from './views/EmployeePortal'
 
 function Shell() {
-  const { page, boardroomMode, tour } = useApp()
+  const { page, boardroomMode } = useApp()
 
   const renderPage = () => {
     switch (page) {
@@ -50,25 +50,24 @@ function Shell() {
       {!boardroomMode && <Sidebar />}
       <div className="flex min-w-0 flex-1 flex-col">
         <TopBar />
-        {/* While the tour runs, pad the bottom so its fixed control bar never
-            covers page content or the footer. */}
-        <main
-          className={`flex-1 overflow-y-auto scroll-smooth ${
-            tour.active ? 'pb-40' : ''
-          }`}
-        >
-          <div
-            className={`mx-auto w-full ${
-              boardroomMode
-                ? 'max-w-[1640px] p-4 sm:p-6 lg:p-8'
-                : 'max-w-[1440px] p-4 sm:p-6 lg:p-8'
-            }`}
-          >
-            <div key={page} className="animate-fade-in">
-              {renderPage()}
+        {/* Fixed, non-scrolling stage: each view is sized to fit the screen, so
+            the content area never scrolls (no per-view jump). The footer stays
+            pinned and visible; any overflow is clipped rather than scrolled. */}
+        <main className="flex min-h-0 flex-1 flex-col">
+          <div className="min-h-0 flex-1 overflow-hidden">
+            <div
+              className={`mx-auto h-full w-full ${
+                boardroomMode
+                  ? 'max-w-[1640px] p-4 sm:p-6 lg:p-8'
+                  : 'max-w-[1440px] p-4 sm:p-6 lg:p-8'
+              }`}
+            >
+              <div key={page} className="animate-fade h-full">
+                {renderPage()}
+              </div>
             </div>
           </div>
-          <footer className="border-t border-white/[0.06] px-6 py-5 text-center">
+          <footer className="shrink-0 border-t border-white/[0.06] px-6 py-3 text-center">
             <p className="text-[11px] tracking-[0.18em] text-slate-600 uppercase">
               Demo data — interview prototype only
             </p>
