@@ -44,11 +44,17 @@ export function KPICard({ kpi, index = 0 }: { kpi: KPI; index?: number }) {
       <div className="relative mt-3 flex items-end justify-between gap-3">
         <AnimatedNumber
           value={kpi.value}
-          className={`font-display font-bold tracking-tightest text-white ${
-            boardroomMode ? 'text-[3.4rem] leading-none' : 'text-[2.6rem] leading-none'
-          } tabular`}
+          className={`font-display font-bold leading-none tracking-tightest text-white tabular ${
+            boardroomMode
+              ? 'text-[2.6rem] sm:text-[3.4rem]'
+              : 'text-[2.1rem] sm:text-[2.6rem]'
+          }`}
         />
-        <Sparkline seed={kpi.label} trend={trend} className="mb-1 shrink-0 opacity-80" />
+        <Sparkline
+          seed={kpi.label}
+          trend={trend}
+          className="mb-1 hidden shrink-0 opacity-80 sm:block"
+        />
       </div>
 
       <div className="relative mt-2.5 flex items-center gap-2">

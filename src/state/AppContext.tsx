@@ -22,6 +22,7 @@ interface AppState {
   page: PageKey
   sidebarCollapsed: boolean
   boardroomMode: boolean
+  mobileNavOpen: boolean
   exceptions: ExceptionItem[]
   auditLog: AuditEntry[]
   events: IntegrationEvent[]
@@ -32,6 +33,8 @@ type Action =
   | { type: 'SET_PAGE'; page: PageKey }
   | { type: 'TOGGLE_SIDEBAR' }
   | { type: 'TOGGLE_BOARDROOM' }
+  | { type: 'TOGGLE_MOBILE_NAV' }
+  | { type: 'CLOSE_MOBILE_NAV' }
   | { type: 'ADD_EXCEPTION'; exception: ExceptionItem }
   | { type: 'RESOLVE_EXCEPTION'; id: string }
   | { type: 'ADD_AUDIT'; entry: AuditEntry }
@@ -42,6 +45,7 @@ const initialState: AppState = {
   page: 'home',
   sidebarCollapsed: false,
   boardroomMode: false,
+  mobileNavOpen: false,
   exceptions: seedExceptions,
   auditLog: [],
   events: seedIntegrationEvents,
@@ -51,11 +55,16 @@ const initialState: AppState = {
 function reducer(state: AppState, action: Action): AppState {
   switch (action.type) {
     case 'SET_PAGE':
-      return { ...state, page: action.page }
+      // Navigating always dismisses the mobile drawer.
+      return { ...state, page: action.page, mobileNavOpen: false }
     case 'TOGGLE_SIDEBAR':
       return { ...state, sidebarCollapsed: !state.sidebarCollapsed }
     case 'TOGGLE_BOARDROOM':
-      return { ...state, boardroomMode: !state.boardroomMode }
+      return { ...state, boardroomMode: !state.boardroomMode, mobileNavOpen: false }
+    case 'TOGGLE_MOBILE_NAV':
+      return { ...state, mobileNavOpen: !state.mobileNavOpen }
+    case 'CLOSE_MOBILE_NAV':
+      return { ...state, mobileNavOpen: false }
     case 'ADD_EXCEPTION':
       return { ...state, exceptions: [action.exception, ...state.exceptions] }
     case 'RESOLVE_EXCEPTION':
@@ -85,6 +94,8 @@ interface AppContextValue extends AppState {
   setPage: (page: PageKey) => void
   toggleSidebar: () => void
   toggleBoardroom: () => void
+  toggleMobileNav: () => void
+  closeMobileNav: () => void
   addException: (exception: ExceptionItem) => void
   resolveException: (id: string) => void
   addAudit: (entry: AuditEntry) => void
@@ -100,6 +111,8 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const setPage = useCallback((page: PageKey) => dispatch({ type: 'SET_PAGE', page }), [])
   const toggleSidebar = useCallback(() => dispatch({ type: 'TOGGLE_SIDEBAR' }), [])
   const toggleBoardroom = useCallback(() => dispatch({ type: 'TOGGLE_BOARDROOM' }), [])
+  const toggleMobileNav = useCallback(() => dispatch({ type: 'TOGGLE_MOBILE_NAV' }), [])
+  const closeMobileNav = useCallback(() => dispatch({ type: 'CLOSE_MOBILE_NAV' }), [])
   const addException = useCallback(
     (exception: ExceptionItem) => dispatch({ type: 'ADD_EXCEPTION', exception }),
     [],
@@ -119,6 +132,8 @@ export function AppProvider({ children }: { children: ReactNode }) {
         setPage,
         toggleSidebar,
         toggleBoardroom,
+        toggleMobileNav,
+        closeMobileNav,
         addException,
         resolveException,
         addAudit,
