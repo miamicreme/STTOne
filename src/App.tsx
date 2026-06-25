@@ -1,5 +1,6 @@
 'use client'
 
+import { useEffect, useRef } from 'react'
 import { Linkedin } from 'lucide-react'
 import { AppProvider, useApp } from './state/AppContext'
 import { Sidebar } from './components/Sidebar'
@@ -20,6 +21,13 @@ import { EmployeePortal } from './views/EmployeePortal'
 
 function Shell() {
   const { page, boardroomMode } = useApp()
+  const scrollRef = useRef<HTMLDivElement>(null)
+
+  // Each view starts at the top — switching pages never inherits the previous
+  // scroll position, so there's no jump. Instant (not smooth) so it's invisible.
+  useEffect(() => {
+    scrollRef.current?.scrollTo({ top: 0 })
+  }, [page])
 
   const renderPage = () => {
     switch (page) {
@@ -51,20 +59,20 @@ function Shell() {
       {!boardroomMode && <Sidebar />}
       <div className="flex min-w-0 flex-1 flex-col">
         <TopBar />
-        {/* Stage. On desktop (md+) it's a fixed, non-scrolling presentation
-            surface — each view is sized to fit, so there's no per-view jump. On
-            mobile, where every grid stacks into one tall column, it scrolls
-            naturally so nothing is clipped. The footer stays pinned either way. */}
+        {/* Stage — an app-shell content area: the top bar, sidebar, and footer
+            stay fixed while only this region scrolls. Views fade in place (no
+            slide) and reset to the top on switch, so navigation is calm and
+            nothing is ever clipped, on any screen size. */}
         <main className="flex min-h-0 flex-1 flex-col">
-          <div className="min-h-0 flex-1 overflow-y-auto md:overflow-hidden">
+          <div ref={scrollRef} className="min-h-0 flex-1 overflow-y-auto">
             <div
-              className={`mx-auto w-full md:h-full ${
+              className={`mx-auto w-full ${
                 boardroomMode
                   ? 'max-w-[1640px] p-4 sm:p-6 lg:p-8'
                   : 'max-w-[1440px] p-4 sm:p-6 lg:p-8'
               }`}
             >
-              <div key={page} className="animate-fade md:h-full">
+              <div key={page} className="animate-fade">
                 {renderPage()}
               </div>
             </div>

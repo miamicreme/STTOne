@@ -11,6 +11,7 @@ import {
   pipelineJobs,
   governanceGuards,
   newHireStats,
+  portfolioByRegion,
 } from '../data'
 
 const VALID_PAGES = new Set([
@@ -79,6 +80,20 @@ test('architecture model is complete (systems, pipelines, guards)', () => {
   for (const j of pipelineJobs) {
     assert.ok(['webhook', 'scheduled', 'event'].includes(j.trigger))
   }
+})
+
+test('portfolio chart reconciles to the subtitle (24 workstreams, 17 programs)', () => {
+  // ExecutiveHome's "Active Portfolio by Region" subtitle hardcodes these — the
+  // stacked bars must sum to 24 discipline workstreams, and the Active Projects
+  // KPI must read 17 active programs, or the subtitle silently lies.
+  const workstreams = portfolioByRegion.reduce(
+    (s, r) => s + r.underground + r.aerial + r.wireless + r.fulfillment,
+    0,
+  )
+  assert.equal(workstreams, 24)
+  const activeProjects = executiveKpis.find((k) => /active projects/i.test(k.label))
+  assert.ok(activeProjects, 'Active Projects KPI exists')
+  assert.equal(activeProjects!.value, '17')
 })
 
 test('New Hire stat values are compact enough to render on one line', () => {
