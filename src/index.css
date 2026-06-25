@@ -14,10 +14,17 @@ body,
 
 html,
 body {
-  /* The app is a fixed, non-scrolling stage — no page scroll, no smooth-scroll
-     animation that could read as the screen "jumping" between views. */
-  overflow: hidden;
   overscroll-behavior: none;
+}
+
+/* Desktop is a fixed, non-scrolling presentation stage — no page scroll, no
+   smooth-scroll that could read as the screen "jumping" between views. On
+   mobile, content stacks tall and scrolls naturally so nothing is clipped. */
+@media (min-width: 768px) {
+  html,
+  body {
+    overflow: hidden;
+  }
 }
 
 body {

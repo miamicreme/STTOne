@@ -73,6 +73,12 @@ export function IntegrationHealth() {
     icon: levelIcon[ev.level],
   }))
 
+  // Show the most recent events so the feed fits without scrolling; newer New
+  // Hire runs land at the top, so the latest activity is always visible.
+  const VISIBLE_EVENTS = 6
+  const visibleRows = timelineRows.slice(0, VISIBLE_EVENTS)
+  const hiddenEvents = timelineRows.length - visibleRows.length
+
   return (
     <div className="space-y-6">
       {/* System status cards */}
@@ -117,8 +123,13 @@ export function IntegrationHealth() {
             subtitle="Cross-system sync feed · New Hire runs append here"
             icon={<Activity className="h-4 w-4" />}
           />
-          <div className="max-h-[26rem] overflow-y-auto pr-1">
-            <Timeline rows={timelineRows} />
+          <div className="pr-1">
+            <Timeline rows={visibleRows} />
+            {hiddenEvents > 0 && (
+              <p className="mt-2 pl-1 text-[11px] text-slate-500">
+                +{hiddenEvents} earlier {hiddenEvents === 1 ? 'event' : 'events'} this session
+              </p>
+            )}
           </div>
         </Card>
 
