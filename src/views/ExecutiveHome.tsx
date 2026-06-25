@@ -135,7 +135,7 @@ export function ExecutiveHome() {
         <Card className="lg:col-span-2">
           <SectionHeader
             title="Active Portfolio by Region"
-            subtitle="Program count by discipline · simulated"
+            subtitle="24 discipline workstreams across 17 active programs · simulated"
           />
           <div className="h-80 w-full">
             <ResponsiveContainer width="100%" height="100%">
