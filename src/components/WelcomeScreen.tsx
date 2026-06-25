@@ -1,7 +1,7 @@
 'use client'
 
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { Play, ArrowRight, Workflow, ShieldCheck, Database, Sparkles } from 'lucide-react'
+import { Play, ArrowRight, Workflow, ShieldCheck, Database, Sparkles, Linkedin } from 'lucide-react'
 import { useApp } from '../state/AppContext'
 import { BrandMark } from './Logo'
 import { leakageTotal } from '../data'
@@ -192,11 +192,27 @@ export function WelcomeScreen() {
             </button>
           </div>
 
-          {/* Footnote */}
-          <p className="mt-5 text-[11px] leading-relaxed text-slate-500">
-            Demo data — interview prototype only. Figures are modeled estimates anchored to Southern
-            Tier&apos;s public scale, to be validated in week one.
-          </p>
+          {/* Footnote + quiet byline */}
+          <div className="mt-5 flex flex-col gap-2 border-t border-white/[0.06] pt-4 sm:flex-row sm:items-end sm:justify-between">
+            <p className="max-w-md text-[11px] leading-relaxed text-slate-500">
+              Demo data — interview prototype only. Figures are modeled estimates anchored to
+              Southern Tier&apos;s public scale, to be validated in week one.
+            </p>
+            <a
+              href="https://www.linkedin.com/in/kohron-burton/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group inline-flex shrink-0 items-center gap-1.5 text-[11px] text-slate-500 transition-colors hover:text-accent"
+            >
+              <span>
+                Prototype by{' '}
+                <span className="font-medium text-slate-400 group-hover:text-accent">
+                  Kohron Burton
+                </span>
+              </span>
+              <Linkedin className="h-3 w-3 opacity-70 transition-opacity group-hover:opacity-100" />
+            </a>
+          </div>
         </div>
       </div>
     </div>
