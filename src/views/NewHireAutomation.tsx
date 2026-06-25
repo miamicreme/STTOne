@@ -22,6 +22,8 @@ type StepState = 'pending' | 'running' | 'done' | 'error' | 'skipped'
 
 const STEP_MS = 700
 const FAIL_STEP = 5 // "Vehicle eligibility check"
+// Most-recent audit entries shown; the timeline stays put without scrolling.
+const VISIBLE_AUDIT = 5
 
 export function NewHireAutomation() {
   const { addAudit, addException, addEvent, incrementRun, auditLog, setPage, nhCommand } = useApp()
@@ -290,7 +292,7 @@ export function NewHireAutomation() {
             hint="Immutable record of every automation run — worker name, outcome, and resolution path. Appended on each run for compliance and audit trail purposes."
             action={<span className="text-[11px] text-slate-500">{auditLog.length} entries</span>}
           />
-          <div className="max-h-[36rem] flex-1 space-y-3 overflow-y-auto p-4">
+          <div className="flex-1 space-y-3 p-4">
             {auditLog.length === 0 ? (
               <EmptyState
                 icon={<CircleDashed className="h-8 w-8" />}
@@ -298,25 +300,33 @@ export function NewHireAutomation() {
                 subtitle="Run the automation to append an audit record."
               />
             ) : (
-              auditLog.map((entry) => (
-                <div
-                  key={entry.id}
-                  className="rounded-lg border border-white/[0.06] bg-base-800/50 p-3 animate-slide-in"
-                >
-                  <div className="flex items-center justify-between gap-2">
-                    <div className="flex items-center gap-2">
-                      {entry.outcome === 'success' ? (
-                        <Check className="h-3.5 w-3.5 text-emerald-400" />
-                      ) : (
-                        <AlertTriangle className="h-3.5 w-3.5 text-rose-400" />
-                      )}
-                      <span className="text-sm font-medium text-slate-100">{entry.worker}</span>
+              <>
+                {auditLog.slice(0, VISIBLE_AUDIT).map((entry) => (
+                  <div
+                    key={entry.id}
+                    className="rounded-lg border border-white/[0.06] bg-base-800/50 p-3 animate-slide-in"
+                  >
+                    <div className="flex items-center justify-between gap-2">
+                      <div className="flex items-center gap-2">
+                        {entry.outcome === 'success' ? (
+                          <Check className="h-3.5 w-3.5 text-emerald-400" />
+                        ) : (
+                          <AlertTriangle className="h-3.5 w-3.5 text-rose-400" />
+                        )}
+                        <span className="text-sm font-medium text-slate-100">{entry.worker}</span>
+                      </div>
+                      <span className="text-[11px] tabular text-slate-500">{entry.timestamp}</span>
                     </div>
-                    <span className="text-[11px] tabular text-slate-500">{entry.timestamp}</span>
+                    <p className="mt-1 pl-5 text-xs text-slate-400">{entry.message}</p>
                   </div>
-                  <p className="mt-1 pl-5 text-xs text-slate-400">{entry.message}</p>
-                </div>
-              ))
+                ))}
+                {auditLog.length > VISIBLE_AUDIT && (
+                  <p className="pt-0.5 text-center text-[11px] text-slate-500">
+                    +{auditLog.length - VISIBLE_AUDIT} earlier{' '}
+                    {auditLog.length - VISIBLE_AUDIT === 1 ? 'entry' : 'entries'} recorded
+                  </p>
+                )}
+              </>
             )}
           </div>
         </Card>

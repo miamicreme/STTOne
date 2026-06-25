@@ -12,8 +12,19 @@ body,
   height: 100%;
 }
 
-html {
-  scroll-behavior: smooth;
+html,
+body {
+  overscroll-behavior: none;
+}
+
+/* Desktop is a fixed, non-scrolling presentation stage — no page scroll, no
+   smooth-scroll that could read as the screen "jumping" between views. On
+   mobile, content stacks tall and scrolls naturally so nothing is clipped. */
+@media (min-width: 768px) {
+  html,
+  body {
+    overflow: hidden;
+  }
 }
 
 body {

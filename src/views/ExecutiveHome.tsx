@@ -17,6 +17,10 @@ import { Hint } from '../components/Hint'
 import { executiveKpis, portfolioByRegion, leakageLines, leakageTotal } from '../data'
 import { useApp } from '../state/AppContext'
 
+// Cap the drawer so the card fits its cell without scrolling; the rest is one
+// quiet tap away on Integration Health.
+const VISIBLE_EXCEPTIONS = 4
+
 const chartColors = {
   underground: '#2f86e0',
   aerial: '#a78bfa',
@@ -177,7 +181,7 @@ export function ExecutiveHome() {
             hint="Cross-system data conflicts or missing records that block payroll or onboarding. Each item must be resolved or retried before the weekly payroll lock."
             action={<CountPill tone="rose">{exceptions.length}</CountPill>}
           />
-          <div className="max-h-[19rem] flex-1 space-y-2 overflow-y-auto p-4">
+          <div className="flex-1 space-y-2 p-4">
             {exceptions.length === 0 ? (
               <EmptyState
                 icon={<ShieldCheck className="h-8 w-8 text-emerald-400" />}
@@ -186,14 +190,25 @@ export function ExecutiveHome() {
                 className="h-full"
               />
             ) : (
-              exceptions.map((exc) => (
-                <ExceptionRow
-                  key={exc.id}
-                  exception={exc}
-                  compact
-                  onRetry={resolveException}
-                />
-              ))
+              <>
+                {exceptions.slice(0, VISIBLE_EXCEPTIONS).map((exc) => (
+                  <ExceptionRow
+                    key={exc.id}
+                    exception={exc}
+                    compact
+                    onRetry={resolveException}
+                  />
+                ))}
+                {exceptions.length > VISIBLE_EXCEPTIONS && (
+                  <button
+                    onClick={() => setPage('integration')}
+                    className="flex w-full items-center justify-center gap-1.5 rounded-lg border border-white/[0.06] bg-white/[0.02] py-2 text-[11px] font-medium text-slate-400 transition-colors hover:border-accent/30 hover:text-accent"
+                  >
+                    +{exceptions.length - VISIBLE_EXCEPTIONS} more in the queue
+                    <ArrowRight className="h-3 w-3" />
+                  </button>
+                )}
+              </>
             )}
           </div>
         </Card>

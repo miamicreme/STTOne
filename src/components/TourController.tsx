@@ -22,35 +22,16 @@ export function TourController() {
     stopTour,
     startTour,
     nhRun,
-    welcomeOpen,
   } = useApp()
 
   const sceneTimer = useRef<number | null>(null)
   const runTimer = useRef<number | null>(null)
-  const scrollTimer = useRef<number | null>(null)
   const ranForScene = useRef<number>(-1) // which sceneIndex already fired its NH run
-  const autoStarted = useRef(false)
   const [showDone, setShowDone] = useState(false)
 
-  /* Auto-start once per load, after the visitor leaves the welcome overlay —
-     unless they prefer reduced motion. The welcome screen is the front door;
-     if they choose "Explore on my own", the tour still auto-opens shortly after
-     so an unattended link keeps walking itself. */
-  useEffect(() => {
-    if (autoStarted.current || welcomeOpen) return
-    autoStarted.current = true
-    // If the visitor launched the tour straight from the welcome CTA, it's
-    // already running — don't restart it.
-    if (tour.active || tour.completed) return
-    const reduce =
-      typeof window !== 'undefined' &&
-      window.matchMedia?.('(prefers-reduced-motion: reduce)').matches
-    if (reduce) return
-    // Let the landing page settle and the count-ups finish before the tour opens.
-    const id = window.setTimeout(() => startTour(), 2800)
-    return () => window.clearTimeout(id)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [welcomeOpen])
+  /* The tour is launched from the welcome overlay — either by the visitor, or,
+     for an unattended link, by its auto-advance after a comfortable read. So
+     there's no separate auto-start here; "Explore on my own" stays explore. */
 
   /* Reset the per-scene run guard whenever a fresh tour begins at scene 0. */
   useEffect(() => {
@@ -70,19 +51,9 @@ export function TourController() {
 
     tourPage(scene.page)
 
-    // Once the new page renders, smoothly center the scene's subject.
-    // Scenes without an anchor calmly return to the top.
-    scrollTimer.current = window.setTimeout(() => {
-      const main = document.querySelector('main')
-      const target = scene.anchor
-        ? (document.querySelector(`[data-tour="${scene.anchor}"]`) as HTMLElement | null)
-        : null
-      if (target) {
-        target.scrollIntoView({ behavior: 'smooth', block: 'center' })
-      } else if (main) {
-        main.scrollTo({ top: 0, behavior: 'smooth' })
-      }
-    }, 560)
+    // The stage is fixed and non-scrolling — each view fits the screen — so the
+    // tour no longer scrolls or centers anything (that motion read as the screen
+    // "jumping" between scenes). It simply changes the page.
 
     if (scene.run && ranForScene.current !== tour.sceneIndex) {
       ranForScene.current = tour.sceneIndex
@@ -91,7 +62,6 @@ export function TourController() {
 
     return () => {
       if (runTimer.current) window.clearTimeout(runTimer.current)
-      if (scrollTimer.current) window.clearTimeout(scrollTimer.current)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tour.active, tour.sceneIndex])
