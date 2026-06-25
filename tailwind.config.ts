@@ -45,13 +45,15 @@ const config: Config = {
           'linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px)',
       },
       keyframes: {
+        // Opacity-only entrances — no translate/scale, so nothing shifts
+        // position as a page or its cards mount (prevents the per-page "jump").
         'fade-in': {
-          '0%': { opacity: '0', transform: 'translateY(6px)' },
-          '100%': { opacity: '1', transform: 'translateY(0)' },
+          '0%': { opacity: '0' },
+          '100%': { opacity: '1' },
         },
         rise: {
-          '0%': { opacity: '0', transform: 'translateY(14px) scale(0.985)' },
-          '100%': { opacity: '1', transform: 'translateY(0) scale(1)' },
+          '0%': { opacity: '0' },
+          '100%': { opacity: '1' },
         },
         'slide-in': {
           '0%': { opacity: '0', transform: 'translateX(14px)' },
