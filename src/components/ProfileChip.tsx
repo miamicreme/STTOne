@@ -10,7 +10,7 @@ export function ProfileChip({ collapsed = false }: { collapsed?: boolean }) {
   const hideWhenCollapsed = collapsed ? 'md:hidden' : ''
   return (
     <a
-      href="https://www.linkedin.com/in/kohronburton/"
+      href="https://www.linkedin.com/in/kohronburton?trk=profile-badge"
       target="_blank"
       rel="noopener noreferrer"
       title="Kohron Burton — LinkedIn"
