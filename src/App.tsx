@@ -18,6 +18,7 @@ import { IntegrationHealth } from './views/IntegrationHealth'
 import { FieldOps } from './views/FieldOps'
 import { ProjectPortfolio } from './views/ProjectPortfolio'
 import { EmployeePortal } from './views/EmployeePortal'
+import ProjectStatus from './views/ProjectStatus'
 
 function Shell() {
   const { page, boardroomMode } = useApp()
@@ -49,6 +50,8 @@ function Shell() {
         return <ProjectPortfolio />
       case 'portal':
         return <EmployeePortal />
+      case 'project-status':
+        return <ProjectStatus />
       default:
         return <ExecutiveHome />
     }

@@ -10,6 +10,7 @@ import {
   Truck,
   FolderKanban,
   IdCard,
+  ClipboardList,
   ChevronLeft,
   X,
 } from 'lucide-react'
@@ -45,6 +46,7 @@ export function Sidebar() {
     { key: 'fleet', label: 'Field Ops / Fleet', icon: Truck },
     { key: 'projects', label: 'Project Portfolio', icon: FolderKanban },
     { key: 'portal', label: 'Employee Portal', icon: IdCard },
+    { key: 'project-status', label: 'Project Status', icon: ClipboardList },
   ]
 
   // On desktop, `sidebarCollapsed` shrinks to an icon rail (md+ only). On mobile
