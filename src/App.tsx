@@ -89,7 +89,7 @@ function Shell() {
                 ·
               </span>
               <a
-                href="https://www.linkedin.com/in/kohron-burton/"
+                href="https://www.linkedin.com/in/kohronburton/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="group inline-flex items-center gap-1.5 text-[11px] text-slate-500 transition-colors hover:text-accent"
