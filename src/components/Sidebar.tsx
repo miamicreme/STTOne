@@ -17,6 +17,7 @@ import {
 import type { PageKey } from '../data'
 import { useApp } from '../state/AppContext'
 import { BrandMark } from './Logo'
+import { ProfileChip } from './ProfileChip'
 
 interface NavItem {
   key: PageKey
@@ -141,6 +142,10 @@ export function Sidebar() {
 
         {/* Footer / collapse */}
         <div className="border-t border-white/[0.07] p-3">
+          {/* Architect credit — links to LinkedIn, collapses to the avatar */}
+          <div className="mb-3">
+            <ProfileChip collapsed={sidebarCollapsed} />
+          </div>
           <p
             className={`mb-2.5 px-2 font-display text-[10px] uppercase leading-relaxed tracking-[0.14em] text-slate-600 ${collapsedMd}`}
           >
