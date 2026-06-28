@@ -1,13 +1,13 @@
 // src/views/ProjectStatus.tsx
 // Mobile-first executive status board for the SouthernTier engagement.
-// Built for a CEO's 30-second read on a phone: Are we on track? What will I get?
-// What do you need from me? Anything caught? — plus a one-tap emergency snapshot.
+// Discreet emergency: a small shield icon in the corner opens a focused panel
+// that runs an animated contact protocol and guidance until Kohron calls back.
 //
-// Self-contained: only needs React + Tailwind. Edit the DATA block to update.
-// NOTE: This is illustrative, modeled from the job description. Real metrics,
-// systems, and workflows are confirmed once the engagement begins.
+// Self-contained: React + Tailwind only. Edit the DATA block to update.
+// NOTE: Illustrative, modeled from the job description. Real metrics, systems,
+// and workflows are confirmed once the engagement begins.
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 /* ============================  DATA  ============================ */
 
@@ -32,7 +32,6 @@ const NEXT_OUTCOMES = [
   "The first estimate of avoidable cost",
 ];
 
-// Active exceptions the system has caught. Empty = nothing flagged.
 const EXCEPTIONS = [
   {
     severity: "Caught & handled",
@@ -66,8 +65,22 @@ const UPDATES: { when: string; kind: Kind; text: string }[] = [
   { when: "Jun 25", kind: "info", text: "Mapped the real hire → field → fleet → billing workflow with dispatch and HR." },
   { when: "Jun 24", kind: "decision", text: "Recommended Paychex as the employee source of truth — awaiting leadership sign-off." },
   { when: "Jun 23", kind: "win", text: "Read-only access confirmed to Paychex, PenguinData, and QuickBooks. No production changes." },
-  { when: "Jun 23", kind: "info", text: "Kickoff and onsite immersion in Fort Myers — met the team, watched a normal day." },
 ];
+
+// Emergency protocol — the animated steps and the guidance shown until Kohron calls.
+const PROTOCOL = [
+  { label: "Capturing system snapshot", sub: "Freezing current state across Paychex, PenguinData, QuickBooks, and the integration layer." },
+  { label: "Pausing affected integrations", sub: "Holding writes in read-only so nothing changes while we look." },
+  { label: "Contacting Kohron", sub: "Placing a call and sending an SMS with the snapshot link." },
+  { label: "Kohron acknowledged", sub: "Calling you back now." },
+];
+const WHILE_YOU_WAIT = [
+  "Keep this screen open — Kohron is calling you back now.",
+  "No action needed from you. Affected systems are already paused safely.",
+  "Payroll, dispatch, and billing are unaffected.",
+  "Please hold any new changes until we've spoken.",
+];
+const DIRECT_LINE = "(305) 555-0142"; // replace with your number
 
 /* ==========================  STYLE MAPS  ========================= */
 
@@ -76,62 +89,167 @@ const rag: Record<Rag, { dot: string; text: string; bg: string; ring: string }> 
   "At Risk": { dot: "bg-amber-500", text: "text-amber-700", bg: "bg-amber-50", ring: "ring-amber-600/20" },
   Blocked: { dot: "bg-rose-500", text: "text-rose-700", bg: "bg-rose-50", ring: "ring-rose-600/20" },
 };
-
-const kindDot: Record<Kind, string> = {
-  win: "bg-emerald-500",
-  exception: "bg-amber-500",
-  info: "bg-blue-500",
-  decision: "bg-violet-500",
-};
+const kindDot: Record<Kind, string> = { win: "bg-emerald-500", exception: "bg-amber-500", info: "bg-blue-500", decision: "bg-violet-500" };
 const kindLabel: Record<Kind, string> = { win: "Progress", exception: "Exception", info: "Update", decision: "Decision" };
 
 /* ============================  ICONS  =========================== */
 
-const Shield = () => (
-  <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+const Shield = ({ c = "h-4 w-4" }) => (
+  <svg viewBox="0 0 24 24" className={c} fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" /><path d="M12 8v4" /><path d="M12 16h.01" />
   </svg>
 );
+const Check = () => (
+  <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M20 6 9 17l-5-5" /></svg>
+);
 const Lock = () => (
-  <svg viewBox="0 0 24 24" className="h-4 w-4 inline -mt-0.5" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <rect x="3" y="11" width="18" height="11" rx="2" /><path d="M7 11V7a5 5 0 0 1 10 0v4" />
-  </svg>
+  <svg viewBox="0 0 24 24" className="h-3.5 w-3.5 inline -mt-0.5" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" /><path d="M7 11V7a5 5 0 0 1 10 0v4" /></svg>
+);
+const Phone = () => (
+  <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.81.36 1.6.69 2.34a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.74-1.96a2 2 0 0 1 2.11-.45c.74.33 1.53.56 2.34.69A2 2 0 0 1 22 16.92z" /></svg>
 );
 
-/* ==========================  COMPONENT  ========================= */
+/* =====================  EMERGENCY PANEL  ======================== */
+
+function EmergencyPanel({ onClose, isLoggedIn }: { onClose: () => void; isLoggedIn: boolean }) {
+  const [phase, setPhase] = useState<"ready" | "running" | "done">("ready");
+  const [step, setStep] = useState(0);
+  const [gate, setGate] = useState(false);
+
+  useEffect(() => {
+    if (phase !== "running") return;
+    if (step >= PROTOCOL.length) { setPhase("done"); return; }
+    const t = setTimeout(() => setStep((s) => s + 1), step === 0 ? 700 : 1100);
+    return () => clearTimeout(t);
+  }, [phase, step]);
+
+  const run = () => { setPhase("running"); setStep(0); };
+  const trigger = () => (isLoggedIn ? run() : setGate(true));
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-end justify-center bg-slate-900/40 p-0 backdrop-blur-sm sm:items-center sm:p-4" onClick={onClose}>
+      <div className="w-full rounded-t-3xl bg-white p-6 shadow-2xl sm:max-w-md sm:rounded-3xl" onClick={(e) => e.stopPropagation()}>
+        {/* header */}
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2.5">
+            <span className="flex h-9 w-9 items-center justify-center rounded-full bg-rose-50 text-rose-600"><Shield c="h-5 w-5" /></span>
+            <div>
+              <div className="text-[15px] font-bold text-slate-900">Emergency protocol</div>
+              <div className="text-xs text-slate-400">Snapshot · contain · contact</div>
+            </div>
+          </div>
+          <button onClick={onClose} aria-label="Close" className="rounded-full p-1.5 text-slate-400 hover:bg-slate-100">
+            <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M18 6 6 18M6 6l12 12" /></svg>
+          </button>
+        </div>
+
+        {/* READY */}
+        {phase === "ready" && (
+          <div className="mt-5">
+            <p className="text-sm text-slate-600">
+              This captures a full system snapshot, pauses affected integrations in read-only, and contacts Kohron immediately — then keeps you posted here until he calls back.
+            </p>
+            <button onClick={trigger} className="mt-5 flex w-full items-center justify-center gap-2 rounded-xl bg-rose-600 px-4 py-3 text-sm font-semibold text-white hover:bg-rose-700">
+              <Shield c="h-4 w-4" /> Trigger emergency snapshot
+            </button>
+            <p className="mt-2 text-center text-xs text-slate-400"><Lock /> You'll need to be signed in to trigger this.</p>
+            {gate && (
+              <p className="mt-2 rounded-lg bg-amber-50 px-3 py-2 text-center text-xs text-amber-700">
+                Sign-in required. This is a live action — it captures a snapshot and calls Kohron.
+              </p>
+            )}
+            <button onClick={run} className="mt-3 w-full text-center text-xs font-medium text-slate-400 underline-offset-2 hover:text-slate-600 hover:underline">
+              Preview the protocol →
+            </button>
+          </div>
+        )}
+
+        {/* RUNNING / DONE */}
+        {phase !== "ready" && (
+          <div className="mt-5">
+            <ol className="space-y-3">
+              {PROTOCOL.map((p, i) => {
+                const done = i < step || phase === "done";
+                const active = i === step && phase === "running";
+                return (
+                  <li key={p.label} className="flex gap-3">
+                    <span className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center">
+                      {done ? (
+                        <span className="flex h-6 w-6 items-center justify-center rounded-full bg-emerald-500 text-white"><Check /></span>
+                      ) : active ? (
+                        <span className="h-5 w-5 animate-spin rounded-full border-2 border-slate-200 border-t-rose-500" />
+                      ) : (
+                        <span className="h-2.5 w-2.5 rounded-full bg-slate-200" />
+                      )}
+                    </span>
+                    <div className={done || active ? "" : "opacity-40"}>
+                      <div className="text-sm font-semibold text-slate-900">{p.label}</div>
+                      <div className="text-xs text-slate-500">{p.sub}</div>
+                    </div>
+                  </li>
+                );
+              })}
+            </ol>
+
+            {phase === "done" && (
+              <div className="mt-5 rounded-2xl bg-slate-50 p-4">
+                <div className="flex items-center gap-2 text-sm font-semibold text-slate-900">
+                  <span className="relative flex h-2.5 w-2.5">
+                    <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
+                    <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-emerald-500" />
+                  </span>
+                  Kohron is calling you back now
+                </div>
+                <ul className="mt-3 space-y-1.5">
+                  {WHILE_YOU_WAIT.map((w) => (
+                    <li key={w} className="flex items-start gap-2 text-sm text-slate-600">
+                      <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-slate-300" />{w}
+                    </li>
+                  ))}
+                </ul>
+                <a href={`tel:${DIRECT_LINE.replace(/[^0-9]/g, "")}`} className="mt-4 flex w-full items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-800 hover:bg-slate-50">
+                  <Phone /> Need him now? Call {DIRECT_LINE}
+                </a>
+              </div>
+            )}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+/* ==========================  BOARD  ============================= */
 
 export default function ProjectStatus() {
   const s = rag[BRIEFING.status];
   const pct = Math.round((BRIEFING.day / BRIEFING.totalDays) * 100);
   const daysToNext = Math.max(0, BRIEFING.nextMilestoneDay - BRIEFING.day);
-
-  const [emergencyMsg, setEmergencyMsg] = useState<string | null>(null);
   const [openExc, setOpenExc] = useState(true);
-  const [showDetail, setShowDetail] = useState(false);
-
-  const isLoggedIn = false; // wire to your auth; demo is signed-out
-
-  const onEmergency = () => {
-    if (isLoggedIn) {
-      setEmergencyMsg("Snapshot captured. Kohron has been alerted and will respond immediately.");
-    } else {
-      setEmergencyMsg("Sign-in required. The emergency button captures a full system snapshot and contacts Kohron immediately — it's locked until you're signed in.");
-    }
-  };
+  const [emergency, setEmergency] = useState(false);
+  const isLoggedIn = false; // wire to your auth
 
   return (
     <div className="min-h-screen bg-slate-50">
       <div className="mx-auto max-w-3xl px-4 py-6 text-slate-800 sm:px-6 sm:py-8">
-        {/* Header */}
-        <div className="flex items-center justify-between gap-3">
+        {/* Header with discreet emergency icon in the corner */}
+        <div className="flex items-start justify-between gap-3">
           <div>
             <div className="text-[11px] font-semibold uppercase tracking-wider text-slate-400">SouthernTier · Modernization</div>
             <h1 className="text-xl font-bold tracking-tight text-slate-900 sm:text-2xl">Where things stand</h1>
+            <div className="mt-0.5 text-[11px] text-slate-400">Updated {BRIEFING.updated}</div>
           </div>
-          <span className="shrink-0 text-right text-[11px] leading-tight text-slate-400">Updated<br className="sm:hidden" /> {BRIEFING.updated}</span>
+          <button
+            onClick={() => setEmergency(true)}
+            aria-label="Emergency protocol"
+            title="Emergency protocol"
+            className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-slate-200 text-slate-400 transition hover:border-rose-200 hover:bg-rose-50 hover:text-rose-600"
+          >
+            <Shield c="h-[18px] w-[18px]" />
+          </button>
         </div>
 
-        {/* Illustrative disclaimer */}
+        {/* disclaimer */}
         <div className="mt-3 rounded-xl bg-slate-100 px-3 py-2 text-[12px] leading-snug text-slate-500">
           Illustrative view, modeled from the job description. The real metrics, systems, and workflow are confirmed once we start.
         </div>
@@ -154,23 +272,6 @@ export default function ProjectStatus() {
           </div>
         </div>
 
-        {/* EMERGENCY */}
-        <button
-          onClick={onEmergency}
-          className="mt-4 flex w-full items-center justify-center gap-2.5 rounded-2xl bg-rose-600 px-4 py-4 text-base font-bold text-white shadow-sm transition active:scale-[.99] hover:bg-rose-700"
-        >
-          <Shield />
-          Emergency — Snapshot &amp; Alert Kohron
-        </button>
-        <p className="mt-2 px-1 text-center text-[12px] text-slate-500">
-          <Lock /> Captures a full system snapshot and contacts me immediately. Sign-in required.
-        </p>
-        {emergencyMsg && (
-          <div className="mt-2 rounded-xl bg-rose-50 px-3 py-2 text-[13px] text-rose-700 ring-1 ring-inset ring-rose-600/20">
-            {emergencyMsg}
-          </div>
-        )}
-
         {/* KPI tiles */}
         <div className="mt-5 grid grid-cols-1 gap-3 sm:grid-cols-3">
           <div className="rounded-2xl border border-slate-200 bg-white p-4">
@@ -185,14 +286,12 @@ export default function ProjectStatus() {
           </div>
           <div className="rounded-2xl border border-slate-200 bg-white p-4">
             <div className="text-[11px] font-medium uppercase tracking-wide text-slate-400">Exceptions</div>
-            <div className={`mt-1 text-3xl font-bold ${EXCEPTIONS.length ? "text-amber-600" : "text-emerald-600"}`}>
-              {EXCEPTIONS.length === 0 ? "0" : EXCEPTIONS.length}
-            </div>
-            <div className="mt-0.5 text-sm text-slate-500">{EXCEPTIONS.length === 0 ? "none open" : "caught & handled"}</div>
+            <div className={`mt-1 text-3xl font-bold ${EXCEPTIONS.length ? "text-amber-600" : "text-emerald-600"}`}>{EXCEPTIONS.length || "0"}</div>
+            <div className="mt-0.5 text-sm text-slate-500">{EXCEPTIONS.length ? "caught & handled" : "none open"}</div>
           </div>
         </div>
 
-        {/* EXCEPTION card */}
+        {/* EXCEPTION */}
         {EXCEPTIONS.map((e) => (
           <div key={e.title} className="mt-4 overflow-hidden rounded-2xl border border-amber-200 bg-amber-50/70">
             <button onClick={() => setOpenExc((v) => !v)} className="flex w-full items-start justify-between gap-3 p-4 text-left">
@@ -221,15 +320,12 @@ export default function ProjectStatus() {
           </div>
         ))}
 
-        {/* What you get next */}
+        {/* What you get */}
         <div className="mt-5 rounded-2xl border-l-4 border-blue-600 bg-blue-50/60 p-4">
           <div className="text-[11px] font-semibold uppercase tracking-wide text-blue-700">What you'll have at Day 30</div>
           <ul className="mt-2 space-y-1.5">
             {NEXT_OUTCOMES.map((o) => (
-              <li key={o} className="flex items-start gap-2 text-sm text-slate-700">
-                <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-blue-500" />
-                {o}
-              </li>
+              <li key={o} className="flex items-start gap-2 text-sm text-slate-700"><span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-blue-500" />{o}</li>
             ))}
           </ul>
         </div>
@@ -239,20 +335,14 @@ export default function ProjectStatus() {
           <h2 className="text-sm font-semibold text-slate-900">The 90-day arc</h2>
           <div className="mt-3 grid grid-cols-1 gap-3 sm:grid-cols-3">
             {MILESTONES.map((m) => {
-              const tone =
-                m.state === "done" ? "border-emerald-200 bg-emerald-50"
-                : m.state === "current" ? "border-blue-300 bg-blue-50 ring-1 ring-blue-200"
-                : "border-slate-200 bg-white";
+              const tone = m.state === "done" ? "border-emerald-200 bg-emerald-50" : m.state === "current" ? "border-blue-300 bg-blue-50 ring-1 ring-blue-200" : "border-slate-200 bg-white";
               const dot = m.state === "done" ? "bg-emerald-500" : m.state === "current" ? "bg-blue-600" : "bg-slate-300";
               return (
                 <div key={m.day} className={`rounded-2xl border p-4 ${tone}`}>
                   <div className="flex items-center gap-2">
-                    <span className={`h-2.5 w-2.5 rounded-full ${dot}`} />
-                    <span className="text-sm font-bold text-slate-900">{m.day}</span>
+                    <span className={`h-2.5 w-2.5 rounded-full ${dot}`} /><span className="text-sm font-bold text-slate-900">{m.day}</span>
                     <span className="text-sm font-semibold text-slate-600">· {m.title}</span>
-                    {m.state === "current" && (
-                      <span className="ml-auto rounded-full bg-blue-600 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-white">Now</span>
-                    )}
+                    {m.state === "current" && <span className="ml-auto rounded-full bg-blue-600 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-white">Now</span>}
                   </div>
                   <p className="mt-1.5 text-sm text-slate-600">{m.desc}</p>
                 </div>
@@ -261,7 +351,7 @@ export default function ProjectStatus() {
           </div>
         </div>
 
-        {/* What I need from you */}
+        {/* Decisions */}
         <div className="mt-6">
           <h2 className="text-sm font-semibold text-slate-900">What I need from you</h2>
           <ul className="mt-3 space-y-2">
@@ -274,19 +364,16 @@ export default function ProjectStatus() {
           </ul>
         </div>
 
-        {/* Recent updates feed */}
+        {/* Updates */}
         <div className="mt-6">
           <h2 className="text-sm font-semibold text-slate-900">Recent updates</h2>
-          <ol className="mt-3 space-y-0">
+          <ol className="mt-3">
             {UPDATES.map((u, i) => (
               <li key={i} className="relative flex gap-3 pb-4 last:pb-0">
                 {i !== UPDATES.length - 1 && <span className="absolute left-[5px] top-3 h-full w-px bg-slate-200" />}
                 <span className={`relative mt-1 h-2.5 w-2.5 shrink-0 rounded-full ${kindDot[u.kind]}`} />
                 <div className="min-w-0">
-                  <div className="flex flex-wrap items-center gap-x-2 gap-y-0.5">
-                    <span className="text-[11px] font-semibold uppercase tracking-wide text-slate-400">{kindLabel[u.kind]}</span>
-                    <span className="text-[11px] text-slate-400">· {u.when}</span>
-                  </div>
+                  <div className="flex flex-wrap items-center gap-x-2"><span className="text-[11px] font-semibold uppercase tracking-wide text-slate-400">{kindLabel[u.kind]}</span><span className="text-[11px] text-slate-400">· {u.when}</span></div>
                   <p className="text-sm text-slate-700">{u.text}</p>
                 </div>
               </li>
@@ -294,27 +381,10 @@ export default function ProjectStatus() {
           </ol>
         </div>
 
-        {/* Optional detail */}
-        <div className="mt-6">
-          <button onClick={() => setShowDetail((v) => !v)} className="text-sm font-medium text-blue-700 hover:text-blue-800">
-            {showDetail ? "Hide" : "Show"} week-by-week plan
-          </button>
-          {showDetail && (
-            <ul className="mt-3 space-y-2 text-sm text-slate-600">
-              <li>Week 1 · Days 1–5 — Access, people, discovery — <span className="font-medium text-emerald-600">complete</span></li>
-              <li>Week 2 · Days 6–10 — Map the real workflow — <span className="font-medium text-blue-600">in progress</span></li>
-              <li>Week 3 · Days 11–15 — Source of truth, mapping, risk — upcoming</li>
-              <li>Week 4 · Days 16–20 — First controlled win + baseline — upcoming</li>
-              <li>Days 21–30 — Review, approve, plan ahead — upcoming</li>
-            </ul>
-          )}
-        </div>
-
-        <p className="mt-8 text-center text-xs text-slate-400">
-          Live status · maintained by Kohron Burton · updated weekly<br />
-          Figures shown are illustrative until confirmed on-site.
-        </p>
+        <p className="mt-8 text-center text-xs text-slate-400">Live status · maintained by Kohron Burton · updated weekly<br />Figures shown are illustrative until confirmed on-site.</p>
       </div>
+
+      {emergency && <EmergencyPanel onClose={() => setEmergency(false)} isLoggedIn={isLoggedIn} />}
     </div>
   );
 }
