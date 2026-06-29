@@ -134,8 +134,9 @@ const Phone = () => (
 /*  Emergency panel                                                    */
 /* ================================================================== */
 
-function EmergencyPanel({ onClose }: { onClose: () => void }) {
+function EmergencyPanel({ onClose, isLoggedIn }: { onClose: () => void; isLoggedIn: boolean }) {
   const [step, setStep] = useState(-1)
+  const [gate, setGate] = useState(false)
   const running = step >= 0 && step < PROTOCOL.length
   const done = step >= PROTOCOL.length
 
@@ -147,6 +148,8 @@ function EmergencyPanel({ onClose }: { onClose: () => void }) {
     }
     tick(0)
   }
+
+  const trigger = () => (isLoggedIn ? run() : setGate(true))
 
   return (
     <div className="fixed inset-0 z-50 flex items-end justify-center bg-base-950/80 backdrop-blur-sm sm:items-center sm:p-6" onClick={onClose}>
@@ -170,9 +173,15 @@ function EmergencyPanel({ onClose }: { onClose: () => void }) {
               <p className="text-sm leading-relaxed text-slate-300">
                 Captures a full system snapshot, pauses affected integrations in read-only, and contacts Kohron immediately.
               </p>
-              <button onClick={run} className="flex w-full items-center justify-center gap-2 rounded-xl bg-rose-500 px-4 py-3 text-sm font-semibold text-white hover:bg-rose-400 active:scale-[0.98]">
+              <button onClick={trigger} className="flex w-full items-center justify-center gap-2 rounded-xl bg-rose-500 px-4 py-3 text-sm font-semibold text-white hover:bg-rose-400 active:scale-[0.98]">
                 <Shield className="h-4 w-4" />Trigger emergency snapshot
               </button>
+              <p className="text-center text-xs text-slate-500">Sign-in required to trigger a live action.</p>
+              {gate && (
+                <p className="rounded-xl bg-amber-500/10 px-4 py-3 text-center text-sm text-amber-300">
+                  Sign in to trigger this. It captures a snapshot and calls Kohron immediately.
+                </p>
+              )}
               <button onClick={run} className="w-full text-center text-xs text-slate-500 hover:text-slate-300 hover:underline underline-offset-2">
                 Preview without triggering →
               </button>
@@ -244,6 +253,7 @@ export default function ProjectStatus() {
   const [decisionsOpen, setDecisionsOpen] = useState(false)
   const [updatesOpen, setUpdatesOpen] = useState(false)
   const [emergency, setEmergency] = useState(false)
+  const isLoggedIn = false
 
   const done   = KANBAN.filter(k => k.state === 'done')
   const active = KANBAN.filter(k => k.state === 'active')
@@ -442,7 +452,7 @@ export default function ProjectStatus() {
 
       <p className="text-center text-[10px] text-slate-700">Illustrative · modeled from job description · real metrics confirmed on-site</p>
 
-      {emergency && <EmergencyPanel onClose={() => setEmergency(false)} />}
+      {emergency && <EmergencyPanel onClose={() => setEmergency(false)} isLoggedIn={isLoggedIn} />}
     </div>
   )
 }
