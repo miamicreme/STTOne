@@ -53,38 +53,36 @@ export function ExecutiveHome() {
   return (
     <div className="space-y-5">
 
-      {/* ── Hero ─────────────────────────────────────────────────────── */}
-      <div className="rounded-2xl border border-accent/20 bg-gradient-to-br from-base-850/80 via-base-850/55 to-base-900/70 px-6 py-5">
-        <div className="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
-          {/* Left — big number */}
-          <div className="min-w-0">
-            <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-accent">
-              Preventable annual leakage
-            </p>
-            <div className="mt-1.5 flex items-end gap-2">
-              <AnimatedNumber
-                value={`$${leakageTotal.toLocaleString('en-US')}`}
-                className="font-display text-[2.8rem] font-bold leading-none tracking-tightest text-gradient tabular sm:text-[3.4rem]"
-              />
-              <span className="mb-1.5 text-lg font-semibold text-slate-400">/yr</span>
+      {/* ── Hero banner — single row ─────────────────────────────────── */}
+      <div className="flex flex-wrap items-center justify-between gap-4 rounded-2xl border border-accent/20 bg-gradient-to-r from-base-850/80 to-base-900/70 px-5 py-3">
+        {/* Left — label + number inline */}
+        <div className="flex items-baseline gap-3">
+          <span className="text-[10px] font-semibold uppercase tracking-[0.18em] text-accent">
+            Preventable leakage
+          </span>
+          <div className="flex items-baseline gap-1">
+            <AnimatedNumber
+              value={`$${leakageTotal.toLocaleString('en-US')}`}
+              className="font-display text-[1.6rem] font-bold leading-none tracking-tightest text-gradient tabular"
+            />
+            <span className="text-sm font-semibold text-slate-400">/yr</span>
+          </div>
+        </div>
+        {/* Right — chips in a row */}
+        <div className="flex flex-wrap gap-2">
+          {leakageLines.map((line) => (
+            <div
+              key={line.label}
+              className="flex items-center gap-2 rounded-lg border border-white/[0.07] bg-base-900/60 px-3 py-1.5"
+            >
+              <span className="font-display text-[13px] font-bold tabular text-white">
+                ${Math.round(line.amount / 1000)}K
+              </span>
+              <span className="text-[10px] text-slate-500">
+                {line.label.split(' — ')[0]}
+              </span>
             </div>
-          </div>
-          {/* Right — 2×2 chip grid */}
-          <div className="grid shrink-0 grid-cols-2 gap-2 lg:w-80">
-            {leakageLines.map((line) => (
-              <div
-                key={line.label}
-                className="rounded-lg border border-white/[0.07] bg-base-900/60 px-3 py-2"
-              >
-                <span className="font-display text-[15px] font-bold tabular text-white">
-                  ${Math.round(line.amount / 1000)}K
-                </span>
-                <p className="mt-0.5 text-[10.5px] leading-snug text-slate-400">
-                  {line.label.split(' — ')[0]}
-                </p>
-              </div>
-            ))}
-          </div>
+          ))}
         </div>
       </div>
 
