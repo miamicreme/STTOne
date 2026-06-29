@@ -122,7 +122,8 @@ export function GanttChart() {
         </div>
       </div>
 
-      <div className="px-5 pb-5 pt-4">
+      <div className="overflow-x-auto px-5 pb-5 pt-4">
+        <div className="min-w-[480px]">
         {/* Month axis */}
         <div className="relative mb-1 ml-[9rem] h-5">
           {MONTHS.map((m, i) => (
@@ -242,6 +243,7 @@ export function GanttChart() {
               </span>
             ))}
           </div>
+        </div>
         </div>
       </div>
     </div>
