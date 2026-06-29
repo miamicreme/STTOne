@@ -1,6 +1,6 @@
 'use client'
 
-import { Presentation, Search, Bell, ChevronRight, Menu, Compass } from 'lucide-react'
+import { Presentation, Search, Bell, Menu, Compass } from 'lucide-react'
 import { useApp } from '../state/AppContext'
 import type { PageKey } from '../data'
 
@@ -14,6 +14,7 @@ const pageTitles: Record<PageKey, string> = {
   fleet: 'Field Ops / Fleet',
   projects: 'Project Portfolio',
   portal: 'Employee Portal',
+  'project-status': 'Project Status',
 }
 
 export function TopBar() {
@@ -21,9 +22,7 @@ export function TopBar() {
     useApp()
 
   return (
-    <header className="glass sticky top-0 z-20 flex h-16 items-center justify-between gap-3 border-b border-white/[0.07] px-4 sm:px-6">
-      {/* STT brand ribbon — red→blue, echoes the logo swoosh, gently panning */}
-      <span className="edge-accent pointer-events-none absolute inset-x-0 bottom-0 h-px" />
+    <header className="glass sticky top-0 z-20 flex h-14 items-center justify-between gap-3 border-b border-white/[0.07] px-4 sm:px-6">
       <div className="flex min-w-0 items-center gap-3" data-tour="topbar">
         {/* Mobile hamburger */}
         {!boardroomMode && (
@@ -35,28 +34,12 @@ export function TopBar() {
             <Menu className="h-5 w-5" />
           </button>
         )}
-        <div className="min-w-0">
-          <div className="hidden items-center gap-1.5 text-[11px] font-medium uppercase tracking-[0.14em] text-slate-500 xl:flex">
-            <span>Southern Tier Telecommunications</span>
-            <ChevronRight className="h-3 w-3 text-slate-700" />
-            <span className="text-slate-400">Fort Myers HQ</span>
-          </div>
-          <h1 className="truncate font-display text-base font-bold tracking-tight text-white sm:text-[19px]">
-            {pageTitles[page]}
-          </h1>
-        </div>
+        <h1 className="truncate font-display text-base font-bold tracking-tight text-white sm:text-[18px]">
+          {pageTitles[page]}
+        </h1>
       </div>
 
       <div className="flex items-center gap-2 sm:gap-3">
-        {/* Operational Pulse chip */}
-        <div className="hidden items-center gap-2 rounded-full border border-emerald-500/25 bg-emerald-500/[0.08] px-3 py-1.5 lg:flex">
-          <span className="relative flex h-2 w-2">
-            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-70" />
-            <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-400" />
-          </span>
-          <span className="text-xs font-semibold text-emerald-300">Operational Pulse · Nominal</span>
-        </div>
-
         {/* Command palette trigger (⌘K) */}
         <button
           onClick={openCommand}
@@ -83,25 +66,27 @@ export function TopBar() {
         {/* Guided Tour trigger */}
         <button
           onClick={startTour}
-          className="flex items-center gap-2 rounded-xl border border-white/[0.07] bg-white/[0.02] px-3 py-2 text-xs font-semibold text-slate-400 transition-all duration-300 hover:border-accent/30 hover:text-accent"
+          title="Guided Tour"
+          className="rounded-xl border border-white/[0.07] bg-white/[0.02] p-2 text-slate-400 transition-all duration-300 hover:border-accent/30 hover:text-accent"
           aria-label="Start guided tour"
         >
           <Compass className="h-4 w-4" />
-          <span className="hidden sm:inline">Guided Tour</span>
         </button>
 
-        {/* Boardroom Mode toggle */}
+        {/* Boardroom Mode toggle — compact icon */}
         <button
           onClick={toggleBoardroom}
           data-tour="boardroom"
-          className={`flex items-center gap-2 rounded-xl border px-3 py-2 text-xs font-semibold transition-all duration-300 ${
+          title="Boardroom Mode"
+          aria-label="Toggle boardroom mode"
+          aria-pressed={boardroomMode}
+          className={`rounded-xl border p-2 transition-all duration-300 ${
             boardroomMode
               ? 'border-accent/40 bg-accent/15 text-accent shadow-[0_0_18px_-4px_rgba(47,134,224,0.6)]'
               : 'border-white/[0.07] bg-white/[0.02] text-slate-400 hover:border-white/[0.14] hover:text-slate-200'
           }`}
         >
           <Presentation className="h-4 w-4" />
-          <span className="hidden sm:inline">Boardroom Mode</span>
         </button>
       </div>
     </header>

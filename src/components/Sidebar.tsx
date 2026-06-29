@@ -10,12 +10,14 @@ import {
   Truck,
   FolderKanban,
   IdCard,
+  ClipboardList,
   ChevronLeft,
   X,
 } from 'lucide-react'
 import type { PageKey } from '../data'
 import { useApp } from '../state/AppContext'
 import { BrandMark } from './Logo'
+import { ProfileChip } from './ProfileChip'
 
 interface NavItem {
   key: PageKey
@@ -45,6 +47,7 @@ export function Sidebar() {
     { key: 'fleet', label: 'Field Ops / Fleet', icon: Truck },
     { key: 'projects', label: 'Project Portfolio', icon: FolderKanban },
     { key: 'portal', label: 'Employee Portal', icon: IdCard },
+    { key: 'project-status', label: 'Project Status', icon: ClipboardList },
   ]
 
   // On desktop, `sidebarCollapsed` shrinks to an icon rail (md+ only). On mobile
@@ -139,13 +142,10 @@ export function Sidebar() {
 
         {/* Footer / collapse */}
         <div className="border-t border-white/[0.07] p-3">
-          <p
-            className={`mb-2.5 px-2 font-display text-[10px] uppercase leading-relaxed tracking-[0.14em] text-slate-600 ${collapsedMd}`}
-          >
-            Built on Execution.
-            <br />
-            Elevated by Excellence.
-          </p>
+          {/* Architect credit — links to LinkedIn, collapses to the avatar */}
+          <div className="mb-3">
+            <ProfileChip collapsed={sidebarCollapsed} />
+          </div>
           {/* Collapse is a desktop affordance only */}
           <button
             onClick={toggleSidebar}

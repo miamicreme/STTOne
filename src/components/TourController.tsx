@@ -26,21 +26,17 @@ export function TourController() {
 
   const sceneTimer = useRef<number | null>(null)
   const runTimer = useRef<number | null>(null)
-  const ranForScene = useRef<number>(-1) // which sceneIndex already fired its NH run
+  const wordTimer = useRef<number | null>(null)
+  const ranForScene = useRef<number>(-1)
   const [showDone, setShowDone] = useState(false)
+  const [wordCount, setWordCount] = useState(0)
 
-  /* The tour is launched from the welcome overlay — either by the visitor, or,
-     for an unattended link, by its auto-advance after a comfortable read. So
-     there's no separate auto-start here; "Explore on my own" stays explore. */
-
-  /* Reset the per-scene run guard whenever a fresh tour begins at scene 0. */
+  /* Reset per-scene run guard on fresh tour. */
   useEffect(() => {
     if (tour.active && tour.sceneIndex === 0) ranForScene.current = -1
   }, [tour.active, tour.sceneIndex])
 
-  /* Navigate to the scene's page and gently bring its subject into view.
-     Runs whenever the scene changes — even while paused — so the Back/Next
-     buttons move the screen too. */
+  /* Navigate to scene page and reset word reveal on scene change. */
   useEffect(() => {
     if (!tour.active) return
     const scene = tourScenes[tour.sceneIndex]
@@ -50,10 +46,8 @@ export function TourController() {
     }
 
     tourPage(scene.page)
-
-    // The stage is fixed and non-scrolling — each view fits the screen — so the
-    // tour no longer scrolls or centers anything (that motion read as the screen
-    // "jumping" between scenes). It simply changes the page.
+    // While paused, show the full caption immediately so manual step-through isn't blank.
+    setWordCount(tour.playing ? 0 : scene.caption.split(' ').length)
 
     if (scene.run && ranForScene.current !== tour.sceneIndex) {
       ranForScene.current = tour.sceneIndex
@@ -66,8 +60,36 @@ export function TourController() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tour.active, tour.sceneIndex])
 
-  /* Auto-advance to the next scene after its dwell time — only while playing.
-     Pausing freezes here, so the viewer can read as long as they like. */
+  /* Word-by-word reveal — advances only while playing. */
+  useEffect(() => {
+    if (!tour.active) return
+    const scene = tourScenes[tour.sceneIndex]
+    if (!scene) return
+
+    const words = scene.caption.split(' ')
+
+    if (!tour.playing) {
+      if (wordTimer.current) window.clearInterval(wordTimer.current)
+      setWordCount(words.length)
+      return
+    }
+
+    wordTimer.current = window.setInterval(() => {
+      setWordCount((n) => {
+        if (n >= words.length) {
+          window.clearInterval(wordTimer.current!)
+          return n
+        }
+        return n + 1
+      })
+    }, 55)
+
+    return () => {
+      if (wordTimer.current) window.clearInterval(wordTimer.current)
+    }
+  }, [tour.active, tour.playing, tour.sceneIndex])
+
+  /* Auto-advance after dwell time — only while playing. */
   useEffect(() => {
     if (!tour.active || !tour.playing) return
     const scene = tourScenes[tour.sceneIndex]
@@ -84,8 +106,12 @@ export function TourController() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tour.active, tour.playing, tour.sceneIndex])
 
-  const goPrev = () => tourGotoScene(Math.max(0, tour.sceneIndex - 1))
+  const goPrev = () => {
+    setWordCount(0)
+    tourGotoScene(Math.max(0, tour.sceneIndex - 1))
+  }
   const goNext = () => {
+    setWordCount(0)
     if (tour.sceneIndex + 1 >= tourScenes.length) tourComplete()
     else tourGotoScene(tour.sceneIndex + 1)
   }
@@ -120,31 +146,35 @@ export function TourController() {
 
   const total = tourScenes.length
   const scene = tourScenes[tour.sceneIndex]
+  const words = scene?.caption.split(' ') ?? []
+  const visibleCaption = words.slice(0, wordCount).join(' ')
+  const isTyping = wordCount < words.length
 
-  /* Active control bar. */
+  /* Active narrator bar. */
   return (
     <div className="fixed inset-x-0 bottom-0 z-40 flex justify-center px-3 pb-3 sm:pb-4">
-      <div className="glass edge-accent relative w-full max-w-2xl overflow-hidden rounded-2xl border border-accent/40 px-3 py-2.5 shadow-[0_14px_44px_-12px_rgba(47,134,224,0.55)] ring-1 ring-accent/20 sm:px-4 sm:py-3">
-        {/* Warm brand-red bloom on the left ties the live controller to the logo swoosh */}
-        <span className="pointer-events-none absolute -left-8 top-0 h-full w-24 bg-brand-red/[0.10] blur-2xl" />
-        <div className="relative flex items-center gap-3">
-          {/* Live badge — red pulse reads as "live" and stands out from the blue UI */}
-          <div className="hidden items-center gap-2 sm:flex">
+      <div className="glass relative w-full max-w-3xl overflow-hidden rounded-2xl border border-accent/30 shadow-[0_14px_44px_-12px_rgba(47,134,224,0.45)] ring-1 ring-accent/15">
+        {/* CC caption block */}
+        <div className="bg-black/55 px-4 py-3 backdrop-blur-sm sm:px-5 sm:py-4">
+          <div className="mb-2 flex items-center gap-2">
             <span className="relative flex h-2 w-2">
               <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-brand-red opacity-70" />
               <span className="relative inline-flex h-2 w-2 rounded-full bg-brand-red" />
             </span>
-            <span className="flex items-center gap-1 text-[11px] font-semibold uppercase tracking-wider text-brand-red-soft">
-              <Compass className="h-3.5 w-3.5" /> Live Tour
+            <span className="flex items-center gap-1 text-[10px] font-semibold uppercase tracking-widest text-brand-red-soft">
+              <Compass className="h-3 w-3" /> Narrator
             </span>
           </div>
-
-          {/* Caption */}
-          <p className="min-w-0 flex-1 truncate text-[13px] font-medium text-slate-100 sm:text-sm">
-            {scene?.caption}
+          <p className="min-h-[1.6rem] text-base font-semibold leading-snug tracking-wide text-white sm:text-lg">
+            {visibleCaption}
+            {isTyping && (
+              <span className="ml-1 inline-block h-[1em] w-0.5 animate-pulse bg-accent align-middle opacity-80" />
+            )}
           </p>
+        </div>
 
-          {/* Controls */}
+        {/* Controls row */}
+        <div className="flex items-center gap-2 border-t border-white/[0.06] bg-base-900/60 px-3 py-2 sm:px-4">
           <div className="flex shrink-0 items-center gap-1.5">
             <button
               onClick={goPrev}
@@ -152,14 +182,14 @@ export function TourController() {
               aria-label="Previous step"
               className="rounded-lg border border-white/10 bg-white/[0.04] p-1.5 text-slate-300 transition-colors hover:bg-white/[0.1] hover:text-white disabled:cursor-not-allowed disabled:opacity-40"
             >
-              <ChevronLeft className="h-4 w-4" />
+              <ChevronLeft className="h-3.5 w-3.5" />
             </button>
             <button
               onClick={() => tourSetPlaying(!tour.playing)}
               aria-label={tour.playing ? 'Pause tour' : 'Play tour'}
-              className="inline-flex items-center gap-1.5 rounded-lg bg-gradient-to-r from-accent to-accent-soft px-2.5 py-1.5 text-xs font-semibold text-white shadow-[0_4px_14px_-4px_rgba(47,134,224,0.85)] transition-all hover:brightness-110 active:scale-[0.97]"
+              className="inline-flex items-center gap-1 rounded-lg bg-gradient-to-r from-accent to-accent-soft px-2.5 py-1.5 text-[11px] font-semibold text-white shadow-[0_4px_14px_-4px_rgba(47,134,224,0.85)] transition-all hover:brightness-110 active:scale-[0.97]"
             >
-              {tour.playing ? <Pause className="h-4 w-4" /> : <Play className="h-4 w-4" />}
+              {tour.playing ? <Pause className="h-3.5 w-3.5" /> : <Play className="h-3.5 w-3.5" />}
               <span className="hidden sm:inline">{tour.playing ? 'Pause' : 'Play'}</span>
             </button>
             <button
@@ -167,42 +197,44 @@ export function TourController() {
               aria-label="Next step"
               className="rounded-lg border border-white/10 bg-white/[0.04] p-1.5 text-slate-300 transition-colors hover:bg-white/[0.1] hover:text-white"
             >
-              <ChevronRight className="h-4 w-4" />
-            </button>
-            <button
-              onClick={stopTour}
-              aria-label="Exit tour"
-              className="ml-0.5 rounded-lg border border-white/10 bg-white/[0.04] p-1.5 text-slate-400 transition-colors hover:bg-rose-500/15 hover:text-rose-300"
-            >
-              <X className="h-4 w-4" />
+              <ChevronRight className="h-3.5 w-3.5" />
             </button>
           </div>
-        </div>
 
-        {/* Progress — current segment fills over its dwell time */}
-        <div className="relative mt-2 flex items-center gap-1.5">
-          {tourScenes.map((s, i) => (
-            <span
-              key={i}
-              className={`relative h-1 flex-1 overflow-hidden rounded-full ${
-                i < tour.sceneIndex ? 'bg-accent/60' : 'bg-white/10'
-              }`}
-            >
-              {i === tour.sceneIndex && (
-                <span
-                  key={tour.sceneIndex}
-                  className="tour-seg-fill absolute inset-0 rounded-full bg-accent"
-                  style={{
-                    animationDuration: `${s.ms}ms`,
-                    animationPlayState: tour.playing ? 'running' : 'paused',
-                  }}
-                />
-              )}
-            </span>
-          ))}
-        </div>
-        <div className="relative mt-1 text-right text-[10px] tabular text-slate-500">
-          {tour.sceneIndex + 1} / {total}
+          {/* Progress segments */}
+          <div className="flex flex-1 items-center gap-1">
+            {tourScenes.map((s, i) => (
+              <span
+                key={i}
+                className={`relative h-1 flex-1 overflow-hidden rounded-full ${
+                  i < tour.sceneIndex ? 'bg-accent/60' : 'bg-white/10'
+                }`}
+              >
+                {i === tour.sceneIndex && (
+                  <span
+                    key={tour.sceneIndex}
+                    className="tour-seg-fill absolute inset-0 rounded-full bg-accent"
+                    style={{
+                      animationDuration: `${s.ms}ms`,
+                      animationPlayState: tour.playing ? 'running' : 'paused',
+                    }}
+                  />
+                )}
+              </span>
+            ))}
+          </div>
+
+          <span className="shrink-0 text-[10px] tabular text-slate-500">
+            {tour.sceneIndex + 1} / {total}
+          </span>
+
+          <button
+            onClick={stopTour}
+            aria-label="Exit tour"
+            className="ml-0.5 rounded-lg border border-white/10 bg-white/[0.04] p-1.5 text-slate-400 transition-colors hover:bg-rose-500/15 hover:text-rose-300"
+          >
+            <X className="h-3.5 w-3.5" />
+          </button>
         </div>
       </div>
     </div>

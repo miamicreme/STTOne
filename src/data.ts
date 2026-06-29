@@ -20,6 +20,7 @@ export type PageKey =
   | 'fleet'
   | 'projects'
   | 'portal'
+  | 'project-status'
 
 export type SystemStatus = 'healthy' | 'warning' | 'active' | 'critical'
 
