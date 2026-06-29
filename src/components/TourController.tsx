@@ -70,6 +70,7 @@ export function TourController() {
 
     if (!tour.playing) {
       if (wordTimer.current) window.clearInterval(wordTimer.current)
+      setWordCount(words.length)
       return
     }
 
