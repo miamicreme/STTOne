@@ -251,7 +251,6 @@ export default function ProjectStatus() {
   const s = rag[BRIEFING.status]
   const pct = Math.round((BRIEFING.day / BRIEFING.totalDays) * 100)
   const daysToNext = Math.max(0, BRIEFING.nextMilestoneDay - BRIEFING.day)
-  const [decisionsOpen, setDecisionsOpen] = useState(false)
   const [updatesOpen, setUpdatesOpen] = useState(false)
   const [emergency, setEmergency] = useState(false)
   const isLoggedIn = false
@@ -376,6 +375,55 @@ export default function ProjectStatus() {
         </div>
       )}
 
+      {/* ── Decisions needed — always open, action-first ─────────────── */}
+      {DECISIONS.length > 0 && (
+        <div className="rounded-2xl border border-amber-500/25 bg-amber-500/[0.04]">
+          <div className="flex items-center gap-2 px-5 py-4">
+            <span className="font-display text-[15px] font-bold text-white">Decisions needed from you</span>
+            <span className="rounded-full bg-amber-500/15 px-2 py-0.5 text-[10px] font-bold text-amber-300 ring-1 ring-inset ring-amber-500/20">
+              {DECISIONS.length}
+            </span>
+          </div>
+          <div className="border-t border-amber-500/15 px-5 py-4">
+            <ul className="space-y-2">
+              {DECISIONS.map((d, i) => (
+                <li key={d.item} className="flex items-center justify-between gap-4 rounded-xl border border-amber-500/20 bg-base-850/50 px-4 py-3">
+                  <div className="flex items-start gap-3">
+                    <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full border border-amber-500/30 bg-amber-500/10 text-[10px] font-bold text-amber-300">{i + 1}</span>
+                    <span className="text-sm text-slate-200">{d.item}</span>
+                  </div>
+                  <span className="shrink-0 rounded-full bg-amber-500/10 px-2.5 py-1 text-[11px] font-semibold text-amber-300 ring-1 ring-inset ring-amber-500/20">{d.due}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      )}
+
+      {/* ── Completed today — wins only ──────────────────────────────── */}
+      {UPDATES.filter(u => u.kind === 'win').length > 0 && (
+        <div className="rounded-2xl border border-emerald-500/20 bg-emerald-500/[0.03]">
+          <div className="flex items-center gap-2 px-5 py-3.5">
+            <span className="h-2 w-2 rounded-full bg-emerald-400" />
+            <span className="font-display text-[13px] font-bold text-emerald-300">Completed</span>
+            <span className="text-[10px] text-slate-500">— what got done</span>
+          </div>
+          <div className="border-t border-emerald-500/10 px-5 py-3">
+            <ul className="space-y-2">
+              {UPDATES.filter(u => u.kind === 'win').map((u, i) => (
+                <li key={i} className="flex items-start gap-3">
+                  <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-emerald-400" />
+                  <div className="min-w-0">
+                    <span className="text-[13px] leading-relaxed text-slate-200">{u.text}</span>
+                    <span className="ml-2 text-[10px] text-slate-600">{u.when}</span>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      )}
+
       {/* ── Kanban ──────────────────────────────────────────────────── */}
       <div>
         <Label text="Work state" />
@@ -391,37 +439,6 @@ export default function ProjectStatus() {
 
       {/* ── 30/60/90-Day Gantt ─────────────────────────────────────── */}
       <GanttChart />
-
-      {/* ── Decisions — collapsed by default ───────────────────────── */}
-      <div className="rounded-2xl border border-white/[0.07] bg-white/[0.02]">
-        <button
-          onClick={() => setDecisionsOpen(v => !v)}
-          className="flex w-full items-center justify-between gap-3 px-5 py-4 text-left"
-        >
-          <div className="flex items-center gap-2">
-            <span className="font-display text-[15px] font-bold text-white">Decisions needed from you</span>
-            <span className="rounded-full bg-amber-500/15 px-2 py-0.5 text-[10px] font-bold text-amber-300 ring-1 ring-inset ring-amber-500/20">
-              {DECISIONS.length}
-            </span>
-          </div>
-          <span className="text-slate-500"><Chevron open={decisionsOpen} /></span>
-        </button>
-        {decisionsOpen && (
-          <div className="border-t border-white/[0.06] px-5 py-4">
-            <ul className="space-y-2">
-              {DECISIONS.map((d, i) => (
-                <li key={d.item} className="flex items-center justify-between gap-4 rounded-xl border border-white/[0.06] bg-base-850/50 px-4 py-3 transition-colors hover:border-amber-500/20 hover:bg-amber-500/[0.04]">
-                  <div className="flex items-start gap-3">
-                    <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full border border-amber-500/30 bg-amber-500/10 text-[10px] font-bold text-amber-300">{i + 1}</span>
-                    <span className="text-sm text-slate-200">{d.item}</span>
-                  </div>
-                  <span className="shrink-0 rounded-full bg-amber-500/10 px-2.5 py-1 text-[11px] font-semibold text-amber-300 ring-1 ring-inset ring-amber-500/20">{d.due}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-        )}
-      </div>
 
       {/* ── Recent updates — collapsed to 2, expand for all ─────────── */}
       <div className="rounded-2xl border border-white/[0.07] bg-white/[0.02]">
