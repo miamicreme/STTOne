@@ -2,6 +2,7 @@
 // Executive engagement status board. Edit the DATA block weekly.
 
 import { useState } from 'react'
+import { GanttChart } from '../components/GanttChart'
 
 /* ================================================================== */
 /*  DATA — update weekly                                               */
@@ -387,6 +388,9 @@ export default function ProjectStatus() {
           <KanbanCol label="Up Next" tone="slate" items={next} state="next" />
         </div>
       </div>
+
+      {/* ── 30/60/90-Day Gantt ─────────────────────────────────────── */}
+      <GanttChart />
 
       {/* ── Decisions — collapsed by default ───────────────────────── */}
       <div className="rounded-2xl border border-white/[0.07] bg-white/[0.02]">
