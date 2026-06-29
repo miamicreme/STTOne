@@ -165,7 +165,7 @@ function EmergencyPanel({ onClose, isLoggedIn }: { onClose: () => void; isLogged
                 <div className="text-xs text-slate-400">Snapshot · contain · contact Kohron</div>
               </div>
             </div>
-            <button onClick={onClose} className="rounded-full p-2 text-slate-400 hover:bg-white/10 hover:text-white"><Close /></button>
+            <button onClick={onClose} aria-label="Close" className="rounded-full p-2 text-slate-400 hover:bg-white/10 hover:text-white"><Close /></button>
           </div>
 
           {step === -1 && (
