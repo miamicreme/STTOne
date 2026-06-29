@@ -104,7 +104,15 @@ function p(day: number) {
   return `${((day / TOTAL_DAYS) * 100).toFixed(3)}%`
 }
 
+function todayOffset(): number {
+  const origin = new Date(GANTT_ORIGIN).getTime()
+  const now = Date.now()
+  return Math.round((now - origin) / 86_400_000)
+}
+
 export function GanttChart() {
+  const today = todayOffset()
+  const showToday = today >= 0 && today <= TOTAL_DAYS
   return (
     <div className="rounded-2xl border border-white/[0.07] bg-base-900/50">
       {/* Header */}
@@ -158,14 +166,16 @@ export function GanttChart() {
           ))}
 
           {/* Today marker */}
-          <div
-            className="absolute inset-y-0 z-10 w-0.5 bg-brand-red/70"
-            style={{ left: p(8) }}
-          >
-            <span className="absolute -top-5 left-1 whitespace-nowrap text-[9px] font-bold uppercase tracking-wide text-brand-red-soft">
-              Today
-            </span>
-          </div>
+          {showToday && (
+            <div
+              className="absolute inset-y-0 z-10 w-0.5 bg-brand-red/70"
+              style={{ left: p(today) }}
+            >
+              <span className="absolute -top-5 left-1 whitespace-nowrap text-[9px] font-bold uppercase tracking-wide text-brand-red-soft">
+                Today
+              </span>
+            </div>
+          )}
 
           {/* Phase rows */}
           {PHASES.map((phase) => (
