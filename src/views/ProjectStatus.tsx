@@ -1,7 +1,8 @@
 // src/views/ProjectStatus.tsx
 // Executive engagement status board. Edit the DATA block weekly.
 
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
+import { GanttChart } from '../components/GanttChart'
 
 /* ================================================================== */
 /*  DATA — update weekly                                               */
@@ -139,16 +140,16 @@ function EmergencyPanel({ onClose, isLoggedIn }: { onClose: () => void; isLogged
   const [gate, setGate] = useState(false)
   const running = step >= 0 && step < PROTOCOL.length
   const done = step >= PROTOCOL.length
+  const timerRef = useRef<number | null>(null)
 
-  const run = () => {
-    setStep(0)
-    const tick = (i: number) => {
-      if (i >= PROTOCOL.length) return
-      setTimeout(() => { setStep(i + 1); tick(i + 1) }, i === 0 ? 700 : 1100)
-    }
-    tick(0)
-  }
+  useEffect(() => {
+    if (step < 0 || step >= PROTOCOL.length) return
+    const delay = step === 0 ? 700 : 1100
+    timerRef.current = window.setTimeout(() => setStep(s => s + 1), delay)
+    return () => { if (timerRef.current) window.clearTimeout(timerRef.current) }
+  }, [step])
 
+  const run = () => setStep(0)
   const trigger = () => (isLoggedIn ? run() : setGate(true))
 
   return (
@@ -296,7 +297,7 @@ export default function ProjectStatus() {
             <p className="mt-2 max-w-2xl text-sm leading-relaxed text-slate-400">{BRIEFING.headline}</p>
           </div>
           {/* Quick stats */}
-          <div className="flex shrink-0 gap-3">
+          <div className="flex flex-wrap gap-3 sm:shrink-0 sm:flex-nowrap">
             <Stat label="Day" value={`${BRIEFING.day}`} sub={`of ${BRIEFING.totalDays}`} />
             <Stat label="Next milestone" value={`${daysToNext}d`} sub={BRIEFING.nextMilestone.split('—')[0].trim()} />
             {EXCEPTIONS.length > 0 && (
@@ -387,6 +388,9 @@ export default function ProjectStatus() {
           <KanbanCol label="Up Next" tone="slate" items={next} state="next" />
         </div>
       </div>
+
+      {/* ── 30/60/90-Day Gantt ─────────────────────────────────────── */}
+      <GanttChart />
 
       {/* ── Decisions — collapsed by default ───────────────────────── */}
       <div className="rounded-2xl border border-white/[0.07] bg-white/[0.02]">
