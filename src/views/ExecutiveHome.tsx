@@ -14,7 +14,7 @@ import { Card, CardHeader, CountPill, EmptyState } from '../components/Card'
 import { KPICard } from '../components/KPICard'
 import { ExceptionRow } from '../components/ExceptionRow'
 import { AnimatedNumber } from '../components/AnimatedNumber'
-import { executiveKpis, portfolioByRegion, leakageLines, leakageTotal } from '../data'
+import { executiveKpis, portfolioByRegion, leakageLines, leakageTotal, systemCards } from '../data'
 import { useApp } from '../state/AppContext'
 
 const VISIBLE_EXCEPTIONS = 5
@@ -45,8 +45,8 @@ export function ExecutiveHome() {
     },
     {
       label: 'Systems connected',
-      value: '3 / 3',
-      ok: true,
+      value: `${systemCards.filter(s => s.status !== 'error').length} / ${systemCards.length}`,
+      ok: systemCards.every(s => s.status !== 'warning' && s.status !== 'error'),
     },
   ]
 
