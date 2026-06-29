@@ -329,12 +329,14 @@ export default function ProjectStatus() {
 
           {/* Left: status + headline */}
           <div className="min-w-0">
-            <div className="flex items-center gap-3">
-              <span className={`h-3.5 w-3.5 rounded-full ${s.dot} shadow-[0_0_10px_2px] ${s.dot.replace('bg-', 'shadow-')}/40`} />
-              <span className={`font-display text-5xl font-black tracking-tight sm:text-6xl ${s.text}`}>
-                {BRIEFING.status}
-              </span>
-              <span className={`ml-2 self-end mb-1.5 rounded-full px-2.5 py-1 text-[11px] font-bold uppercase tracking-wide ring-1 ring-inset ${s.badge}`}>
+            <div className="flex flex-wrap items-end gap-x-3 gap-y-1">
+              <div className="flex items-center gap-3">
+                <span className={`h-3.5 w-3.5 rounded-full ${s.dot}`} />
+                <span className={`font-display text-4xl font-black tracking-tight sm:text-5xl ${s.text}`}>
+                  {BRIEFING.status}
+                </span>
+              </div>
+              <span className={`mb-1 rounded-full px-2.5 py-1 text-[11px] font-bold uppercase tracking-wide ring-1 ring-inset ${s.badge}`}>
                 {BRIEFING.confidence} confidence
               </span>
             </div>
@@ -447,7 +449,7 @@ export default function ProjectStatus() {
             <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-accent">
               What you&apos;ll have at Day 30
             </p>
-            <p className="mt-0.5 text-[11px] text-slate-500">in {Math.max(0, BRIEFING.nextMilestoneDay - BRIEFING.day)} days</p>
+            <p className="mt-0.5 text-[11px] text-slate-500">in {Math.max(0, 30 - BRIEFING.day)} days</p>
             <ul className="mt-3 space-y-2.5">
               {NEXT_OUTCOMES.map((o) => (
                 <li key={o} className="flex items-start gap-3 text-[13px] text-slate-200">
