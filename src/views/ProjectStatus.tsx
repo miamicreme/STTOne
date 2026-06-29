@@ -297,7 +297,7 @@ export default function ProjectStatus() {
             <p className="mt-2 max-w-2xl text-sm leading-relaxed text-slate-400">{BRIEFING.headline}</p>
           </div>
           {/* Quick stats */}
-          <div className="flex shrink-0 gap-3">
+          <div className="flex flex-wrap gap-3 sm:shrink-0 sm:flex-nowrap">
             <Stat label="Day" value={`${BRIEFING.day}`} sub={`of ${BRIEFING.totalDays}`} />
             <Stat label="Next milestone" value={`${daysToNext}d`} sub={BRIEFING.nextMilestone.split('—')[0].trim()} />
             {EXCEPTIONS.length > 0 && (
