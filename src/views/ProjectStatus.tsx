@@ -1,7 +1,7 @@
 // src/views/ProjectStatus.tsx
 // Executive engagement status board. Edit the DATA block weekly.
 
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { GanttChart } from '../components/GanttChart'
 
 /* ================================================================== */
@@ -140,16 +140,16 @@ function EmergencyPanel({ onClose, isLoggedIn }: { onClose: () => void; isLogged
   const [gate, setGate] = useState(false)
   const running = step >= 0 && step < PROTOCOL.length
   const done = step >= PROTOCOL.length
+  const timerRef = useRef<number | null>(null)
 
-  const run = () => {
-    setStep(0)
-    const tick = (i: number) => {
-      if (i >= PROTOCOL.length) return
-      setTimeout(() => { setStep(i + 1); tick(i + 1) }, i === 0 ? 700 : 1100)
-    }
-    tick(0)
-  }
+  useEffect(() => {
+    if (step < 0 || step >= PROTOCOL.length) return
+    const delay = step === 0 ? 700 : 1100
+    timerRef.current = window.setTimeout(() => setStep(s => s + 1), delay)
+    return () => { if (timerRef.current) window.clearTimeout(timerRef.current) }
+  }, [step])
 
+  const run = () => setStep(0)
   const trigger = () => (isLoggedIn ? run() : setGate(true))
 
   return (

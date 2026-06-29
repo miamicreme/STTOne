@@ -106,7 +106,7 @@ function p(day: number) {
 
 export function GanttChart() {
   return (
-    <div className="overflow-hidden rounded-2xl border border-white/[0.07] bg-base-900/50">
+    <div className="rounded-2xl border border-white/[0.07] bg-base-900/50">
       {/* Header */}
       <div className="flex items-baseline justify-between border-b border-white/[0.06] px-5 py-3.5">
         <div>
