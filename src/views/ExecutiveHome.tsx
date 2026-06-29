@@ -45,8 +45,8 @@ export function ExecutiveHome() {
     },
     {
       label: 'Systems connected',
-      value: `${systemCards.filter(s => s.status !== 'error').length} / ${systemCards.length}`,
-      ok: systemCards.every(s => s.status !== 'warning' && s.status !== 'error'),
+      value: `${systemCards.filter(s => s.status === 'healthy' || s.status === 'active').length} / ${systemCards.length}`,
+      ok: systemCards.every(s => s.status === 'healthy' || s.status === 'active'),
     },
   ]
 
