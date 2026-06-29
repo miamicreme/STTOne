@@ -146,13 +146,6 @@ export function Sidebar() {
           <div className="mb-3">
             <ProfileChip collapsed={sidebarCollapsed} />
           </div>
-          <p
-            className={`mb-2.5 px-2 font-display text-[10px] uppercase leading-relaxed tracking-[0.14em] text-slate-600 ${collapsedMd}`}
-          >
-            Built on Execution.
-            <br />
-            Elevated by Excellence.
-          </p>
           {/* Collapse is a desktop affordance only */}
           <button
             onClick={toggleSidebar}
