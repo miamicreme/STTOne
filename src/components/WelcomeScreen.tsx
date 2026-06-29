@@ -10,7 +10,7 @@ const EXIT_MS = 360
 const AUTO_ADVANCE_MS = 10000
 const STORAGE_KEY = 'stc_welcome_seen'
 const MAX_SHOWS = 3
-const DEV = import.meta.env.DEV
+const DEV = process.env.NODE_ENV === 'development'
 
 export function WelcomeScreen() {
   const { welcomeOpen, dismissWelcome, startTour } = useApp()
