@@ -46,7 +46,8 @@ export function TourController() {
     }
 
     tourPage(scene.page)
-    setWordCount(0)
+    // While paused, show the full caption immediately so manual step-through isn't blank.
+    setWordCount(tour.playing ? 0 : scene.caption.split(' ').length)
 
     if (scene.run && ranForScene.current !== tour.sceneIndex) {
       ranForScene.current = tour.sceneIndex
