@@ -1,7 +1,6 @@
 'use client'
 
 import { useEffect, useRef } from 'react'
-import { Linkedin } from 'lucide-react'
 import { AppProvider, useApp } from './state/AppContext'
 import { Sidebar } from './components/Sidebar'
 import { TopBar } from './components/TopBar'
@@ -80,26 +79,10 @@ function Shell() {
               </div>
             </div>
           </div>
-          <footer className="shrink-0 border-t border-white/[0.06] px-6 py-3">
-            <div className="flex flex-wrap items-center justify-center gap-x-2.5 gap-y-1 text-center">
-              <span className="text-[11px] uppercase tracking-[0.18em] text-slate-600">
-                Demo data — interview prototype only
-              </span>
-              <span className="hidden text-slate-700 sm:inline" aria-hidden="true">
-                ·
-              </span>
-              <a
-                href="https://www.linkedin.com/in/kohronburton/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group inline-flex items-center gap-1.5 text-[11px] text-slate-500 transition-colors hover:text-accent"
-              >
-                <span>
-                  Prototype by <span className="font-medium text-slate-400 group-hover:text-accent">Kohron Burton</span>
-                </span>
-                <Linkedin className="h-3 w-3 opacity-70 transition-opacity group-hover:opacity-100" />
-              </a>
-            </div>
+          <footer className="shrink-0 border-t border-white/[0.05] px-6 py-2">
+            <p className="text-center text-[10px] uppercase tracking-[0.18em] text-slate-700">
+              Illustrative data · interview prototype
+            </p>
           </footer>
         </main>
       </div>
