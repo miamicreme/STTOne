@@ -331,10 +331,10 @@ export default function ProjectStatus() {
           <div className="min-w-0">
             <div className="flex items-center gap-3">
               <span className={`h-3.5 w-3.5 rounded-full ${s.dot} shadow-[0_0_10px_2px] ${s.dot.replace('bg-', 'shadow-')}/40`} />
-              <span className={`font-display text-4xl font-extrabold tracking-tight sm:text-5xl ${s.text}`}>
+              <span className={`font-display text-5xl font-black tracking-tight sm:text-6xl ${s.text}`}>
                 {BRIEFING.status}
               </span>
-              <span className={`ml-1 rounded-full px-2.5 py-1 text-xs font-semibold ring-1 ring-inset ${s.badge}`}>
+              <span className={`ml-2 self-end mb-1.5 rounded-full px-2.5 py-1 text-[11px] font-bold uppercase tracking-wide ring-1 ring-inset ${s.badge}`}>
                 {BRIEFING.confidence} confidence
               </span>
             </div>
@@ -348,8 +348,8 @@ export default function ProjectStatus() {
                 <span>{BRIEFING.phase} · {BRIEFING.week}</span>
                 <span>Day {BRIEFING.day} of {BRIEFING.totalDays} · {pct}%</span>
               </div>
-              <div className="h-2 w-full overflow-hidden rounded-full bg-white/10">
-                <div className={`h-full rounded-full ${s.bar} transition-all`} style={{ width: `${pct}%` }} />
+              <div className="h-1.5 w-full overflow-hidden rounded-full bg-white/[0.08]">
+                <div className={`h-full rounded-full ${s.bar} transition-all duration-700`} style={{ width: `${pct}%` }} />
               </div>
             </div>
           </div>
@@ -408,12 +408,11 @@ export default function ProjectStatus() {
                   {openExc && (
                     <div className="border-t border-amber-500/15 bg-black/10 px-4 py-4 pl-10">
                       <p className="text-sm leading-relaxed text-slate-400">{e.detail}</p>
-                      <div className="mt-3 flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between">
-                        <p className="text-sm font-semibold text-slate-200">
-                          <span className="text-slate-500">Action needed: </span>{e.action}
-                        </p>
-                        <span className="text-xs text-slate-500">{e.when}</span>
+                      <div className="mt-3 rounded-lg border border-amber-500/20 bg-amber-500/[0.06] px-3 py-2.5">
+                        <p className="text-[11px] font-bold uppercase tracking-wide text-amber-400">Action needed from you</p>
+                        <p className="mt-0.5 text-sm text-slate-200">{e.action}</p>
                       </div>
+                      <p className="mt-2 text-right text-xs text-slate-600">{e.when}</p>
                     </div>
                   )}
                 </div>
@@ -424,16 +423,18 @@ export default function ProjectStatus() {
           {/* Decisions needed */}
           <Section title="What I need from you" count={DECISIONS.length} countTone="amber">
             <ul className="space-y-2">
-              {DECISIONS.map((d) => (
+              {DECISIONS.map((d, i) => (
                 <li
                   key={d.item}
-                  className="flex items-center justify-between gap-4 rounded-xl border border-white/[0.07] bg-base-850/60 px-4 py-3"
+                  className="flex items-center justify-between gap-4 rounded-xl border border-white/[0.07] bg-base-850/60 px-4 py-3.5 transition-colors hover:border-amber-500/20 hover:bg-amber-500/[0.04]"
                 >
                   <div className="flex items-start gap-3">
-                    <span className="mt-1 h-2 w-2 shrink-0 rounded-full bg-amber-400" />
+                    <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full border border-amber-500/30 bg-amber-500/10 text-[10px] font-bold text-amber-300">
+                      {i + 1}
+                    </span>
                     <span className="text-sm text-slate-200">{d.item}</span>
                   </div>
-                  <span className="shrink-0 rounded-full bg-amber-500/12 px-2.5 py-1 text-xs font-semibold text-amber-300 ring-1 ring-inset ring-amber-500/20">
+                  <span className="shrink-0 rounded-full bg-amber-500/10 px-2.5 py-1 text-[11px] font-semibold text-amber-300 ring-1 ring-inset ring-amber-500/20">
                     {d.due}
                   </span>
                 </li>
@@ -442,14 +443,15 @@ export default function ProjectStatus() {
           </Section>
 
           {/* What you'll have at Day 30 */}
-          <div className="rounded-2xl border border-accent/20 bg-accent/[0.05] p-5">
-            <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-accent">
+          <div className="rounded-2xl border border-accent/25 bg-gradient-to-br from-accent/[0.08] to-accent/[0.03] p-5">
+            <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-accent">
               What you&apos;ll have at Day 30
             </p>
-            <ul className="mt-3 space-y-2">
+            <p className="mt-0.5 text-[11px] text-slate-500">in {Math.max(0, BRIEFING.nextMilestoneDay - BRIEFING.day)} days</p>
+            <ul className="mt-3 space-y-2.5">
               {NEXT_OUTCOMES.map((o) => (
-                <li key={o} className="flex items-start gap-3 text-sm text-slate-300">
-                  <span className="mt-1 flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-accent/20 text-accent">
+                <li key={o} className="flex items-start gap-3 text-[13px] text-slate-200">
+                  <span className="mt-0.5 flex h-[18px] w-[18px] shrink-0 items-center justify-center rounded-full bg-accent/25 text-accent ring-1 ring-accent/30">
                     <CheckIcon />
                   </span>
                   {o}
@@ -594,7 +596,7 @@ function Section({
   return (
     <div>
       <div className="mb-3 flex items-center gap-2">
-        <h2 className="font-display text-sm font-semibold text-slate-200">{title}</h2>
+        <h2 className="font-display text-[15px] font-bold text-white">{title}</h2>
         {count !== undefined && (
           <span className={`rounded-full px-2 py-0.5 text-[10px] font-bold ring-1 ring-inset ${pillColor}`}>
             {count}
