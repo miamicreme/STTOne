@@ -9,7 +9,8 @@ import { leakageTotal } from '../data'
 const EXIT_MS = 360
 const AUTO_ADVANCE_MS = 10000
 const STORAGE_KEY = 'stc_welcome_seen'
-const MAX_SHOWS = 2
+const MAX_SHOWS = 3
+const DEV = import.meta.env.DEV
 
 export function WelcomeScreen() {
   const { welcomeOpen, dismissWelcome, startTour } = useApp()
@@ -17,8 +18,9 @@ export function WelcomeScreen() {
   const [shouldShow, setShouldShow] = useState(false)
   const actedRef = useRef(false)
 
-  /* Check localStorage on mount — suppress after MAX_SHOWS visits. */
+  /* Check localStorage on mount — suppress after MAX_SHOWS visits. In dev, always show. */
   useEffect(() => {
+    if (DEV) { setShouldShow(true); return }
     try {
       const count = parseInt(localStorage.getItem(STORAGE_KEY) ?? '0', 10)
       if (count < MAX_SHOWS) {
