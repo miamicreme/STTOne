@@ -272,6 +272,8 @@ export default function ProjectStatus() {
           <span>Updated {BRIEFING.updated}</span>
           <button
             onClick={() => setEmergency(true)}
+            aria-label="Emergency protocol"
+            title="Emergency: snapshot & alert Kohron"
             className="flex items-center gap-1.5 rounded-xl border border-white/[0.07] bg-white/[0.02] px-3 py-2 text-slate-400 transition-colors hover:border-rose-500/30 hover:bg-rose-500/[0.08] hover:text-rose-300"
           >
             <Shield className="h-4 w-4" /><span className="hidden sm:inline">Emergency</span>
