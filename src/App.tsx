@@ -31,10 +31,6 @@ function Shell() {
     scrollRef.current?.scrollTo({ top: 0 })
   }, [page])
 
-  if (exceptions.length > 0) {
-    return <SystemHoldPage blockers={exceptions} />
-  }
-
   const renderPage = () => {
     switch (page as string) {
       case 'home':
@@ -59,6 +55,8 @@ function Shell() {
         return <EmployeePortal />
       case 'project-status':
         return <ProjectStatus />
+      case 'lead-finder':
+        return <STTLeadFinder />
       default:
         return <ExecutiveHome />
     }
@@ -97,6 +95,7 @@ function Shell() {
       <TourController />
       <CommandPalette />
       <WelcomeScreen />
+      <SystemHoldPage blockers={exceptions} />
     </div>
   )
 }
@@ -105,7 +104,9 @@ export default function App() {
   return (
     <AppProvider>
       <ErrorBoundary>
-        <Shell />
+        <UpdateGate>
+          <Shell />
+        </UpdateGate>
       </ErrorBoundary>
     </AppProvider>
   )
