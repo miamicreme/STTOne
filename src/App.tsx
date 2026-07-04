@@ -8,6 +8,7 @@ import { ErrorBoundary } from './components/ErrorBoundary'
 import { TourController } from './components/TourController'
 import { CommandPalette } from './components/CommandPalette'
 import { WelcomeScreen } from './components/WelcomeScreen'
+import { UpdateGate } from './components/UpdateGate'
 import { ExecutiveHome } from './views/ExecutiveHome'
 import { CEOBoardView } from './views/CEOBoardView'
 import { Architecture } from './views/Architecture'
@@ -100,7 +101,9 @@ export default function App() {
   return (
     <AppProvider>
       <ErrorBoundary>
-        <Shell />
+        <UpdateGate>
+          <Shell />
+        </UpdateGate>
       </ErrorBoundary>
     </AppProvider>
   )
