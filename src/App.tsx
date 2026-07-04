@@ -18,6 +18,7 @@ import { FieldOps } from './views/FieldOps'
 import { ProjectPortfolio } from './views/ProjectPortfolio'
 import { EmployeePortal } from './views/EmployeePortal'
 import ProjectStatus from './views/ProjectStatus'
+import { STTLeadFinder } from './views/STTLeadFinder'
 
 function Shell() {
   const { page, boardroomMode } = useApp()
@@ -30,11 +31,13 @@ function Shell() {
   }, [page])
 
   const renderPage = () => {
-    switch (page) {
+    switch (page as string) {
       case 'home':
         return <ExecutiveHome />
       case 'board':
         return <CEOBoardView />
+      case 'lead-finder':
+        return <STTLeadFinder />
       case 'architecture':
         return <Architecture />
       case 'newhire':

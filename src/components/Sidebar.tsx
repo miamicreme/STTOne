@@ -13,6 +13,7 @@ import {
   ClipboardList,
   ChevronLeft,
   X,
+  Radar,
 } from 'lucide-react'
 import type { PageKey } from '../data'
 import { useApp } from '../state/AppContext'
@@ -20,7 +21,7 @@ import { BrandMark } from './Logo'
 import { ProfileChip } from './ProfileChip'
 
 interface NavItem {
-  key: PageKey
+  key: PageKey | 'lead-finder'
   label: string
   icon: typeof LayoutDashboard
   badge?: number
@@ -40,6 +41,7 @@ export function Sidebar() {
   const nav: NavItem[] = [
     { key: 'home', label: 'Executive Home', icon: LayoutDashboard },
     { key: 'board', label: 'CEO / Board View', icon: Landmark },
+    { key: 'lead-finder', label: 'STT Lead Finder', icon: Radar },
     { key: 'newhire', label: 'New Hire Automation', icon: UserPlus },
     { key: 'drive', label: 'Drive Cleanup Center', icon: HardDrive },
     { key: 'integration', label: 'Integration Health', icon: Activity, badge: exceptions.length },
@@ -98,12 +100,12 @@ export function Sidebar() {
         {/* Nav */}
         <nav className="flex-1 space-y-1 overflow-y-auto p-3">
           {nav.map((item) => {
-            const active = page === item.key
+            const active = (page as string) === item.key
             const Icon = item.icon
             return (
               <button
                 key={item.key}
-                onClick={() => setPage(item.key)}
+                onClick={() => setPage(item.key as PageKey)}
                 title={sidebarCollapsed ? item.label : undefined}
                 className={`group relative flex w-full items-center gap-3 overflow-hidden rounded-xl px-3 py-2.5 text-left text-sm transition-all duration-200 ${
                   active

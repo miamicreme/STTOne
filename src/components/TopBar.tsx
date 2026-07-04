@@ -4,9 +4,10 @@ import { Presentation, Search, Bell, Menu, Compass } from 'lucide-react'
 import { useApp } from '../state/AppContext'
 import type { PageKey } from '../data'
 
-const pageTitles: Record<PageKey, string> = {
+const pageTitles: Record<PageKey | 'lead-finder', string> = {
   home: 'Executive Home',
   board: 'CEO / Board View',
+  'lead-finder': 'STT Lead Finder',
   architecture: 'Integration Architecture',
   newhire: 'New Hire Automation',
   drive: 'Google Drive Cleanup Center',
@@ -35,7 +36,7 @@ export function TopBar() {
           </button>
         )}
         <h1 className="truncate font-display text-base font-bold tracking-tight text-white sm:text-[18px]">
-          {pageTitles[page]}
+          {pageTitles[page as PageKey | 'lead-finder'] ?? 'Executive Home'}
         </h1>
       </div>
 
