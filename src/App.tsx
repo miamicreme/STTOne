@@ -104,7 +104,9 @@ export default function App() {
   return (
     <AppProvider>
       <ErrorBoundary>
-        <Shell />
+        <UpdateGate>
+          <Shell />
+        </UpdateGate>
       </ErrorBoundary>
     </AppProvider>
   )
