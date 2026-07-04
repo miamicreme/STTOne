@@ -8,7 +8,7 @@ import { ErrorBoundary } from './components/ErrorBoundary'
 import { TourController } from './components/TourController'
 import { CommandPalette } from './components/CommandPalette'
 import { WelcomeScreen } from './components/WelcomeScreen'
-import { UpdateGate } from './components/UpdateGate'
+import { SystemHoldPage } from './components/SystemHoldPage'
 import { ExecutiveHome } from './views/ExecutiveHome'
 import { CEOBoardView } from './views/CEOBoardView'
 import { Architecture } from './views/Architecture'
@@ -22,7 +22,7 @@ import ProjectStatus from './views/ProjectStatus'
 import { STTLeadFinder } from './views/STTLeadFinder'
 
 function Shell() {
-  const { page, boardroomMode } = useApp()
+  const { page, boardroomMode, exceptions } = useApp()
   const scrollRef = useRef<HTMLDivElement>(null)
 
   // Each view starts at the top — switching pages never inherits the previous
@@ -55,6 +55,8 @@ function Shell() {
         return <EmployeePortal />
       case 'project-status':
         return <ProjectStatus />
+      case 'lead-finder':
+        return <STTLeadFinder />
       default:
         return <ExecutiveHome />
     }
@@ -93,6 +95,7 @@ function Shell() {
       <TourController />
       <CommandPalette />
       <WelcomeScreen />
+      <SystemHoldPage blockers={exceptions} />
     </div>
   )
 }
