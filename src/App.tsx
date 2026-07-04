@@ -8,7 +8,6 @@ import { ErrorBoundary } from './components/ErrorBoundary'
 import { TourController } from './components/TourController'
 import { CommandPalette } from './components/CommandPalette'
 import { WelcomeScreen } from './components/WelcomeScreen'
-import { SystemHoldPage } from './components/SystemHoldPage'
 import { ExecutiveHome } from './views/ExecutiveHome'
 import { CEOBoardView } from './views/CEOBoardView'
 import { Architecture } from './views/Architecture'
@@ -22,7 +21,7 @@ import ProjectStatus from './views/ProjectStatus'
 import { STTLeadFinder } from './views/STTLeadFinder'
 
 function Shell() {
-  const { page, boardroomMode, exceptions } = useApp()
+  const { page, boardroomMode } = useApp()
   const scrollRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -87,7 +86,6 @@ function Shell() {
       <TourController />
       <CommandPalette />
       <WelcomeScreen />
-      <SystemHoldPage blockers={exceptions} />
     </div>
   )
 }
