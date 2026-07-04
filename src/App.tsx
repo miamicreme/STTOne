@@ -55,6 +55,8 @@ function Shell() {
         return <EmployeePortal />
       case 'project-status':
         return <ProjectStatus />
+      case 'lead-finder':
+        return <STTLeadFinder />
       default:
         return <ExecutiveHome />
     }
