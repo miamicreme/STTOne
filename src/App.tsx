@@ -9,6 +9,7 @@ import { TourController } from './components/TourController'
 import { CommandPalette } from './components/CommandPalette'
 import { WelcomeScreen } from './components/WelcomeScreen'
 import { SystemHoldPage } from './components/SystemHoldPage'
+import { UpdateGate } from './components/UpdateGate'
 import { ExecutiveHome } from './views/ExecutiveHome'
 import { CEOBoardView } from './views/CEOBoardView'
 import { Architecture } from './views/Architecture'
@@ -25,8 +26,6 @@ function Shell() {
   const { page, boardroomMode, exceptions } = useApp()
   const scrollRef = useRef<HTMLDivElement>(null)
 
-  // Each view starts at the top — switching pages never inherits the previous
-  // scroll position, so there's no jump. Instant (not smooth) so it's invisible.
   useEffect(() => {
     scrollRef.current?.scrollTo({ top: 0 })
   }, [page])
@@ -55,8 +54,6 @@ function Shell() {
         return <EmployeePortal />
       case 'project-status':
         return <ProjectStatus />
-      case 'lead-finder':
-        return <STTLeadFinder />
       default:
         return <ExecutiveHome />
     }
@@ -67,10 +64,6 @@ function Shell() {
       {!boardroomMode && <Sidebar />}
       <div className="flex min-w-0 flex-1 flex-col">
         <TopBar />
-        {/* Stage — an app-shell content area: the top bar, sidebar, and footer
-            stay fixed while only this region scrolls. Views fade in place (no
-            slide) and reset to the top on switch, so navigation is calm and
-            nothing is ever clipped, on any screen size. */}
         <main className="flex min-h-0 flex-1 flex-col">
           <div ref={scrollRef} className="min-h-0 flex-1 overflow-y-auto">
             <div
