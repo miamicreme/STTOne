@@ -8,6 +8,7 @@ import { ErrorBoundary } from './components/ErrorBoundary'
 import { TourController } from './components/TourController'
 import { CommandPalette } from './components/CommandPalette'
 import { WelcomeScreen } from './components/WelcomeScreen'
+import { SystemHoldPage } from './components/SystemHoldPage'
 import { ExecutiveHome } from './views/ExecutiveHome'
 import { CEOBoardView } from './views/CEOBoardView'
 import { Architecture } from './views/Architecture'
@@ -21,7 +22,7 @@ import ProjectStatus from './views/ProjectStatus'
 import { STTLeadFinder } from './views/STTLeadFinder'
 
 function Shell() {
-  const { page, boardroomMode } = useApp()
+  const { page, boardroomMode, exceptions } = useApp()
   const scrollRef = useRef<HTMLDivElement>(null)
 
   // Each view starts at the top — switching pages never inherits the previous
@@ -29,6 +30,11 @@ function Shell() {
   useEffect(() => {
     scrollRef.current?.scrollTo({ top: 0 })
   }, [page])
+
+  const blockerHold = <SystemHoldPage blockers={exceptions} />
+  if (blockerHold.type) {
+    return blockerHold
+  }
 
   const renderPage = () => {
     switch (page as string) {
