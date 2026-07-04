@@ -31,9 +31,8 @@ function Shell() {
     scrollRef.current?.scrollTo({ top: 0 })
   }, [page])
 
-  const blockerHold = <SystemHoldPage blockers={exceptions} />
-  if (blockerHold.type) {
-    return blockerHold
+  if (exceptions.length > 0) {
+    return <SystemHoldPage blockers={exceptions} />
   }
 
   const renderPage = () => {
