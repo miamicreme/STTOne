@@ -31,11 +31,6 @@ function Shell() {
     scrollRef.current?.scrollTo({ top: 0 })
   }, [page])
 
-  const blockerHold = <SystemHoldPage blockers={exceptions} />
-  if (blockerHold.type) {
-    return blockerHold
-  }
-
   const renderPage = () => {
     switch (page as string) {
       case 'home':
@@ -98,6 +93,7 @@ function Shell() {
       <TourController />
       <CommandPalette />
       <WelcomeScreen />
+      <SystemHoldPage blockers={exceptions} />
     </div>
   )
 }
