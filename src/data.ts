@@ -5,6 +5,7 @@
 
 export type PageKey =
   | 'home'
+  | 'discovery'
   | 'board'
   | 'lead-finder'
   | 'architecture'
@@ -336,16 +337,11 @@ export const leakageTotal = leakageLines.reduce((sum, line) => sum + line.amount
 
 export interface TourScene { page: PageKey; caption: string; ms: number; run?: 'success' | 'failure'; anchor?: string }
 export const tourScenes: TourScene[] = [
-  { page: 'home', caption: 'The number that matters: ~$214K/yr in preventable leakage', ms: 9500 },
-  { page: 'board', caption: 'The board view — risk by region and the transformation roadmap', ms: 10000, anchor: 'risk' },
-  { page: 'newhire', caption: 'New-hire automation: Paychex to PenguinData in a single pass', ms: 12500, run: 'success', anchor: 'runhire' },
-  { page: 'newhire', caption: 'The catch — a hire with no CDL is stopped before dispatch', ms: 12000, run: 'failure', anchor: 'runhire' },
-  { page: 'integration', caption: 'That blocked hire lands here as a live exception — nothing fails silently', ms: 9500, anchor: 'intq' },
-  { page: 'architecture', caption: 'One governed layer between your systems — validate, de-dupe, audit, never fail silently', ms: 10500, anchor: 'arch-diagram' },
-  { page: 'drive', caption: 'The Google Drive junk drawer, classified, de-duped, and de-risked', ms: 9000, anchor: 'drive-dupes' },
-  { page: 'projects', caption: 'Portfolio health across every active program', ms: 8500, anchor: 'project-table' },
-  { page: 'portal', caption: 'The field tech portal — schedule, truck, and certs in one place', ms: 8500, anchor: 'portal-schedule' },
-  { page: 'home', caption: 'Keep the systems of record. Add one governed layer between them.', ms: 7500 },
+  { page: 'home', caption: 'Start with the executive problem: visibility, leakage, and risk across disconnected systems.', ms: 9000 },
+  { page: 'discovery', caption: 'Then learn the business before building: interview, map, validate, and prioritize.', ms: 9000, anchor: 'discovery-start' },
+  { page: 'architecture', caption: 'Keep the systems of record. Add one governed operating layer between them.', ms: 9500, anchor: 'arch-diagram' },
+  { page: 'integration', caption: 'Route every mismatch to an exception queue so nothing breaks silently.', ms: 9000, anchor: 'intq' },
+  { page: 'board', caption: 'Close with the roadmap: measured wins, governance, and a foundation for Power BI and AI.', ms: 9000, anchor: 'risk' },
 ]
 
 export interface SystemOfRecord { system: string; owns: string; role: string }
