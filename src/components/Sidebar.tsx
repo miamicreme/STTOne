@@ -14,6 +14,7 @@ import {
   ChevronLeft,
   X,
   Radar,
+  Bot,
 } from 'lucide-react'
 import type { PageKey } from '../data'
 import { useApp } from '../state/AppContext'
@@ -21,7 +22,7 @@ import { BrandMark } from './Logo'
 import { ProfileChip } from './ProfileChip'
 
 interface NavItem {
-  key: PageKey | 'lead-finder'
+  key: PageKey | 'lead-finder' | 'discovery'
   label: string
   icon: typeof LayoutDashboard
   badge?: number
@@ -42,6 +43,7 @@ export function Sidebar() {
     { key: 'home', label: 'Executive Home', icon: LayoutDashboard },
     { key: 'board', label: 'CEO / Board View', icon: Landmark },
     { key: 'lead-finder', label: 'STT Lead Finder', icon: Radar },
+    { key: 'discovery', label: 'Discovery Assistant', icon: Bot },
     { key: 'newhire', label: 'New Hire Automation', icon: UserPlus },
     { key: 'drive', label: 'Drive Cleanup Center', icon: HardDrive },
     { key: 'integration', label: 'Integration Health', icon: Activity, badge: exceptions.length },
