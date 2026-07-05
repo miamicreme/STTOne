@@ -20,6 +20,7 @@ import { EmployeePortal } from './views/EmployeePortal'
 import ProjectStatus from './views/ProjectStatus'
 import { STTLeadFinder } from './views/STTLeadFinder'
 import { DiscoveryAssistant } from './views/DiscoveryAssistant'
+import { LegacyDemo } from './views/LegacyDemo'
 
 function Shell() {
   const { page, boardroomMode } = useApp()
@@ -35,6 +36,8 @@ function Shell() {
         return <ExecutiveHome />
       case 'board':
         return <CEOBoardView />
+      case 'legacy':
+        return <LegacyDemo />
       case 'lead-finder':
         return <STTLeadFinder />
       case 'discovery':
