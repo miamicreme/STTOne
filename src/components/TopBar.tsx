@@ -8,6 +8,7 @@ const pageTitles: Record<PageKey, string> = {
   home: 'Executive Brief',
   discovery: 'Discovery Map',
   board: '90-Day Roadmap',
+  legacy: 'Old Full Demo',
   'lead-finder': 'STT Lead Finder',
   architecture: 'Operating Model',
   newhire: 'New Hire Automation',
