@@ -7,6 +7,7 @@ export type PageKey =
   | 'home'
   | 'discovery'
   | 'board'
+  | 'legacy'
   | 'lead-finder'
   | 'architecture'
   | 'newhire'
