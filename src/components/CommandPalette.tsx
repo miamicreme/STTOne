@@ -15,6 +15,7 @@ import {
   Presentation,
   Search,
   CornerDownLeft,
+  Bot,
   type LucideIcon,
 } from 'lucide-react'
 import type { PageKey } from '../data'
@@ -29,18 +30,19 @@ interface Command {
   run: (ctx: ReturnType<typeof useApp>) => void
 }
 
-const goto = (page: PageKey, label: string, hint: string, icon: LucideIcon): Command => ({
+const goto = (page: PageKey | 'discovery', label: string, hint: string, icon: LucideIcon): Command => ({
   id: `go-${page}`,
   label,
   hint,
   icon,
   keywords: 'go to navigate open page',
-  run: (ctx) => ctx.setPage(page),
+  run: (ctx) => ctx.setPage(page as PageKey),
 })
 
 const COMMANDS: Command[] = [
   goto('home', 'Executive Home', 'Go to page', LayoutDashboard),
   goto('board', 'CEO / Board View', 'Go to page', Landmark),
+  goto('discovery', 'Discovery Assistant', 'AI interview assessment', Bot),
   goto('architecture', 'Integration Architecture', 'Go to page', Network),
   goto('newhire', 'New Hire Automation', 'Go to page', UserPlus),
   goto('drive', 'Drive Cleanup Center', 'Go to page', HardDrive),
@@ -220,11 +222,11 @@ export function CommandPalette() {
           <span className="flex items-center gap-2">
             <kbd className="rounded border border-white/10 bg-white/[0.04] px-1 py-0.5">↑</kbd>
             <kbd className="rounded border border-white/10 bg-white/[0.04] px-1 py-0.5">↓</kbd>
-            to navigate
+            navigate
           </span>
-          <span className="flex items-center gap-1.5">
-            <kbd className="rounded border border-white/10 bg-white/[0.04] px-1 py-0.5">↵</kbd>
-            to run
+          <span className="flex items-center gap-2">
+            <kbd className="rounded border border-white/10 bg-white/[0.04] px-1 py-0.5">Enter</kbd>
+            run
           </span>
         </div>
       </div>
