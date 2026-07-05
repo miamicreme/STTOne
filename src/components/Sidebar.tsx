@@ -1,6 +1,6 @@
 'use client'
 
-import { LayoutDashboard, SearchCheck, Network, Activity, Route, ChevronLeft, X } from 'lucide-react'
+import { LayoutDashboard, SearchCheck, Network, Activity, Route, Archive, ChevronLeft, X } from 'lucide-react'
 import type { PageKey } from '../data'
 import { useApp } from '../state/AppContext'
 import { BrandMark } from './Logo'
@@ -25,6 +25,7 @@ export function Sidebar() {
   ]
 
   const collapsedMd = sidebarCollapsed ? 'md:hidden' : ''
+  const legacyActive = page === 'legacy'
 
   return (
     <>
@@ -59,12 +60,7 @@ export function Sidebar() {
             const active = page === item.key
             const Icon = item.icon
             return (
-              <button
-                key={item.key}
-                onClick={() => setPage(item.key)}
-                title={sidebarCollapsed ? item.label : undefined}
-                className={`group relative flex w-full items-center gap-3 overflow-hidden rounded-xl px-3 py-2.5 text-left text-sm transition-all duration-200 ${active ? 'bg-gradient-to-r from-accent/[0.18] via-accent/[0.10] to-transparent font-semibold text-accent shadow-[inset_0_0_0_1px_rgba(47,134,224,0.22)]' : 'text-slate-400 hover:bg-white/[0.05] hover:text-slate-100'}`}
-              >
+              <button key={item.key} onClick={() => setPage(item.key)} title={sidebarCollapsed ? item.label : undefined} className={`group relative flex w-full items-center gap-3 overflow-hidden rounded-xl px-3 py-2.5 text-left text-sm transition-all duration-200 ${active ? 'bg-gradient-to-r from-accent/[0.18] via-accent/[0.10] to-transparent font-semibold text-accent shadow-[inset_0_0_0_1px_rgba(47,134,224,0.22)]' : 'text-slate-400 hover:bg-white/[0.05] hover:text-slate-100'}`}>
                 {active && <span className="absolute inset-y-1.5 left-0 w-[3px] rounded-full bg-gradient-to-b from-brand-red via-accent to-accent-glow shadow-[0_0_12px_rgba(47,134,224,0.8)]" />}
                 <Icon className={`h-[18px] w-[18px] shrink-0 ${active ? '' : 'group-hover:scale-110'}`} />
                 <span className={`flex h-5 w-5 shrink-0 items-center justify-center rounded-full border border-white/10 text-[10px] tabular text-slate-500 ${collapsedMd}`}>{index + 1}</span>
@@ -76,6 +72,10 @@ export function Sidebar() {
         </nav>
 
         <div className="border-t border-white/[0.07] p-3">
+          <button onClick={() => setPage('legacy')} title={sidebarCollapsed ? 'Old full demo' : undefined} className={`mb-3 flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left text-xs transition-colors ${legacyActive ? 'bg-white/[0.06] text-slate-100' : 'text-slate-500 hover:bg-white/[0.04] hover:text-slate-300'}`}>
+            <Archive className="h-4 w-4 shrink-0" />
+            <span className={`truncate ${collapsedMd}`}>Old full demo</span>
+          </button>
           <div className="mb-3"><ProfileChip collapsed={sidebarCollapsed} /></div>
           <button onClick={toggleSidebar} className="hidden w-full items-center justify-center gap-2 rounded-xl border border-white/[0.07] bg-white/[0.02] py-2 text-xs text-slate-400 transition-colors hover:bg-white/[0.05] hover:text-slate-200 md:flex">
             <ChevronLeft className={`h-4 w-4 transition-transform duration-300 ${sidebarCollapsed ? 'rotate-180' : ''}`} />
