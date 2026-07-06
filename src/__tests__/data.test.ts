@@ -18,6 +18,7 @@ const VALID_PAGES = new Set([
   'home',
   'discovery',
   'board',
+  'legacy',
   'architecture',
   'newhire',
   'drive',
