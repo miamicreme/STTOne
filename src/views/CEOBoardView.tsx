@@ -1,6 +1,6 @@
 'use client'
 
-import { ArrowRight, CheckCircle2, ClipboardList, Laptop, Map, Network, ShieldCheck } from 'lucide-react'
+import { ArrowRight, CheckCircle2, ClipboardList, Laptop, Map, Network, ShieldCheck, SearchCheck, Settings2, BarChart3 } from 'lucide-react'
 import { Card, SectionHeader, Tag } from '../components/Card'
 import { useApp } from '../state/AppContext'
 
@@ -9,6 +9,8 @@ const roadmap = [
     phase: 'Days 1–30',
     title: 'Discover and baseline',
     outcome: 'Understand the business before recommending change.',
+    icon: SearchCheck,
+    accent: 'from-sky-500/20 to-accent/5 border-sky-400/30',
     bullets: [
       'Meet with leadership, HR, operations, dispatch, finance, project leads, and field users.',
       'Map how Paychex, PenguinData, QuickBooks, and Google Drive are used today.',
@@ -20,6 +22,8 @@ const roadmap = [
     phase: 'Days 31–60',
     title: 'Govern and stabilize',
     outcome: 'Define ownership and stop silent data failures.',
+    icon: Settings2,
+    accent: 'from-violet-500/20 to-accent/5 border-violet-400/30',
     bullets: [
       'Confirm sources of truth: Paychex for people, PenguinData for operations, QuickBooks for finance, Drive as legacy document source.',
       'Create source-of-truth rules, validation checks, exception categories, and approval paths.',
@@ -31,6 +35,8 @@ const roadmap = [
     phase: 'Days 61–90',
     title: 'Visibility and implementation path',
     outcome: 'Prepare SouthernTier for Power BI, automation, and AI readiness.',
+    icon: BarChart3,
+    accent: 'from-emerald-500/20 to-accent/5 border-emerald-400/30',
     bullets: [
       'Finalize the future-state integration layer plan and phased implementation sequence.',
       'Define executive dashboards across operations, finance, fleet, hiring, projects, and customer KPIs.',
@@ -101,29 +107,51 @@ export function CEOBoardView() {
         </div>
       </section>
 
-      <section className="grid gap-4 xl:grid-cols-3">
-        {roadmap.map((phase) => (
-          <Card key={phase.phase} className="flex flex-col">
-            <div className="mb-4 flex items-start justify-between gap-3">
-              <div>
-                <Tag>{phase.phase}</Tag>
-                <h2 className="mt-3 font-display text-xl font-bold text-white">{phase.title}</h2>
-              </div>
-              <CheckCircle2 className="h-5 w-5 text-accent" />
-            </div>
-            <p className="rounded-xl border border-accent/20 bg-accent/[0.06] p-3 text-sm font-medium leading-6 text-slate-200">
-              {phase.outcome}
-            </p>
-            <ul className="mt-4 space-y-2 text-sm leading-6 text-slate-400">
-              {phase.bullets.map((bullet) => (
-                <li key={bullet} className="flex gap-2">
-                  <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-accent" />
-                  <span>{bullet}</span>
-                </li>
-              ))}
-            </ul>
-          </Card>
-        ))}
+      <section className="rounded-3xl border border-white/[0.08] bg-base-900/35 p-4 shadow-inset md:p-5">
+        <div className="mb-5 flex flex-col gap-2 md:flex-row md:items-end md:justify-between">
+          <div>
+            <p className="font-display text-[11px] uppercase tracking-[0.2em] text-accent">First 90 days</p>
+            <h2 className="mt-1 font-display text-2xl font-bold tracking-tight text-white">Three phases, one controlled path.</h2>
+          </div>
+          <p className="max-w-xl text-sm leading-6 text-slate-400">Each phase has a simple executive message, practical field work, and a concrete deliverable.</p>
+        </div>
+
+        <div className="grid gap-4 xl:grid-cols-3">
+          {roadmap.map((phase, index) => {
+            const Icon = phase.icon
+            return (
+              <article key={phase.phase} className={`relative overflow-hidden rounded-3xl border bg-gradient-to-br ${phase.accent} p-5 shadow-[0_18px_40px_-28px_rgba(0,0,0,0.85)]`}>
+                <div className="mb-5 flex items-start justify-between gap-3">
+                  <div>
+                    <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-accent">Phase {index + 1}</p>
+                    <div className="mt-2 inline-flex rounded-full border border-white/10 bg-black/20 px-3 py-1 text-[12px] font-bold text-white">
+                      {phase.phase}
+                    </div>
+                  </div>
+                  <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl border border-white/10 bg-white/[0.06] text-accent">
+                    <Icon className="h-5 w-5" />
+                  </span>
+                </div>
+
+                <h3 className="font-display text-2xl font-black tracking-tight text-white">{phase.title}</h3>
+                <p className="mt-3 rounded-2xl border border-white/[0.08] bg-base-950/45 p-3 text-[15px] font-semibold leading-6 text-slate-100">
+                  {phase.outcome}
+                </p>
+
+                <ul className="mt-5 space-y-3 text-sm leading-6 text-slate-300">
+                  {phase.bullets.map((bullet, bulletIndex) => (
+                    <li key={bullet} className="flex gap-3 rounded-xl border border-white/[0.05] bg-base-950/25 p-3">
+                      <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-accent/15 text-[11px] font-bold text-accent">
+                        {bulletIndex + 1}
+                      </span>
+                      <span>{bullet}</span>
+                    </li>
+                  ))}
+                </ul>
+              </article>
+            )
+          })}
+        </div>
       </section>
 
       <section className="grid gap-5 lg:grid-cols-[1fr_1fr]">
