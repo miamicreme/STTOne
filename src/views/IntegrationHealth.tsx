@@ -1,3 +1,4 @@
+import type { ReactNode } from 'react'
 import {
   AlertTriangle,
   ArrowRight,
@@ -196,7 +197,7 @@ export function IntegrationHealth() {
   )
 }
 
-function ProofPoint({ icon, title, body }: { icon: React.ReactNode; title: string; body: string }) {
+function ProofPoint({ icon, title, body }: { icon: ReactNode; title: string; body: string }) {
   return (
     <div className="flex gap-3 rounded-xl border border-white/[0.06] bg-base-900/35 p-3">
       <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl border border-accent/20 bg-accent/10 text-accent">
