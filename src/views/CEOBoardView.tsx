@@ -1,255 +1,206 @@
 'use client'
 
-import { Gauge, ShieldAlert, Map, Flag, CheckCircle2, Loader2, Circle, ArrowRight } from 'lucide-react'
-import { Card, SectionHeader, CardHeader } from '../components/Card'
-import { KPICard } from '../components/KPICard'
-import { StatusBadge } from '../components/StatusBadge'
-import { ProgressBar } from '../components/ProgressBar'
-import {
-  boardKpis,
-  riskHeatmap,
-  riskDimensions,
-  riskLabels,
-  transformationRoadmap,
-  projects,
-  type RiskLevel,
-  type MilestoneStatus,
-} from '../data'
+import { ArrowRight, CheckCircle2, ClipboardList, DollarSign, Laptop, Map, Network, ShieldCheck, UserCheck } from 'lucide-react'
+import { Card, SectionHeader, Tag } from '../components/Card'
 import { useApp } from '../state/AppContext'
 
-const riskCell: Record<RiskLevel, string> = {
-  0: 'bg-emerald-500/15 text-emerald-300 ring-emerald-500/25',
-  1: 'bg-sky-500/15 text-sky-300 ring-sky-500/25',
-  2: 'bg-amber-500/15 text-amber-300 ring-amber-500/25',
-  3: 'bg-rose-500/15 text-rose-300 ring-rose-500/25',
-}
+const answerCards = [
+  {
+    question: 'Rate and structure',
+    answer: '$15K–$25K fixed-fee assessment and roadmap, depending on final scope and timeline. Ongoing work can become phased implementation, contract-to-hire, or a long-term leadership role after discovery.',
+    icon: DollarSign,
+  },
+  {
+    question: 'Fixed-fee vs. hourly',
+    answer: 'Fixed-fee for the first defined phase so cost is predictable and delivery risk stays on me. Hourly only where the scope is genuinely open-ended.',
+    icon: ClipboardList,
+  },
+  {
+    question: 'Availability',
+    answer: 'I can begin promptly after the engagement agreement, onboarding, and required access are complete.',
+    icon: CheckCircle2,
+  },
+  {
+    question: 'Similar work',
+    answer: '18+ years across enterprise systems, SQL Server, .NET, ETL, modern TypeScript systems, integration, automation, and owner-operated technology businesses. The working prototype is the clearest evidence.',
+    icon: UserCheck,
+  },
+  {
+    question: 'References',
+    answer: 'Recent work has been through businesses I own and operate, so I am demonstrating the approach through the prototype, architecture, and implementation materials, with a direct executive walkthrough.',
+    icon: ShieldCheck,
+  },
+  {
+    question: 'What I need from STT',
+    answer: 'Read-only access first, time with the people who use the systems, one executive sponsor, one access/approval contact, and company-managed equipment and accounts for security.',
+    icon: Laptop,
+  },
+]
 
-const milestoneMeta: Record<
-  MilestoneStatus,
-  { icon: typeof CheckCircle2; cls: string; label: string }
-> = {
-  done: { icon: CheckCircle2, cls: 'text-emerald-400', label: 'Complete' },
-  'in-progress': { icon: Loader2, cls: 'text-accent', label: 'In progress' },
-  planned: { icon: Circle, cls: 'text-slate-500', label: 'Planned' },
-}
+const roadmap = [
+  {
+    phase: 'Days 1–30',
+    title: 'Discover and baseline',
+    outcome: 'Understand the business before recommending change.',
+    bullets: [
+      'Interview leadership, HR, operations, dispatch, finance, project leads, and field users.',
+      'Map how Paychex, PenguinData, QuickBooks, and Google Drive are used today.',
+      'Identify duplicate entry, spreadsheet dependency, job-code issues, permissions, and reporting pain.',
+      'Deliver an executive current-state brief and prioritized risk/opportunity list.',
+    ],
+  },
+  {
+    phase: 'Days 31–60',
+    title: 'Govern and stabilize',
+    outcome: 'Define ownership and stop silent data failures.',
+    bullets: [
+      'Confirm systems of record: Paychex for people, PenguinData for operations, QuickBooks for finance, Drive as legacy document source.',
+      'Create source-of-truth rules, validation checks, and exception categories.',
+      'Build the first governed workflow prototype with audit trail and owner handoffs.',
+      'Deliver quick wins that reduce manual rework without touching production unsafely.',
+    ],
+  },
+  {
+    phase: 'Days 61–90',
+    title: 'Roadmap and executive visibility',
+    outcome: 'Prepare the company for Power BI, automation, and AI readiness.',
+    bullets: [
+      'Finalize the future-state integration layer plan and implementation sequence.',
+      'Define executive dashboards across operations, finance, fleet, hiring, projects, and customer KPIs.',
+      'Document security, access, audit, backup, and change-management requirements.',
+      'Present the long-term implementation roadmap and recommended role structure.',
+    ],
+  },
+]
+
+const demoSteps = [
+  { page: 'home' as const, label: 'Executive Brief', body: 'Start with the business case and modeled leakage.' },
+  { page: 'discovery' as const, label: 'Discovery Map', body: 'Show how I learn the business before building.' },
+  { page: 'architecture' as const, label: 'Operating Model', body: 'Show the governed layer between existing systems.' },
+  { page: 'integration' as const, label: 'Exception Command Center', body: 'Show how mismatches become visible work.' },
+]
 
 export function CEOBoardView() {
-  const { exceptions, setPage } = useApp()
-  const atRisk = projects.filter((p) => p.status === 'at-risk' || p.status === 'blocked')
-  const doneCount = transformationRoadmap.filter((m) => m.status === 'done').length
-  const roadmapProgress = Math.round((doneCount / transformationRoadmap.length) * 100)
+  const { setPage, startTour } = useApp()
 
   return (
-    <div className="space-y-4">
-      {/* Executive summary hero */}
-      <div className="edge-accent sheen relative overflow-hidden rounded-2xl border border-accent/20 bg-gradient-to-r from-accent/[0.14] via-base-850/50 to-base-850/40 p-5 shadow-glow">
-        <span className="pointer-events-none absolute -right-16 -top-20 h-56 w-56 rounded-full bg-accent/10 blur-3xl" />
-        <div className="relative flex flex-wrap items-start justify-between gap-4">
-          <div className="max-w-2xl">
-            <p className="font-display text-[11px] uppercase tracking-[0.2em] text-accent">
-              Board Brief · Q2 2026
-            </p>
-            <h2 className="mt-1.5 font-display text-xl font-bold tracking-tight text-white sm:text-[22px]">
-              Professionalizing the back office, at execution speed.
-            </h2>
-            <p className="mt-1.5 text-[13px] leading-relaxed text-slate-300">
-              A decade of HR, fleet, and project data is being moved out of the Google Drive
-              “junk drawer” into a clean stack — Paychex for people, PenguinData for operations,
-              QuickBooks for finance — with exception governance instead of silent failures.
+    <div className="space-y-5">
+      <section className="rounded-3xl border border-accent/20 bg-gradient-to-br from-accent/[0.16] via-base-850/70 to-base-900/80 p-6 shadow-glow md:p-7">
+        <div className="flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
+          <div className="max-w-4xl">
+            <p className="font-display text-[11px] uppercase tracking-[0.2em] text-accent">Leadership email response</p>
+            <h1 className="mt-3 font-display text-3xl font-black leading-tight tracking-tight text-white md:text-5xl">
+              Here is the direct answer, the 90-day plan, and the demo path that proves the approach.
+            </h1>
+            <p className="mt-4 max-w-3xl text-sm leading-7 text-slate-300 md:text-base">
+              The assignment is bigger than organizing Google Drive. The response is a defined assessment, a governed operating model, and a practical path toward trusted reporting, Power BI, automation, and AI readiness.
             </p>
           </div>
-          <div className="flex w-full items-center justify-between gap-3 rounded-xl border border-white/10 bg-base-900/50 px-4 py-2.5 sm:w-auto sm:justify-start">
-            <div className="text-right">
-              <p className="text-[11px] uppercase tracking-wider text-slate-500">Open Exceptions</p>
-              <p className="font-display text-3xl font-bold tabular text-rose-300">
-                {exceptions.length}
-              </p>
-            </div>
-            <button
-              onClick={() => setPage('integration')}
-              className="inline-flex items-center gap-1 rounded-lg border border-accent/30 bg-accent/10 px-3 py-2 text-xs font-semibold text-accent transition-colors hover:bg-accent/20"
-            >
-              Review
-              <ArrowRight className="h-3.5 w-3.5" />
-            </button>
-          </div>
+          <button
+            onClick={startTour}
+            className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-accent to-accent-soft px-5 py-3 text-sm font-semibold text-white shadow-[0_8px_24px_-8px_rgba(47,134,224,0.75)] transition-all hover:brightness-110 sm:w-auto"
+          >
+            Walk the executive demo <ArrowRight className="h-4 w-4" />
+          </button>
         </div>
-      </div>
+      </section>
 
-      {/* Board KPIs */}
-      <div className="grid grid-cols-2 gap-3 lg:grid-cols-3 xl:grid-cols-6">
-        {boardKpis.map((kpi, i) => (
-          <KPICard key={kpi.label} kpi={kpi} index={i} />
-        ))}
-      </div>
-
-      <div className="grid gap-4 lg:grid-cols-3">
-        {/* Risk heat map */}
-        <Card className="lg:col-span-2" tourId="risk">
-          <SectionHeader
-            title="Regional Risk Heat Map"
-            subtitle="Operational risk by region & dimension · simulated"
-            icon={<Map className="h-4 w-4" />}
-            hint="Operational exposure by region across five dimensions — payroll sync health, fleet coverage, AR billing accuracy, document classification, and schedule fidelity."
-          />
-          <div className="overflow-x-auto">
-            <table className="w-full min-w-[560px] border-separate border-spacing-1 text-sm">
-              <thead>
-                <tr>
-                  <th className="px-2 py-1 text-left text-[11px] font-medium uppercase tracking-wider text-slate-500">
-                    Region
-                  </th>
-                  {riskDimensions.map((d) => (
-                    <th
-                      key={d}
-                      className="px-2 py-1 text-center text-[11px] font-medium uppercase tracking-wider text-slate-500"
-                    >
-                      {d}
-                    </th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody>
-                {riskHeatmap.map((row) => (
-                  <tr key={row.region}>
-                    <td className="whitespace-nowrap px-2 py-1 text-sm font-medium text-slate-200">
-                      {row.region}
-                    </td>
-                    {(['payroll', 'fleet', 'billing', 'docs', 'schedule'] as const).map((dim) => {
-                      const lvl = row[dim]
-                      return (
-                        <td key={dim} className="px-1 py-1">
-                          <div
-                            title={`${row.region} · ${dim}: ${riskLabels[lvl]}`}
-                            className={`flex h-8 items-center justify-center rounded-lg text-[11px] font-semibold ring-1 ring-inset ${riskCell[lvl]}`}
-                          >
-                            {riskLabels[lvl]}
-                          </div>
-                        </td>
-                      )
-                    })}
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-          {/* Legend */}
-          <div className="mt-3 flex flex-wrap items-center gap-3 border-t border-white/[0.06] pt-3">
-            {([0, 1, 2, 3] as RiskLevel[]).map((lvl) => (
-              <span key={lvl} className="flex items-center gap-1.5 text-[11px] text-slate-400">
-                <span className={`h-3 w-3 rounded ring-1 ring-inset ${riskCell[lvl]}`} />
-                {riskLabels[lvl]}
-              </span>
-            ))}
-          </div>
-        </Card>
-
-        {/* Transformation roadmap */}
-        <Card padded={false} className="flex flex-col">
-          <CardHeader
-            title="Transformation Roadmap"
-            icon={<Flag className="h-4 w-4 text-accent" />}
-            below={
-              <div className="mt-3">
-                <ProgressBar value={roadmapProgress} caption={`${roadmapProgress}% delivered`} size="sm" />
-              </div>
-            }
-          />
-          <div className="space-y-2.5 p-4">
-            {transformationRoadmap.map((m) => {
-              const meta = milestoneMeta[m.status]
-              const Icon = meta.icon
-              return (
-                <div key={m.title} className="flex gap-3">
-                  <Icon
-                    className={`mt-0.5 h-4 w-4 shrink-0 ${meta.cls} ${
-                      m.status === 'in-progress' ? 'animate-spin' : ''
-                    }`}
-                  />
-                  <div className="min-w-0 flex-1">
-                    <div className="flex items-center justify-between gap-2">
-                      <p className="text-sm font-medium text-slate-100">{m.title}</p>
-                      <span className="shrink-0 text-[10px] uppercase tracking-wide text-slate-500">
-                        {m.quarter}
-                      </span>
-                    </div>
-                    <p className="mt-0.5 text-xs text-slate-400">{m.detail}</p>
-                  </div>
-                </div>
-              )
-            })}
-          </div>
-        </Card>
-      </div>
-
-      {/* At-risk portfolio + savings callout */}
-      <div className="grid gap-4 lg:grid-cols-3">
-        <Card className="lg:col-span-2" padded={false}>
-          <CardHeader
-            title="Programs Needing Board Attention"
-            icon={<ShieldAlert className="h-4 w-4 text-amber-400" />}
-            action={
-              <button
-                onClick={() => setPage('projects')}
-                className="inline-flex items-center gap-1 text-xs font-semibold text-accent hover:underline"
-              >
-                Full portfolio
-                <ArrowRight className="h-3.5 w-3.5" />
-              </button>
-            }
-          />
-          <div className="divide-y divide-white/[0.05]">
-            {atRisk.map((p) => (
-              <div key={p.name} className="flex items-center gap-4 px-3.5 py-2.5">
-                <div className="min-w-0 flex-1">
-                  <p className="truncate text-sm font-medium text-slate-100">{p.name}</p>
-                  <p className="truncate text-xs text-slate-400">
-                    {p.region} · {p.type} — {p.issue}
-                  </p>
-                </div>
-                {p.complete !== null && (
-                  <span className="hidden w-28 shrink-0 sm:block">
-                    <ProgressBar value={p.complete} caption={`${p.complete}%`} size="sm" />
-                  </span>
-                )}
-                <span className="shrink-0">
-                  <StatusBadge tone={p.status === 'blocked' ? 'blocked' : 'at-risk'} label={p.status} dot={false} />
+      <section className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+        {answerCards.map((card) => {
+          const Icon = card.icon
+          return (
+            <Card key={card.question} hover>
+              <div className="mb-3 flex items-center gap-2">
+                <span className="flex h-8 w-8 items-center justify-center rounded-xl border border-accent/25 bg-accent/10 text-accent">
+                  <Icon className="h-4 w-4" />
                 </span>
+                <h2 className="font-display text-sm font-semibold text-white">{card.question}</h2>
+              </div>
+              <p className="text-sm leading-6 text-slate-400">{card.answer}</p>
+            </Card>
+          )
+        })}
+      </section>
+
+      <section className="grid gap-5 lg:grid-cols-[1.1fr_.9fr]">
+        <Card>
+          <SectionHeader
+            title="Recommended additions to scope"
+            subtitle="The difference between a cleanup and a scalable foundation"
+            icon={<Network className="h-4 w-4" />}
+          />
+          <div className="grid gap-2 sm:grid-cols-2">
+            {[
+              'Data governance',
+              'Business process mapping',
+              'One governed integration layer',
+              'Executive dashboards',
+              'AI readiness',
+              'Security by default',
+              'Documentation throughout',
+            ].map((item) => (
+              <div key={item} className="rounded-xl border border-white/[0.06] bg-base-900/40 p-3 text-sm font-medium text-slate-200">
+                {item}
               </div>
             ))}
           </div>
         </Card>
 
-        <Card className="flex flex-col justify-between">
+        <Card>
           <SectionHeader
-            title="Modeled Impact"
-            icon={<Gauge className="h-4 w-4" />}
-            hint="Annualized estimate from reclaimed admin time (126 hrs/mo at blended $25/hr) plus billing leakage reduction once the Drive migration cutover completes. Conservative baseline only."
+            title="Demo path for leadership"
+            subtitle="Use this route to understand the proposal quickly"
+            icon={<Map className="h-4 w-4" />}
           />
-          <div className="space-y-3">
-            <ImpactRow label="Admin hours saved / mo" value="126 hrs" pct={70} />
-            <ImpactRow label="Duplicate entry reduction" value="61%" pct={61} />
-            <ImpactRow label="Drive classified" value="71%" pct={71} />
-            <ImpactRow label="Onboarding cycle cut" value="20%" pct={20} />
-          </div>
-          <div className="mt-4 rounded-xl border border-accent/20 bg-accent/[0.06] p-3 text-xs text-slate-300">
-            Combined <span className="font-semibold text-accent">~$214K/yr</span> modeled impact from
-            reclaimed admin time and reduced billing leakage once migration cutover completes.
+          <div className="space-y-2">
+            {demoSteps.map((step, index) => (
+              <button
+                key={step.label}
+                onClick={() => setPage(step.page)}
+                className="group flex w-full gap-3 rounded-xl border border-white/[0.06] bg-base-900/35 p-3 text-left transition-colors hover:border-accent/30 hover:bg-accent/[0.06]"
+              >
+                <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg border border-white/10 text-xs font-bold text-accent">{index + 1}</span>
+                <span className="min-w-0 flex-1">
+                  <span className="block text-sm font-semibold text-white">{step.label}</span>
+                  <span className="mt-0.5 block text-xs leading-5 text-slate-400">{step.body}</span>
+                </span>
+                <ArrowRight className="mt-1 h-4 w-4 shrink-0 text-slate-600 transition-transform group-hover:translate-x-0.5 group-hover:text-accent" />
+              </button>
+            ))}
           </div>
         </Card>
-      </div>
-    </div>
-  )
-}
+      </section>
 
-function ImpactRow({ label, value, pct }: { label: string; value: string; pct: number }) {
-  return (
-    <div>
-      <div className="mb-1 flex items-center justify-between text-xs">
-        <span className="text-slate-300">{label}</span>
-        <span className="font-semibold tabular text-white">{value}</span>
-      </div>
-      <ProgressBar value={pct} size="sm" />
+      <section className="space-y-4" data-tour="risk">
+        <div>
+          <p className="font-display text-[11px] uppercase tracking-[0.2em] text-accent">90-day execution plan</p>
+          <h2 className="mt-1 font-display text-2xl font-bold tracking-tight text-white">Clear phases, clear deliverables, no vague roadmap.</h2>
+        </div>
+        <div className="grid gap-4 xl:grid-cols-3">
+          {roadmap.map((phase) => (
+            <Card key={phase.phase} className="flex flex-col">
+              <div className="mb-4 flex items-start justify-between gap-3">
+                <div>
+                  <Tag>{phase.phase}</Tag>
+                  <h3 className="mt-3 font-display text-lg font-bold text-white">{phase.title}</h3>
+                </div>
+                <CheckCircle2 className="h-5 w-5 text-accent" />
+              </div>
+              <p className="rounded-xl border border-accent/20 bg-accent/[0.06] p-3 text-sm font-medium leading-6 text-slate-200">
+                {phase.outcome}
+              </p>
+              <ul className="mt-4 space-y-2 text-sm leading-6 text-slate-400">
+                {phase.bullets.map((bullet) => (
+                  <li key={bullet} className="flex gap-2">
+                    <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-accent" />
+                    <span>{bullet}</span>
+                  </li>
+                ))}
+              </ul>
+            </Card>
+          ))}
+        </div>
+      </section>
     </div>
   )
 }
