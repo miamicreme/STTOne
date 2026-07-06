@@ -2,19 +2,13 @@ import type { Metadata } from 'next'
 import localFont from 'next/font/local'
 import '../index.css'
 
-// Self-hosted variable fonts — no network at build time, no layout shift.
-// Inter for body/numerics (excellent tabular figures); Sora for display.
+// Self-hosted Inter variable font — no network request, no layout shift.
+// Use one highly readable font family across the app for faster first paint.
 const inter = localFont({
   src: './fonts/inter-var.woff2',
   variable: '--font-inter',
   display: 'swap',
   weight: '100 900',
-})
-const sora = localFont({
-  src: './fonts/sora-var.woff2',
-  variable: '--font-sora',
-  display: 'swap',
-  weight: '100 800',
 })
 
 export const metadata: Metadata = {
@@ -25,7 +19,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${inter.variable} ${sora.variable}`}>
+    <html lang="en" className={inter.variable}>
       <body>{children}</body>
     </html>
   )
