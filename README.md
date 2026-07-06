@@ -4,172 +4,109 @@
 
 <h1 align="center">Operations Command Center</h1>
 
-<p align="center"><em>A working prototype and integration proposal for Southern Tier Telecommunications</em></p>
+<p align="center"><em>A working executive prototype and 90-day operating-model proposal for Southern Tier Telecommunications</em></p>
 
-<p align="center"><strong>Built on Execution. Elevated by Excellence.</strong></p>
+<p align="center"><strong>Business first. Governed data. Measured automation.</strong></p>
 
 ---
 
 ## Executive summary
 
-Southern Tier runs on three strong systems — **Paychex, PenguinData, and QuickBooks** — and a decade of operational history. Today those systems don't talk to each other, and much of that history sits unstructured in Google Drive. The result is manual onboarding, duplicated work, delayed billing, and an estimated **~$214,000 a year in preventable leakage**.
+Southern Tier already has useful systems of record: **Paychex** for people, **PenguinData** for operations, **QuickBooks** for finance, and **Google Drive** as the legacy document source. The opportunity is not to replace those tools. The opportunity is to understand how the business actually works, define ownership, add one governed layer between the systems, and make exceptions visible before they become payroll, billing, field, or reporting risk.
 
 This repository contains two things:
 
-1. A **working prototype** — the Operations Command Center — that demonstrates the proposed operating model end to end.
-2. A **90-day plan** to deliver it against your live systems.
+1. A **working executive prototype** that demonstrates the proposed operating model.
+2. A **90-day execution plan** for discovery, governance, early wins, reporting readiness, Power BI readiness, automation, and AI readiness.
 
-The proposal is straightforward: keep your systems of record, connect them with one governed integration layer, automate the work done by hand today, and put guardrails in place so the data stays clean. *(The prototype uses simulated data, anchored to Southern Tier's real footprint, to make the model tangible.)*
-
----
-
-## The challenge today
-
-- A decade of HR, fleet, and project files accumulated loosely in Google Drive — a "junk drawer" that's hard to search, duplicate-heavy, and inconsistently secured.
-- Paychex, PenguinData, and QuickBooks operate in silos; data is re-keyed by hand between them.
-- Onboarding a new hire is manual and error-prone — and nothing reliably stops a non-compliant hire from slipping through.
-- Failures are silent. Mismatches and missing fields surface late, as billing holds or payroll rework.
-- Nothing prevents staff and crews from re-cluttering the system over time.
+The modeled baseline shows **~$214,000/year in preventable leakage** across onboarding/data-entry admin, billing leakage, payroll rework, and Drive sprawl. These numbers are illustrative and should be validated in week one.
 
 ---
 
-## The opportunity
-
-Closing those gaps is worth an estimated **~$214K per year**, modeled across four areas:
-
-| Area | Modeled annual value | Driver |
-|---|---|---|
-| Onboarding & data-entry admin | **~$72K** | ~126 admin hours / month reclaimed |
-| Billing leakage | **~$82K** | Held and mis-coded work across programs |
-| Payroll rework & overpayment | **~$38K** | Duplicate / mismatched worker records |
-| Drive sprawl | **~$22K** | Duplicate files + permission cleanup |
-
-Beyond the dollars: **faster onboarding, reliable billing, clean and searchable records, and real-time executive visibility.**
-
----
-
-## The approach
+## The core message
 
 > **Keep the systems of record. Add one governed layer between them. Make nothing fail silently.**
 
-- **One source of truth per domain.** Paychex owns *People*. PenguinData owns *Operations*. QuickBooks owns *Finance*. Google Drive becomes governed *Documents*.
-- **A thin integration layer** validates, maps, de-duplicates, and audits every change between systems — no rip-and-replace.
-- **Exceptions, not silent failures.** Anything the system can't resolve is routed to a person, visibly.
-- **Guards at the point of entry** keep the data clean by design, so it can't re-clutter.
-
-A full custom platform is built only where it clearly beats integration on return — a deliberate decision, not the default.
-
----
-
-## What the prototype demonstrates
-
-| Capability | The benefit it proves |
-|---|---|
-| **Executive & Board view** | One screen for KPIs, regional risk, and modeled ROI |
-| **Integration Architecture** | The full data-flow blueprint and source-of-truth model |
-| **Automated onboarding** | A new hire in Paychex provisions accounts, fleet, and profile automatically — and a non-compliant hire is stopped *before* dispatch |
-| **Integration health** | Live system status, a flowing event feed, and a retryable exception queue |
-| **Drive cleanup** | A decade of files classified, de-duplicated, and de-risked |
-| **Field ops & fleet** | Fleet health, utilization, and maintenance at a glance |
-| **Project portfolio** | Program health and at-risk work across every region |
-
-A **welcome screen** greets every visitor with a one-screen brief on what's being demonstrated and two doors: watch the guided tour, or explore freely. The prototype also ships with a **self-running guided tour** — open the link and it walks the full story in about 80 seconds, including the onboarding pipeline catching a non-compliant hire in real time. A **Boardroom Mode** enlarges everything for screen-share or projector, and a **⌘K command palette** jumps to any screen or action from the keyboard.
+- Paychex remains the source of truth for people, workers, onboarding, and payroll.
+- PenguinData remains the source of truth for operations, dispatch, fleet, and work activity.
+- QuickBooks remains the source of truth for finance, invoicing, job-cost, and payables.
+- Google Drive becomes a governed legacy document source, not a junk drawer.
+- The command center makes mismatches visible, assigned, auditable, and recoverable.
 
 ---
 
-## Timeline — 30 / 60 / 90
+## Main demo path
 
-| Milestone | Outcome |
-|---|---|
-| **Day 30** | Integration backbone live; first automated pipeline in production with exception routing; current-state map and quantified baseline complete |
-| **Day 60** | Paychex, PenguinData, and QuickBooks connected with reliable, audited pipelines; onboarding fully automated; job-cost and payroll sync running |
-| **Day 90** | Legacy Drive migrated or archived; governance guards on every entry path; payroll and operations ring-fenced; full documentation and handoff |
+The current executive story is intentionally tight:
 
----
+| Step | Page | What it proves |
+|---|---|---|
+| 1 | **Executive Brief** | The business case, modeled leakage, and why the work matters. |
+| 2 | **Discovery Map** | Kohron starts by learning the business, operators, workflows, and breakpoints. |
+| 3 | **Operating Model** | STT keeps Paychex, PenguinData, QuickBooks, and Drive; one governed layer controls handoffs. |
+| 4 | **Exception Command Center** | Bad data becomes owned work before it becomes business risk. |
+| 5 | **90-Day Plan** | The first phase is concrete: discover, govern, stabilize, and prepare the implementation path. |
 
-## The plan
-
-- **Phase 0 — Discovery & baseline** *(Days 1–10):* document the current state, confirm API capabilities, audit the Drive estate, and quantify the real leakage figure.
-- **Phase 1 — Foundation & first win** *(Days 7–30):* stand up the staging / audit layer and ship the first automated pipeline with exception routing.
-- **Phase 2 — Core integration** *(Days 30–60):* connect all three systems with idempotent, audited pipelines; complete onboarding automation.
-- **Phase 3 — Legacy migration** *(Days 45–80):* classify, de-duplicate, and migrate or archive the Drive backlog; retire stray spreadsheets.
-- **Phase 4 — Governance & hardening** *(Days 60–90):* activate ingest guards, ring-fence sensitive data, and publish data standards.
-- **Phase 5 — Handoff** *(Day 90+):* runbooks, monitoring, knowledge transfer, and a forward roadmap.
-
-> The full breakdown — activities, deliverables, and exit criteria per phase — is in **[STT-Execution-Plan.md](./STT-Execution-Plan.md)**.
+The older full demo modules are still available in the archive link for deeper review, but the main navigation stays focused for leadership.
 
 ---
 
-## How success is measured
+## First 90 days
+
+| Phase | Focus | Deliverable |
+|---|---|---|
+| **Days 1–30** | Discover and baseline | Current-state map, risk/opportunity list, workflow breakpoints, first quick-win recommendations. |
+| **Days 31–60** | Govern and stabilize | Source-of-truth rules, validation checks, exception categories, approval paths, and first governed workflow prototype. |
+| **Days 61–90** | Visibility and implementation path | Future-state integration plan, executive dashboard definitions, security/access requirements, and implementation roadmap. |
+
+---
+
+## Success measures
 
 | Metric | Target direction |
 |---|---|
-| Preventable leakage recovered | ↑ toward the modeled ~$214K |
-| Admin hours reclaimed / month | ↑ (~126 modeled) |
-| Cross-system sync health | → 99%+ |
-| Exception resolution time | ↓ |
-| Duplicate records | ↓ |
-| On-time billing | ↑ |
-| Legacy Drive migrated / archived | ↑ |
-| Data re-clutter rate | → 0 |
+| Preventable leakage recovered | Up toward validated baseline |
+| Duplicate entry and manual rework | Down |
+| Exception visibility | Up |
+| Exception resolution time | Down |
+| Payroll / job-cost sync confidence | Up |
+| Reporting and Power BI readiness | Up |
+| Data re-clutter rate | Toward zero |
 
 ---
 
-## What I need to begin (Week 1)
+## What I need to begin
 
-- Read or sandbox access (or API credentials) for Paychex, PenguinData, and QuickBooks.
-- A read-only Google Drive audit grant.
-- One executive sponsor and one operations point of contact.
+- Read-only or sandbox access first.
+- Time with leadership, HR, operations, dispatch, finance, project leads, and field users.
+- One executive sponsor and one access/approval contact.
+- Company-managed equipment and accounts for secure, auditable work.
 
 ---
 
-## Appendix — running the prototype
-
-Working software, not slideware. To run it locally:
+## Running the prototype
 
 ```bash
 npm install
 npm run dev      # http://localhost:3000
-npm run build    # static export → ./out
-npm test         # 21 unit tests (Node test runner — no Vite)
+npm run build    # static export to ./out
+npm test         # Node test runner
 ```
 
-**Stack:** Next.js 14 (App Router, static export) · React 18 · TypeScript · Tailwind CSS · Recharts. No backend and no persistence — all data is simulated in memory, and every screen is labeled *"Demo data — interview prototype only."* Fonts are self-hosted, so the build has no external dependencies; it deploys to any static host (a Render blueprint is included).
-
-### What's real vs. simulated
-
-Honesty up front, because it's the first question worth asking:
-
-| Real, working software | Simulated for the demo |
-|---|---|
-| The full UI, state model, and cross-page reactivity — run a New Hire and the exception propagates live to the Executive, Integration, and Board views | The records themselves (workers, projects, files, fleet) — in-memory mock data, no live systems |
-| The integration **model**: source-of-truth per domain, governed layer, exception routing, ingest guards | The dollar figures (~$214K, 126 hrs/mo, etc.) — *modeled* estimates anchored to STT's public scale, to be validated in week one |
-| The automation **logic** — the onboarding pipeline genuinely runs, validates, and halts a non-compliant hire before dispatch | The Paychex / PenguinData / QuickBooks connections — represented, not yet wired to real APIs |
-| Reducer + data integrity covered by **21 automated tests** (`npm test`) | — |
-
-The point of the prototype is to make the *operating model* tangible and testable. Phase 0 of the [execution plan](./STT-Execution-Plan.md) replaces the simulated layer with live system access and a measured baseline.
-
-### Tests
-
-`npm test` runs 21 unit tests on Node's built-in runner (via `tsx` — **no Vite**, consistent with the rest of the stack):
-
-- **Reducer** — the cross-page reactivity that makes the app feel real: welcome-overlay and tour control, command-palette state, New-Hire command nonces, exception add/resolve, event-feed capping, and reducer purity.
-- **Data integrity** — the leakage breakdown reconciles exactly to the $214K headline, board figures stay consistent, every tour scene targets a real page with a readable dwell time, and KPI values stay compact enough not to clip.
-
-Every push and pull request runs the tests **and** the production build in CI (GitHub Actions — `.github/workflows/ci.yml`), so `main` stays green.
-
-### Testing time
-
-| Path | Time |
-|---|---|
-| **Watch the self-running tour** (no setup — just open the live link) | **~80 seconds** |
-| Click through all nine screens at your own pace | ~3–5 minutes |
-| Run locally from a clean clone (`npm install` → `npm run dev`) | ~2 minutes |
-| Production build + static export (`npm run build`) | <1 minute |
-| Automated test suite (`npm test`) | <1 second (21 tests) |
-
-Fastest way to evaluate: open the link and let the tour drive — it provisions a new hire, catches a non-compliant one, and lands the resulting exception live, end to end, in about a minute and a half.
+**Stack:** Next.js 14 App Router, React 18, TypeScript, Tailwind CSS, Recharts, local mock data, self-hosted fonts, static export for Render.
 
 ---
 
-<p align="center"><em>Prepared by <strong>Kohron Burton</strong> — 18+ years in enterprise systems and integration, delivering on a modern TypeScript / Supabase stack.</em></p>
+## Real vs. simulated
+
+| Real, working software | Simulated for the demo |
+|---|---|
+| UI, state model, guided tour, command palette, page navigation, reducer tests, and cross-page exception behavior | Records, workers, files, events, projects, and all financial figures |
+| Operating model: source-of-truth domains, governed layer, exception routing, audit-style flow | Live Paychex / PenguinData / QuickBooks API connections |
+| Static deployable Next.js prototype | Production data, credentials, and real system writes |
+
+The purpose is to make the operating model tangible before touching live systems.
+
+---
+
+<p align="center"><em>Prepared by <strong>Kohron Burton</strong> — enterprise systems, integration, product architecture, and executive-ready delivery.</em></p>
