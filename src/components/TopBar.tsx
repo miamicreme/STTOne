@@ -7,7 +7,7 @@ import type { PageKey } from '../data'
 const pageTitles: Record<PageKey, string> = {
   home: 'Executive Brief',
   discovery: 'Discovery Map',
-  board: 'Response + 90-Day Plan',
+  board: '90-Day Execution Plan',
   legacy: 'Old Full Demo',
   'lead-finder': 'STT Lead Finder',
   architecture: 'Operating Model',
