@@ -1,18 +1,20 @@
 import {
+  Activity,
   AlertTriangle,
   ArrowRight,
+  CheckCircle,
   CheckCircle2,
   CircleAlert,
+  ClipboardList,
   Info,
   RadioTower,
+  ShieldCheck,
+  UserCheck,
   XCircle,
-  CheckCircle,
-  ClipboardList,
-  Activity,
 } from 'lucide-react'
-import { Card, SectionHeader, CardHeader, EmptyState } from '../components/Card'
-import { StatusBadge } from '../components/StatusBadge'
+import { Card, CardHeader, EmptyState, SectionHeader } from '../components/Card'
 import { ExceptionRow } from '../components/ExceptionRow'
+import { StatusBadge } from '../components/StatusBadge'
 import { Timeline, type TimelineRow } from '../components/Timeline'
 import { systemCards } from '../data'
 import { useApp } from '../state/AppContext'
@@ -38,8 +40,9 @@ export function IntegrationHealth() {
   const retryable = exceptions.filter((e) => e.retryable)
   const blocked = exceptions.filter((e) => !e.retryable)
   const highPriority = exceptions.find((e) => e.severity === 'high') ?? exceptions[0]
-
-  const timelineRows: TimelineRow[] = events.slice(0, 4).map((ev) => ({
+  const nextItems = exceptions.filter((e) => e.id !== highPriority?.id).slice(0, 3)
+  const systemsHealthy = systemCards.filter((sys) => sys.status === 'healthy').length
+  const latestEvents: TimelineRow[] = events.slice(0, 3).map((ev) => ({
     id: ev.id,
     title: `${ev.system} · ${ev.message}`,
     time: ev.time,
@@ -47,41 +50,39 @@ export function IntegrationHealth() {
     icon: levelIcon[ev.level],
   }))
 
-  const systemsHealthy = systemCards.filter((sys) => sys.status === 'healthy').length
-
   return (
     <div className="space-y-4">
       <section className="rounded-3xl border border-accent/20 bg-gradient-to-br from-accent/[0.14] via-base-850/65 to-base-900/75 p-5 shadow-glow md:p-6">
-        <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
-          <div className="max-w-3xl">
+        <div className="grid gap-4 xl:grid-cols-[1.15fr_.85fr] xl:items-end">
+          <div>
             <p className="font-display text-[11px] uppercase tracking-[0.2em] text-accent">Exception command center</p>
-            <h1 className="mt-2 font-display text-3xl font-black leading-tight tracking-tight text-white md:text-4xl">
-              Make bad data visible before it becomes payroll, billing, or operational risk.
+            <h1 className="mt-2 max-w-4xl font-display text-3xl font-black leading-tight tracking-tight text-white md:text-4xl">
+              Bad data becomes owned work — before it becomes business risk.
             </h1>
-            <p className="mt-3 text-sm leading-7 text-slate-300">
-              This page is the control room: systems stay connected, exceptions get owners, and nothing breaks silently.
+            <p className="mt-3 max-w-3xl text-sm leading-7 text-slate-300">
+              This is the governed layer in action: detect the mismatch, assign the owner, retry what can be retried, and escalate what needs a decision.
             </p>
           </div>
-          <div className="grid w-full grid-cols-3 gap-2 rounded-2xl border border-white/[0.08] bg-base-950/35 p-3 sm:w-auto sm:min-w-[360px]">
+          <div className="grid grid-cols-3 gap-2 rounded-2xl border border-white/[0.08] bg-base-950/35 p-3">
             <CommandStat label="Open" value={exceptions.length} tone="rose" />
-            <CommandStat label="Retryable" value={retryable.length} tone="amber" />
+            <CommandStat label="Retry" value={retryable.length} tone="amber" />
             <CommandStat label="Blocked" value={blocked.length} tone="rose" />
           </div>
         </div>
       </section>
 
-      <section className="grid gap-4 xl:grid-cols-[1.05fr_.95fr]">
-        <Card padded={false} tourId="intq">
+      <section className="grid gap-4 xl:grid-cols-[1.1fr_.9fr]">
+        <Card padded={false} tourId="intq" className="overflow-hidden">
           <CardHeader
-            title="Priority exception queue"
+            title="Priority exception"
             icon={<AlertTriangle className="h-4 w-4 text-amber-400" />}
             action={<span className="text-[11px] text-slate-500">{retryable.length} retryable · {blocked.length} blocked</span>}
           />
           <div className="space-y-3 p-4">
             {highPriority ? (
-              <div className="rounded-2xl border border-rose-400/25 bg-rose-500/[0.07] p-4">
-                <div className="mb-2 flex items-center justify-between gap-3">
-                  <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-rose-300">Highest priority</p>
+              <div className="rounded-2xl border border-rose-400/25 bg-rose-500/[0.06] p-4">
+                <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
+                  <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-rose-300">Needs owner decision</p>
                   <span className="rounded-full border border-rose-400/25 bg-rose-500/10 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide text-rose-200">
                     {categoryLabel[highPriority.category] ?? highPriority.category}
                   </span>
@@ -92,50 +93,37 @@ export function IntegrationHealth() {
               <EmptyState title="Queue is clear" subtitle="All systems reconciled." className="py-10" />
             )}
 
-            {exceptions.length > 1 && (
-              <div className="space-y-2">
-                <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-slate-500">Next items</p>
-                {exceptions.slice(1, 4).map((exc) => (
+            {nextItems.length > 0 && (
+              <div className="grid gap-2 md:grid-cols-3 xl:grid-cols-1 2xl:grid-cols-3">
+                {nextItems.map((exc) => (
                   <ExceptionRow key={exc.id} exception={exc} compact onRetry={resolveException} />
                 ))}
-                {exceptions.length > 4 && (
-                  <p className="rounded-xl border border-white/[0.06] bg-base-950/35 px-3 py-2 text-xs text-slate-400">
-                    +{exceptions.length - 4} lower-priority items held behind the same governance workflow.
-                  </p>
-                )}
               </div>
             )}
           </div>
         </Card>
 
-        <div className="space-y-4">
+        <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-1">
           <Card>
             <SectionHeader
-              title="What this proves"
-              subtitle="A governed layer turns silent failures into owned work."
+              title="Executive readout"
+              subtitle="What leadership needs to know"
               icon={<ClipboardList className="h-4 w-4" />}
             />
-            <div className="space-y-2 text-sm leading-6 text-slate-300">
-              {[
-                'Paychex, PenguinData, QuickBooks, and Google Drive keep their jobs.',
-                'Every mismatch gets categorized, logged, and routed to a responsible owner.',
-                'Retryable items can be reprocessed; blocked items require human decision.',
-              ].map((item, index) => (
-                <div key={item} className="flex gap-3 rounded-xl border border-white/[0.06] bg-base-900/35 p-3">
-                  <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-accent/15 text-[11px] font-bold text-accent">{index + 1}</span>
-                  <span>{item}</span>
-                </div>
-              ))}
+            <div className="grid gap-2">
+              <ProofPoint icon={<ShieldCheck className="h-4 w-4" />} title="Visible" body="No silent failures between systems." />
+              <ProofPoint icon={<UserCheck className="h-4 w-4" />} title="Owned" body="Every exception has a category and next action." />
+              <ProofPoint icon={<CheckCircle2 className="h-4 w-4" />} title="Recoverable" body="Retryable items move again after data is corrected." />
             </div>
           </Card>
 
           <Card>
             <SectionHeader
               title="System pulse"
-              subtitle={`${systemsHealthy} of ${systemCards.length} systems healthy · ${runCount} automation runs this session`}
+              subtitle={`${systemsHealthy} of ${systemCards.length} healthy · ${runCount} automation runs`}
               icon={<RadioTower className="h-4 w-4" />}
             />
-            <div className="space-y-2">
+            <div className="grid gap-2 sm:grid-cols-2 xl:grid-cols-1">
               {systemCards.map((sys) => (
                 <div key={sys.name} className="flex items-center justify-between gap-3 rounded-xl border border-white/[0.06] bg-base-900/35 px-3 py-2.5">
                   <div className="min-w-0">
@@ -150,30 +138,44 @@ export function IntegrationHealth() {
         </div>
       </section>
 
-      <section className="grid gap-4 xl:grid-cols-[.85fr_1.15fr]">
+      <section className="grid gap-4 xl:grid-cols-[.9fr_1.1fr]">
         <Card>
           <SectionHeader
-            title="Latest system events"
-            subtitle="Most recent cross-system activity"
+            title="Latest events"
+            subtitle="Only the recent activity leadership needs"
             icon={<Activity className="h-4 w-4" />}
           />
-          <Timeline rows={timelineRows} />
+          <Timeline rows={latestEvents} />
         </Card>
 
         <Card>
           <SectionHeader
-            title="Executive takeaway"
-            subtitle="The point of the command center"
+            title="Close message"
+            subtitle="Why this page matters"
             icon={<CheckCircle2 className="h-4 w-4" />}
           />
           <p className="text-sm leading-7 text-slate-300">
-            The goal is not to show every technical event on one screen. The goal is to give leadership confidence that exceptions are visible, assigned, auditable, and recoverable before they affect payroll, billing, field operations, or reporting.
+            This is the difference between connected systems and governed operations. Paychex, PenguinData, QuickBooks, and Google Drive can keep doing what they do best while the command center makes every mismatch visible, auditable, and recoverable.
           </p>
-          <button className="mt-4 inline-flex items-center gap-2 rounded-xl border border-accent/25 bg-accent/10 px-4 py-2 text-sm font-semibold text-accent">
+          <div className="mt-4 inline-flex items-center gap-2 rounded-xl border border-accent/25 bg-accent/10 px-4 py-2 text-sm font-semibold text-accent">
             Exceptions become managed work <ArrowRight className="h-4 w-4" />
-          </button>
+          </div>
         </Card>
       </section>
+    </div>
+  )
+}
+
+function ProofPoint({ icon, title, body }: { icon: React.ReactNode; title: string; body: string }) {
+  return (
+    <div className="flex gap-3 rounded-xl border border-white/[0.06] bg-base-900/35 p-3">
+      <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl border border-accent/20 bg-accent/10 text-accent">
+        {icon}
+      </span>
+      <div>
+        <p className="text-sm font-semibold text-white">{title}</p>
+        <p className="mt-0.5 text-xs leading-5 text-slate-400">{body}</p>
+      </div>
     </div>
   )
 }
