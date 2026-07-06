@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import localFont from 'next/font/local'
 import '../index.css'
+import '../readability.css'
 
 // Self-hosted Inter variable font — no network request, no layout shift.
 // Use one highly readable font family across the app for faster first paint.
