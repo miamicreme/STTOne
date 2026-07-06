@@ -24,12 +24,12 @@ const guidedPath = [
   {
     label: 'Exception Command Center',
     intent: 'Prove that bad data becomes visible work instead of silent failure.',
-    next: 'Next: close with the roadmap.'
+    next: 'Next: answer leadership directly and show the 90-day plan.'
   },
   {
-    label: '90-Day Roadmap',
-    intent: 'Finish with what leadership gets: measured wins, governance, and a path to Power BI and AI.',
-    next: 'Tour complete.'
+    label: 'Leadership Response + 90-Day Plan',
+    intent: 'Answer the leadership questions, show the demo path, and make the first 90 days concrete.',
+    next: 'Guided path complete.'
   },
 ]
 
