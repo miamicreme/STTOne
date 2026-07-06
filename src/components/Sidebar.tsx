@@ -21,7 +21,7 @@ export function Sidebar() {
     { key: 'discovery', label: 'Discovery Map', icon: SearchCheck },
     { key: 'architecture', label: 'Operating Model', icon: Network },
     { key: 'integration', label: 'Exception Command Center', icon: Activity, badge: exceptions.length },
-    { key: 'board', label: 'Response + 90-Day Plan', icon: Route },
+    { key: 'board', label: '90-Day Plan', icon: Route },
   ]
 
   const collapsedMd = sidebarCollapsed ? 'md:hidden' : ''
