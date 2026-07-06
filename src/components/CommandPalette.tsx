@@ -28,7 +28,7 @@ const COMMANDS: Command[] = [
   goto('discovery', 'Discovery Map', 'How I learn the business', SearchCheck),
   goto('architecture', 'Operating Model', 'Systems of record and governed layer', Network),
   goto('integration', 'Exception Command Center', 'Visible failures and ownership', Activity),
-  goto('board', '90-Day Roadmap', 'Measured path forward', Route),
+  goto('board', '90-Day Plan', 'First 90 days and close message', Route),
   { id: 'tour', label: 'Start guided tour', hint: 'Action', icon: Compass, keywords: 'play walkthrough demo replay', run: (ctx) => ctx.startTour() },
   { id: 'boardroom', label: 'Toggle Boardroom Mode', hint: 'Action', icon: Presentation, keywords: 'present screen share fullscreen', run: (ctx) => ctx.toggleBoardroom() },
 ]
